@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Bookmark-Oneday</string>
+    
+    <string name="menu_homebottom_mylibrary">나의 서재</string>
+    <string name="menu_homebottom_bookclub">책 모임</string>
+    <string name="menu_homebottom_todayoneline">오늘 한줄</string>
+    <string name="menu_homebottom_scrapbook">스크랩 북</string>
+    <string name="menu_homebottom_mypage">마이페이지</string>
+</resources>
