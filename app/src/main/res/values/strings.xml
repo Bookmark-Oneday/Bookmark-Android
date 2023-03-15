@@ -6,4 +6,22 @@
     <string name="menu_homebottom_todayoneline">오늘 한줄</string>
     <string name="menu_homebottom_scrapbook">스크랩 북</string>
     <string name="menu_homebottom_mypage">마이페이지</string>
+    
+    <string name="label_bookdetail_first_read_day">처음 읽은 날</string>
+    <string name="label_bookdetail_total_reading_time">총 독서 시간</string>
+    <string name="label_bookdetail_input_page">페이지 입력</string>
+    <string name="label_bookdetail_until_complete">완독까지</string>
+    <string name="label_bookdetail_my_reading_record">나의 독서기록</string>
+    <string name="caption_bookdetail_my_reading_record">날짜별로 보는 하루 독서량</string>
+    <string name="label_bookdetail_remove_from_book_list">책 목록에서 삭제</string>
+
+    <string name="label_bookdetail_remove_book">책 삭제</string>
+    <string name="caption_bookdetail_remove_book">서재 목록에서 책을 삭제하시겠습니까?</string>
+    <string name="label_bookdetail_remove">삭제</string>
+    <string name="label_bookdetail_cancel">취소</string>
+
+    <string name="label_bookdetail_bookmark">책갈피</string>
+    <string name="caption_bookdetail_bookmark">몇 페이지까지 읽으셨나요?</string>
+    <string name="label_bookdetail_input">입력</string>
+    
 </resources>
