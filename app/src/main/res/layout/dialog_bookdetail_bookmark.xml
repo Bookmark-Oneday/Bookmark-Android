@@ -12,6 +12,7 @@
         android:paddingVertical="21dp"
         android:paddingHorizontal="32dp">
 
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/label_bookdetail_bookmarkdialog_title"
             android:layout_width="wrap_content"
@@ -50,8 +51,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:textSize="16sp"
                 android:padding="6dp"
+                android:textStyle="bold"
+                android:textColor="@color/orange"
                 android:background="@drawable/bookdetail_edittextbackground"
                 />
 
@@ -66,8 +70,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:textSize="16sp"
                 android:padding="6dp"
+                android:textStyle="bold"
                 android:background="@drawable/bookdetail_edittextbackground"
                 />
 
@@ -94,4 +100,12 @@
             android:layout_marginTop="24dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="27dp"
+        android:layout_height="35dp"
+        android:layout_gravity="top"
+        android:layout_marginStart="29dp"
+        android:src="@drawable/img_bookdetail_bookmark"/>
+
 </FrameLayout>
