@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookDetail
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -22,24 +21,13 @@ class BookDetailViewModel : ViewModel() {
         viewModelScope.launch {
             events.send(BookDetailEvent.GetBookDetailLoading)
             val bookDetail = useCaseGetBookDetail.invoke(1)
-            delay(1500L)
             events.send(BookDetailEvent.GetBookDetailSuccess(bookDetail))
         }
     }
 
-    fun tryDeleteBook() {
+    fun setPageInfo(currentPage : Int, totalPage : Int) {
         viewModelScope.launch {
-            events.send(BookDetailEvent.DeleteBookLoading)
-            delay(1000L)
-            events.send(BookDetailEvent.DeleteBookSuccess)
-        }
-    }
-
-    fun tryEditPageInfo(currentPage : Int, totalPage : Int) {
-        viewModelScope.launch {
-            events.send(BookDetailEvent.EditPageLoading)
-            delay(1000L)
-            events.send(BookDetailEvent.EditPageSuccess(currentPage, totalPage))
+            events.send(BookDetailEvent.SetPageInfo(currentPage, totalPage))
         }
     }
 
@@ -58,13 +46,7 @@ class BookDetailViewModel : ViewModel() {
                     inputPageButtonActive = true
                 )
             }
-            BookDetailEvent.EditPageLoading -> {
-                state.copy(inputPageButtonActive = false)
-            }
-            BookDetailEvent.EditPageFail -> {
-                state.copy(inputPageButtonActive = true)
-            }
-            is BookDetailEvent.EditPageSuccess -> {
+            is BookDetailEvent.SetPageInfo -> {
                 state.copy(
                     bookDetail = state.bookDetail?.copy(
                         totalPage = event.totalPage,
@@ -72,15 +54,6 @@ class BookDetailViewModel : ViewModel() {
                     ),
                     inputPageButtonActive = true
                 )
-            }
-            BookDetailEvent.DeleteBookLoading -> {
-                state.copy(toolbarButtonActive = false, inputPageButtonActive = false)
-            }
-            BookDetailEvent.DeleteBookFail -> {
-                state.copy(toolbarButtonActive = true, inputPageButtonActive = true)
-            }
-            BookDetailEvent.DeleteBookSuccess -> {
-                state.copy(toolbarButtonActive = true, inputPageButtonActive = true)
             }
         }
     }
@@ -96,10 +69,5 @@ sealed class BookDetailEvent {
     object GetBookDetailLoading : BookDetailEvent()
     object GetBookDetailFail : BookDetailEvent()
     class GetBookDetailSuccess(val bookDetail: BookDetail) : BookDetailEvent()
-    object EditPageLoading : BookDetailEvent()
-    object EditPageFail : BookDetailEvent()
-    class EditPageSuccess(val currentPage : Int, val totalPage : Int) : BookDetailEvent()
-    object DeleteBookLoading : BookDetailEvent()
-    object DeleteBookFail : BookDetailEvent()
-    object DeleteBookSuccess : BookDetailEvent()
+    class SetPageInfo(val currentPage : Int, val totalPage : Int) : BookDetailEvent()
 }

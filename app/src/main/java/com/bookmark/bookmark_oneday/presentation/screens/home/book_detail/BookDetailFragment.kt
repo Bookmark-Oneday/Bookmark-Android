@@ -49,7 +49,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
         binding.btnBookdetailInputPage.setOnClickListener {
             BookDetailEditPageDialog(
-                onClick = viewModel::tryEditPageInfo,
+                onSuccess = viewModel::setPageInfo,
                 currentPage = viewModel.state.value.bookDetail?.currentPage,
                 totalPage = viewModel.state.value.bookDetail?.totalPage
             ).show(childFragmentManager, "BookDetailBookmarkDialog")
@@ -61,7 +61,11 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
     }
 
     private fun showRemoveConfirmDialog() {
-        BookDetailRemoveDialog(viewModel::tryDeleteBook).show(childFragmentManager, "BookDetailRemoveDialog")
+        BookDetailRemoveDialog(::removeSuccessCallback).show(childFragmentManager, "BookDetailRemoveDialog")
+    }
+
+    private fun removeSuccessCallback() {
+        // 이전 화면으로 돌아가되, 이전 화면에서 책목록을 수정할 수 있도록 정보를 제공해야 함
     }
 
     private fun setObserver() {
@@ -86,6 +90,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
         binding.labelBookdetailAuthor.text = bookDetail.author
         binding.labelBookdetailCurrentPage.text = bookDetail.currentPage.toString()
         binding.labelBookdetailTotalPage.text = "/" + bookDetail.totalPage.toString()
+        binding.labelBookdetailReadProgress.text = "${100 - bookDetail.readingPageRatio}%"
         Glide.with(this@BookDetailFragment).load(bookDetail.imageUrl).into(binding.imgBookdetailBookcover)
 
         binding.labelBookdetailFirstReadDay.text = bookDetail.firstReadTime
