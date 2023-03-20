@@ -54,6 +54,14 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
+    // cameraX
+    def camerax_version = "1.2.1"
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    implementation "androidx.camera:camera-view:${camerax_version}"
+    implementation 'com.google.mlkit:barcode-scanning:17.0.3'
+
     // coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 

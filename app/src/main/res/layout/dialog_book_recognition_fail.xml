@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/all_dialogbackground"
+        android:paddingVertical="21dp"
+        android:paddingHorizontal="32dp">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/label_bookrecognition_fail_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="인식 실패" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/label_bookrecognition_fail_caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_bookrecognition_fail_title"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:text="바코드가 인식되지 않습니다."/>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_bookdetail_bookmarkdialog_input"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:text="확인"
+            android:background="@drawable/all_roundbutton_positive"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_bookrecognition_fail_caption"
+            android:layout_marginTop="24dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>
