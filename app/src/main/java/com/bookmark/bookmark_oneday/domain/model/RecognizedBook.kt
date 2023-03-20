@@ -8,5 +8,7 @@ data class RecognizedBook(
     val thumbnail_url : String,
     val isbn : String,
     val total_page : Int,
-    val meta : String
-)
+    val meta : String,
+    val publisher : String,
+    val dateTime : String
+) : java.io.Serializable

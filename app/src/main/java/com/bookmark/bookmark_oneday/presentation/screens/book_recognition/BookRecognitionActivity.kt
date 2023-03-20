@@ -1,6 +1,7 @@
 package com.bookmark.bookmark_oneday.presentation.screens.book_recognition
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.ActivityBookRecognitionBinding
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
+import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.BookConfirmationActivity
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.component.BookRecognitionFailDialog
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.model.ScreenSizeAdapter
 import com.google.mlkit.vision.barcode.BarcodeScanner
@@ -91,7 +93,10 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.sideEffectsSearchBookSuccess.collectLatest {
-                        // todo 화면 이동
+                        val intent = Intent(this@BookRecognitionActivity, BookConfirmationActivity::class.java)
+                        intent.putExtra("book", it)
+                        this@BookRecognitionActivity.startActivity(intent)
+                        this@BookRecognitionActivity.finish()
                     }
                 }
             }
