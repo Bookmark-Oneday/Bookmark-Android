@@ -23,7 +23,7 @@ class BookRecognitionViewModel constructor(
 
     fun trySearchAndGetBookInfo(isbn : String) {
         // 이미 책 검색을 수행하고 있다면 즉시 리턴
-        if (state.value.showLoadingDialog) return
+        if (state.value.showLoadingDialog || state.value.showErrorDialog) return
 
         viewModelScope.launch {
             events.send(BookRecognitionEvent.SearchBookInfoLoading)

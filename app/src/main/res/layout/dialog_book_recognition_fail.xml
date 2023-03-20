@@ -38,7 +38,7 @@
 
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_bookdetail_bookmarkdialog_input"
+            android:id="@+id/btn_bookrecognition_fail_register"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:minHeight="0dp"

@@ -1,5 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.book_recognition.component
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -25,8 +26,16 @@ class BookRecognitionFailDialog(
         return binding.root
     }
 
-    override fun dismiss() {
-        super.dismiss()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.btnBookrecognitionFailRegister.setOnClickListener {
+            dismiss()
+        }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
         onClose()
     }
 }
