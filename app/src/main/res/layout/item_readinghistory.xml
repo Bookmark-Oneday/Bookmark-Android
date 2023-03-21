@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_readinghistory_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="12/23"/>
+
+    <View
+        android:id="@+id/view_readinghistory_bar"
+        android:layout_width="22dp"
+        android:layout_height="120dp"
+        android:maxHeight="200dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/label_readinghistory_date"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bookdetail_readinghisotrybar"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_readinghistory_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/view_readinghistory_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="6dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/orange"
+        tools:text="62"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
