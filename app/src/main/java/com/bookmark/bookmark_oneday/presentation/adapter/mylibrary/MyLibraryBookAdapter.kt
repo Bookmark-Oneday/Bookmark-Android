@@ -1,0 +1,117 @@
+package com.bookmark.bookmark_oneday.presentation.adapter.mylibrary
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bookmark.bookmark_oneday.databinding.ItemMylibraryBookAddBinding
+import com.bookmark.bookmark_oneday.databinding.ItemMylibraryBookNormalBinding
+import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
+import com.bumptech.glide.Glide
+
+class MyLibraryBookAdapter(
+    private val onClickBook : (Int) -> Unit,
+    private val onClickAdder : () -> Unit,
+) : RecyclerView.Adapter<ViewHolder>() {
+
+    private val asyncDiffer = AsyncListDiffer(this, MyLibraryItemDiffUtil())
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            MyLibraryItem.BOOK_ADDER -> {
+                val binding = ItemMylibraryBookAddBinding.inflate(inflater, parent, false)
+                MyLibraryBookAdderViewHolder(binding, onClickAdder)
+            }
+            MyLibraryItem.BOOK_NORMAL -> {
+                val binding = ItemMylibraryBookNormalBinding.inflate(inflater, parent, false)
+                MyLibraryBookNormalViewHolder(binding, onClickBook)
+            }
+            else -> {
+                val binding = ItemMylibraryBookNormalBinding.inflate(inflater, parent, false)
+                MyLibraryBookNormalViewHolder(binding, onClickBook)
+            }
+        }
+
+    }
+
+    override fun getItemCount(): Int = asyncDiffer.currentList.size
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        when (holder) {
+            is MyLibraryBookAdderViewHolder -> {
+                holder.bind()
+            }
+            is MyLibraryBookNormalViewHolder -> {
+                holder.bind(asyncDiffer.currentList[position] as MyLibraryItem.Book)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return asyncDiffer.currentList[position].viewType
+    }
+
+    fun updateList(list : List<MyLibraryItem>) {
+         asyncDiffer.submitList(list)
+    }
+
+}
+
+class MyLibraryBookNormalViewHolder(
+    private val binding : ItemMylibraryBookNormalBinding,
+    private val onClick : (Int) -> Unit
+) : ViewHolder(binding.root) {
+    private lateinit var currentBook : MyLibraryItem.Book
+
+    init {
+        binding.root.setOnClickListener {
+            onClick(currentBook.id)
+        }
+    }
+
+    fun bind(book : MyLibraryItem.Book) {
+        currentBook = book
+        binding.labelItemMylibraryBookTitle.text = book.title
+        binding.labelItemMylibraryBookAuthor.text = book.author
+        Glide.with(binding.root.context).load(book.thumbnail).into(binding.imgItemMylibraryBookThumbnail)
+
+        binding.imgItemMylibraryLike.visibility = if (book.favorite) View.VISIBLE else View.INVISIBLE
+        binding.imgItemMylibraryBookmark.visibility = if (book.reading) View.VISIBLE else View.INVISIBLE
+    }
+}
+
+class MyLibraryBookAdderViewHolder(
+    binding : ItemMylibraryBookAddBinding,
+    private val onClick : () -> Unit
+) : ViewHolder(binding.root) {
+
+    init {
+        binding.root.setOnClickListener {
+            onClick()
+        }
+    }
+
+    fun bind() {
+
+    }
+}
+
+class MyLibraryItemDiffUtil : DiffUtil.ItemCallback<MyLibraryItem>() {
+    override fun areItemsTheSame(oldItem: MyLibraryItem, newItem: MyLibraryItem): Boolean {
+        return if (oldItem is MyLibraryItem.BookAdder && newItem is MyLibraryItem.BookAdder) {
+            true
+        } else if (oldItem is MyLibraryItem.Book && newItem is MyLibraryItem.Book) {
+            oldItem.id == newItem.id
+        } else {
+            false
+        }
+    }
+
+    override fun areContentsTheSame(oldItem: MyLibraryItem, newItem: MyLibraryItem): Boolean {
+        return oldItem == newItem
+    }
+}

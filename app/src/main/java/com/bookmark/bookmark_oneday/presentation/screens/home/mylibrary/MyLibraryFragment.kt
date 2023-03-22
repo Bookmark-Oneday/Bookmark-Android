@@ -4,12 +4,19 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentMylibraryBinding
+import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(FragmentMylibraryBinding::bind, R.layout.fragment_mylibrary) {
@@ -21,12 +28,31 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(Fragment
 
         setRecyclerView()
         setAppbarEvent()
+        setObserver()
+
+        viewModel.tryGetInitPagingData()
     }
 
     private fun setRecyclerView() {
         binding.listBooklist.layoutManager = GridLayoutManager(requireContext(), 3)
-
+        binding.listBooklist.adapter = MyLibraryBookAdapter({}, {})
         binding.listBooklist.addItemDecoration(MyLibraryBookDecoration(requireContext()))
+
+        binding.listBooklist.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager ?: return
+                layoutManager as GridLayoutManager
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+
+                if (firstVisibleItemPosition + visibleItemCount + 3 >= totalItemCount) {
+                    viewModel.tryGetNextPagingData()
+                }
+            }
+        })
     }
 
     private fun setAppbarEvent() {
@@ -41,6 +67,22 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(Fragment
                 binding.toolbarMylibrary.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.transparent))
             }
         }
+    }
+
+    private fun setObserver() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.state.collectLatest { state ->
+                        applyState(state)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun applyState(state : MyLibraryState) {
+        (binding.listBooklist.adapter as MyLibraryBookAdapter).updateList(state.bookList)
     }
 
 }
