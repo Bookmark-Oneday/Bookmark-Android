@@ -2,11 +2,14 @@ package com.bookmark.bookmark_oneday.presentation.screens.timer
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ActivityTimerBinding
 import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 import com.bookmark.bookmark_oneday.presentation.adapter.timer_record.TimerRecordHistoryAdapter
@@ -25,6 +28,7 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
 
         viewModel = ViewModelProvider(this)[TimerViewModel::class.java]
 
+        // 실제로는 이전 화면에서 받아옵니다.
         viewModel.setReadingHistory(List(30){ ReadingHistory(it, "23.01.01", it * 30) })
 
         setButton()
@@ -57,8 +61,11 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         TimerMoreBottomSheetDialog(::callRemoveDialog).show(supportFragmentManager, "TimerMoreBottomSheet")
     }
 
-    private fun callRemoveDialog(targetIdx : Int ?= null) {
-        TimerRemoveHistoryDialog().show(supportFragmentManager, "TimerRemoveHistoryDialog")
+    private fun callRemoveDialog(targetId : Int ?= null) {
+        TimerRemoveHistoryDialog(
+            onRemoveItemSuccess = viewModel::applyRemovedItemToList,
+            targetId = targetId
+        ).show(supportFragmentManager, "TimerRemoveHistoryDialog")
     }
 
     private fun setRecyclerView() {
@@ -97,6 +104,10 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
 
         binding.btnTimerTotal.setToggleState(state.totalButtonToggled)
         binding.btnTimerPlay.setToggleState(state.playButtonToggled)
+
+        binding.labelTimerTotal.visibility = if (state.totalButtonToggled) View.VISIBLE else View.INVISIBLE
+        val totalTextColor = if (state.totalButtonToggled) R.color.orange else R.color.black
+        binding.labelTimerTime.setTextColor(ContextCompat.getColor(this, totalTextColor))
     }
 
     @SuppressLint("NotifyDataSetChanged")

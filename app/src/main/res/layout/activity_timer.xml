@@ -61,6 +61,19 @@
                     android:layout_marginBottom="24dp"
                     tools:text="00:00"/>
 
+                <TextView
+                    android:id="@+id/label_timer_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="@id/partial_timer_stopwatch"
+                    app:layout_constraintEnd_toEndOf="@id/partial_timer_stopwatch"
+                    app:layout_constraintTop_toBottomOf="@id/label_timer_time"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/orange"
+                    android:visibility="invisible"
+                    android:text="Total"/>
+
                 <com.bookmark.bookmark_oneday.presentation.screens.timer.component.ToggleButton
                     android:id="@+id/btn_timer_total"
                     android:layout_width="66dp"

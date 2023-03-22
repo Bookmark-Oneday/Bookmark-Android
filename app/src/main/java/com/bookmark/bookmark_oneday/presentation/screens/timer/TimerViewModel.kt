@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 
 class TimerViewModel : ViewModel() {
 
-    private val timer = Timer(viewModelScope, Dispatchers.Default, goalTime = 680, action = ::setStopWatchTime)
+    private val timer = Timer(viewModelScope, Dispatchers.Default, action = ::setStopWatchTime)
 
     private val events = Channel<TimerViewEvent>()
     val state : StateFlow<TimerViewState> = events.receiveAsFlow()
@@ -23,6 +23,20 @@ class TimerViewModel : ViewModel() {
 
     private val _stopWatchState = MutableStateFlow(StopWatchState())
     val stopWatchState = _stopWatchState.asStateFlow()
+
+    // 현재 total time 은 임시
+    private val totalTime = 30
+    private var addedTime = 0
+
+    private fun setStopWatchTime(time : Int) {
+        viewModelScope.launch {
+            val appliedTimeSecond = time + addedTime
+            _stopWatchState.value = StopWatchState(
+                timeString = String.format("%02d:%02d", appliedTimeSecond / 60, appliedTimeSecond % 60),
+                progress = appliedTimeSecond
+            )
+        }
+    }
 
     fun setReadingHistory(historyList : List<ReadingHistory>) {
         viewModelScope.launch {
@@ -58,12 +72,10 @@ class TimerViewModel : ViewModel() {
         }
     }
 
-    fun setStopWatchTime(time : Int) {
+    fun applyRemovedItemToList(targetId : Int?) {
         viewModelScope.launch {
-            _stopWatchState.value = StopWatchState(
-                timeString = String.format("%02d:%02d", time / 60, time % 60),
-                progress = time
-            )
+            if (targetId == null) events.send(TimerViewEvent.RemoveHistoryAllSuccess)
+            else events.send(TimerViewEvent.RemoveHistoryItemSuccess(targetId))
         }
     }
 
@@ -79,6 +91,8 @@ class TimerViewModel : ViewModel() {
                 state.copy(buttonActive = true)
             }
             is TimerViewEvent.ToggleTotalButton -> {
+                addedTime = if (event.total) totalTime else 0
+                setStopWatchTime(timer.getCurrentTime())
                 state.copy(totalButtonToggled = event.total)
             }
             is TimerViewEvent.TogglePlayButton -> {
