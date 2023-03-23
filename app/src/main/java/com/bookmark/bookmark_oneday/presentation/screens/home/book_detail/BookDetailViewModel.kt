@@ -17,10 +17,10 @@ class BookDetailViewModel : ViewModel() {
         .runningFold(BookDetailState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, BookDetailState())
 
-    fun tryGetBookDetail() {
+    fun tryGetBookDetail(bookId : Int) {
         viewModelScope.launch {
             events.send(BookDetailEvent.GetBookDetailLoading)
-            val bookDetail = useCaseGetBookDetail.invoke(1)
+            val bookDetail = useCaseGetBookDetail.invoke(bookId)
             events.send(BookDetailEvent.GetBookDetailSuccess(bookDetail))
         }
     }

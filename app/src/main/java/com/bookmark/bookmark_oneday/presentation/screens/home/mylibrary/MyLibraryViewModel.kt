@@ -19,6 +19,10 @@ class MyLibraryViewModel constructor(
 
     private val pagingCheckData = PagingCheckData()
 
+    init {
+        tryGetInitPagingData()
+    }
+
     fun tryGetInitPagingData(sortData : SortData = sortList[0]) {
         viewModelScope.launch {
             event.send(MyLibraryEvent.InitPagingDataLoading(sortData))
@@ -47,6 +51,12 @@ class MyLibraryViewModel constructor(
                 event.send(MyLibraryEvent.NextPagingDataLoadingFail)
             }
 
+        }
+    }
+
+    fun applyItemChange(bookId : Int) {
+        viewModelScope.launch {
+            event.send(MyLibraryEvent.ChangeBookItemProperty(bookId))
         }
     }
 
@@ -93,6 +103,17 @@ class MyLibraryViewModel constructor(
                 val bookList = state.bookList + event.pagingData.dataList
                 state.copy(bookList = bookList, pagingLoading = false)
             }
+            is MyLibraryEvent.ChangeBookItemProperty -> {
+                // 테스팅
+                val bookList = state.bookList.map { item ->
+                    return@map if (item is MyLibraryItem.Book && item.id == event.bookId) {
+                        item.copy(reading = true)
+                    } else {
+                        item
+                    }
+                }
+                state.copy(bookList = bookList)
+            }
         }
     }
 
@@ -124,4 +145,5 @@ sealed class MyLibraryEvent {
     object NextPagingDataLoading : MyLibraryEvent()
     object NextPagingDataLoadingFail : MyLibraryEvent()
     class NextPagingDataLoadingSuccess(val pagingData : PagingData<MyLibraryItem>) : MyLibraryEvent()
+    class ChangeBookItemProperty(val bookId : Int) : MyLibraryEvent()
 }

@@ -1,5 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -8,6 +9,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.R
@@ -15,6 +18,7 @@ import com.bookmark.bookmark_oneday.databinding.FragmentMylibraryBinding
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
+import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.BookRecognitionActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.bottomsheet_sort.MyLibrarySortBottomSheet
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -37,8 +41,6 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
         setAppbarEvent()
         setObserver()
         setBottomSheet()
-
-        viewModel.tryGetInitPagingData()
     }
 
     private fun setButton() {
@@ -50,7 +52,10 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
 
     private fun setRecyclerView() {
         binding.listBooklist.layoutManager = GridLayoutManager(requireContext(), 3)
-        binding.listBooklist.adapter = MyLibraryBookAdapter({}, {})
+        binding.listBooklist.adapter = MyLibraryBookAdapter(
+            onClickAdder = ::clickBookAdder,
+            onClickBook = ::clickBookDetail
+        )
         binding.listBooklist.addItemDecoration(MyLibraryBookDecoration(requireContext()))
 
         binding.listBooklist.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -68,6 +73,16 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
                 }
             }
         })
+    }
+    @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
+    private fun clickBookAdder() {
+        val intent = Intent(requireActivity(), BookRecognitionActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun clickBookDetail(bookId : Int) {
+        val action = MyLibraryFragmentDirections.actionMyLibraryFragmentToBookDetailFragment(bookId)
+        binding.root.findNavController().navigate(action)
     }
 
     private fun setAppbarEvent() {
@@ -103,6 +118,10 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
                     }
                 }
             }
+        }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>("book")?.observe(viewLifecycleOwner){
+            viewModel.applyItemChange(it)
         }
     }
 
