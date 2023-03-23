@@ -2,14 +2,14 @@ package com.bookmark.bookmark_oneday.presentation.screens.book_recognition.model
 
 import android.graphics.Rect
 
-class ScreenSizeAdapter(
-    originalHeightPx : Int,
-    originalWidthPx : Int,
-    boundingBoxHeightPx : Int,
-    boundingBoxWidthPx : Int,
-    cameraResolutionHeight : Int = 640,
-    cameraResolutionWidth : Int = 480,
-) {
+class ScreenSizeAdapter {
+    private var originalHeightPx : Int = 0
+    private var originalWidthPx : Int = 0
+    private var boundingBoxHeightPx : Int = 0
+    private var boundingBoxWidthPx : Int = 0
+    private var cameraResolutionHeight : Int = 0
+    private var cameraResolutionWidth : Int = 0
+
     private var adaptiveHeightPx = 0f
     private var adaptiveWidthPx = 0f
 
@@ -18,7 +18,33 @@ class ScreenSizeAdapter(
 
     private val boundingBoxRect = Rect()
 
-    init {
+    fun setCameraResolutionInfo(heightPx : Int, widthPx : Int) {
+        cameraResolutionHeight = heightPx
+        cameraResolutionWidth = widthPx
+
+        if (checkAllInitialize()) {
+            setBoundingBox()
+        }
+    }
+
+    fun setViewSizeInfo(totalHeightPx : Int, totalWidthPx : Int, targetHeightPx : Int, targetWidthPx : Int) {
+        originalHeightPx = totalHeightPx
+        originalWidthPx = totalWidthPx
+        boundingBoxHeightPx = targetHeightPx
+        boundingBoxWidthPx = targetWidthPx
+
+        if (checkAllInitialize()) {
+            setBoundingBox()
+        }
+    }
+
+    fun checkAllInitialize() : Boolean {
+        return (originalHeightPx != 0 && originalWidthPx != 0
+                && boundingBoxHeightPx != 0 && boundingBoxWidthPx != 0
+                && cameraResolutionHeight != 0 && cameraResolutionWidth != 0)
+    }
+
+    private fun setBoundingBox() {
         val originalRatio = originalHeightPx / originalWidthPx.toFloat()
         val cameraResolutionRatio = cameraResolutionHeight / cameraResolutionWidth.toFloat()
 
@@ -43,7 +69,6 @@ class ScreenSizeAdapter(
             cameraResolutionWidth / 2 + adaptiveBoundingBoxWidth / 2,
             cameraResolutionHeight / 2 + adaptiveBoundingBoxHeight / 2
         )
-
     }
 
     override fun toString(): String {

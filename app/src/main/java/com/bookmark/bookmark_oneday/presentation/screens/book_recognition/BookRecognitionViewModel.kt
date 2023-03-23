@@ -37,7 +37,7 @@ class BookRecognitionViewModel constructor(
         }
     }
 
-    fun closePopup() {
+    fun setScannable() {
         viewModelScope.launch {
             events.send(BookRecognitionEvent.SearchingBarcode)
         }
