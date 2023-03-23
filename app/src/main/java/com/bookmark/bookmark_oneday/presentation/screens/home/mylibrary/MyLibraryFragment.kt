@@ -15,22 +15,37 @@ import com.bookmark.bookmark_oneday.databinding.FragmentMylibraryBinding
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
+import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.bottomsheet_sort.MyLibrarySortBottomSheet
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(FragmentMylibraryBinding::bind, R.layout.fragment_mylibrary) {
+class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
+    FragmentMylibraryBinding::bind,
+    R.layout.fragment_mylibrary
+) {
 
-    private lateinit var viewModel : MyLibraryViewModel
+    private lateinit var viewModel: MyLibraryViewModel
+    private lateinit var sortBottomSheet: MyLibrarySortBottomSheet
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[MyLibraryViewModel::class.java]
 
+        setButton()
         setRecyclerView()
         setAppbarEvent()
         setObserver()
+        setBottomSheet()
 
         viewModel.tryGetInitPagingData()
+    }
+
+    private fun setButton() {
+        binding.llbtnMylibrarySort.setOnClickListener {
+            if (sortBottomSheet.isAdded) return@setOnClickListener
+            sortBottomSheet.show(childFragmentManager, "MyLibrarySortBottomSheet")
+        }
     }
 
     private fun setRecyclerView() {
@@ -60,11 +75,21 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(Fragment
             if (abs(verticalOffset) + binding.toolbarMylibrary.height > binding.partialMylibraryProfile.viewMylibraryBackground.top) {
                 binding.viewMylibraryDivider.visibility = View.VISIBLE
                 binding.labelMylibraryTitle.setTextColor(Color.BLACK)
-                binding.toolbarMylibrary.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.toolbarMylibrary.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.white
+                    )
+                )
             } else {
                 binding.viewMylibraryDivider.visibility = View.INVISIBLE
                 binding.labelMylibraryTitle.setTextColor(Color.WHITE)
-                binding.toolbarMylibrary.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.transparent))
+                binding.toolbarMylibrary.setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.transparent
+                    )
+                )
             }
         }
     }
@@ -81,8 +106,21 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(Fragment
         }
     }
 
-    private fun applyState(state : MyLibraryState) {
+    private fun applyState(state: MyLibraryState) {
         (binding.listBooklist.adapter as MyLibraryBookAdapter).updateList(state.bookList)
+
+        binding.labelMylibrarySort.text = state.currentSortData.presentText
+        binding.labelMylibraryBookcount.text = state.totalItemCountString
+        binding.llbtnMylibrarySort.isEnabled = state.sortButtonActive
+
+        sortBottomSheet.setCurrentSort(state.currentSortData)
+    }
+
+    private fun setBottomSheet() {
+        sortBottomSheet = MyLibrarySortBottomSheet(
+            MyLibraryViewModel.sortList,
+            viewModel::tryGetInitPagingData
+        )
     }
 
 }

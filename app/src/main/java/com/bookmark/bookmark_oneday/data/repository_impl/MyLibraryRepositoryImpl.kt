@@ -20,7 +20,7 @@ class MyLibraryRepositoryImpl : MyLibraryRepository {
         }
 
         val nextPageToken = key.toInt()
-        val tempDataList = List(perPage){ MyLibraryItem.Book(it + perPage * nextPageToken, "", "${it + perPage * nextPageToken} 번째 책", "${it + perPage * nextPageToken}번째 지구") }
+        val tempDataList = List(perPage){ MyLibraryItem.Book(it + perPage * nextPageToken, "", "${it + perPage * nextPageToken} 번째 책", "${it + perPage * nextPageToken}번째 $sortType") }
         val pagingData = PagingData(dataList = tempDataList, nextPageToken = (nextPageToken + 1).toString(), totalItemCount = 150)
 
 

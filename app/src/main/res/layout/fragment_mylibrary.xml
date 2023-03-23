@@ -70,8 +70,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_booklist_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingVertical="12dp"
+            android:layout_height="60dp"
             android:paddingHorizontal="24dp"
             android:background="@color/design_default_color_background"
             android:layout_gravity="center_vertical">
@@ -98,14 +97,19 @@
                 tools:text="36"/>
 
             <LinearLayout
-                android:id="@+id/ll_mylibrary_sort"
+                android:id="@+id/llbtn_mylibrary_sort"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="-12dp"
+                android:padding="12dp"
                 android:gravity="center">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/label_mylibrary_sort"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"

@@ -2,10 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
-import com.bookmark.bookmark_oneday.domain.model.PagingCheckData
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.domain.model.*
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookList
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -22,28 +19,27 @@ class MyLibraryViewModel constructor(
 
     private val pagingCheckData = PagingCheckData()
 
-    fun tryGetInitPagingData() {
+    fun tryGetInitPagingData(sortData : SortData = sortList[0]) {
         viewModelScope.launch {
-            event.send(MyLibraryEvent.InitPagingDataLoading)
+            event.send(MyLibraryEvent.InitPagingDataLoading(sortData))
 
-            val response = useCaseGetBookList.loadInitPages()
+            val response = useCaseGetBookList.loadInitPages(sort = sortData.apiValue)
 
             if (response is BaseResponse.Success) {
                 event.send(MyLibraryEvent.InitPagingDataLoadingSuccess(response.data))
             } else {
                 event.send(MyLibraryEvent.InitPagingDataLoadingFail)
             }
-
         }
     }
 
-    // 다음 페이지 요청할 때, 이미 해당 페이지가 요청중이라면 무시해야 한다.
+    // 다음 페이지 요청할 때, 이미 해당 페이지가 요청중이라면 무시
     fun tryGetNextPagingData() {
         if (pagingCheckData.tryLoading || pagingCheckData.isFinish) return
         viewModelScope.launch {
             event.send(MyLibraryEvent.NextPagingDataLoading)
 
-            val response = useCaseGetBookList(pagingCheckData.nextKey ?: "0")
+            val response = useCaseGetBookList(key = pagingCheckData.nextKey ?: "0", sort = state.value.currentSortData.apiValue)
 
             if (response is BaseResponse.Success) {
                 event.send(MyLibraryEvent.NextPagingDataLoadingSuccess(response.data))
@@ -56,26 +52,37 @@ class MyLibraryViewModel constructor(
 
     private fun reduce(state : MyLibraryState, event : MyLibraryEvent) : MyLibraryState {
         return when (event) {
-            MyLibraryEvent.InitPagingDataLoading -> {
-                pagingCheckData.setLoading()
-                MyLibraryState()
+            is MyLibraryEvent.InitPagingDataLoading -> {
+                pagingCheckData.setRefresh()
+                state.copy(
+                    currentSortData = event.sortData,
+                    pagingLoading = true,
+                    bookList = listOf(),
+                    totalItemCountString = "-",
+                    sortButtonActive = false
+                )
             }
-            MyLibraryEvent.InitPagingDataLoadingFail -> {
+            is MyLibraryEvent.InitPagingDataLoadingFail -> {
                 pagingCheckData.setLoadFail()
-                state.copy(showLoadingFail = true, totalLoading = false)
+                state.copy(showLoadingFail = true, totalLoading = false, sortButtonActive = true)
             }
             is MyLibraryEvent.InitPagingDataLoadingSuccess -> {
                 pagingCheckData.setLoadSuccess(event.pagingData.nextPageToken)
                 if (event.pagingData.isFinish) pagingCheckData.setFinish()
 
                 val bookList = listOf(MyLibraryItem.BookAdder) + event.pagingData.dataList
-                state.copy(bookList = bookList, totalLoading = false)
+                state.copy(
+                    bookList = bookList,
+                    totalLoading = false,
+                    totalItemCountString = event.pagingData.totalItemCount.toString(),
+                    sortButtonActive = true
+                )
             }
-            MyLibraryEvent.NextPagingDataLoading -> {
+            is MyLibraryEvent.NextPagingDataLoading -> {
                 pagingCheckData.setLoading()
                 state.copy(showPagingLoadingFail = false, pagingLoading = true)
             }
-            MyLibraryEvent.NextPagingDataLoadingFail -> {
+            is MyLibraryEvent.NextPagingDataLoadingFail -> {
                 pagingCheckData.setLoadFail()
                 state.copy(showPagingLoadingFail = true, pagingLoading = false)
             }
@@ -89,6 +96,14 @@ class MyLibraryViewModel constructor(
         }
     }
 
+    companion object {
+        val sortList = listOf(
+            SortData("최신 순", "latest"),
+            SortData("과거 순", "past"),
+            SortData("즐겨찾는 책", "favorite"),
+            SortData("읽고 있는 책", "reading"),
+        )
+    }
 }
 
 data class MyLibraryState(
@@ -97,10 +112,13 @@ data class MyLibraryState(
     val showLoadingFail : Boolean = false,
     val pagingLoading : Boolean = false,
     val showPagingLoadingFail : Boolean = false,
+    val currentSortData: SortData = MyLibraryViewModel.sortList[0],
+    val totalItemCountString : String = "-",
+    val sortButtonActive : Boolean = false
 )
 
 sealed class MyLibraryEvent {
-    object InitPagingDataLoading : MyLibraryEvent()
+    class InitPagingDataLoading(val sortData: SortData) : MyLibraryEvent()
     object InitPagingDataLoadingFail : MyLibraryEvent()
     class InitPagingDataLoadingSuccess(val pagingData : PagingData<MyLibraryItem>) : MyLibraryEvent()
     object NextPagingDataLoading : MyLibraryEvent()
