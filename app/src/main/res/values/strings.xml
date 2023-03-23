@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Bookmark-Oneday</string>
+    <string name="app_name">오늘 한줄</string>
 
     <string name="menu_homebottom_mylibrary">나의 서재</string>
     <string name="menu_homebottom_bookclub">책 모임</string>
@@ -49,6 +49,12 @@
     <string name="label_mylibrary_sort_favorite_book">즐겨찾는 책</string>
     <string name="label_mylibrary_sort_reading_book">읽고 있는 책</string>
     <string name="label_mylibrary_chain">연속 %d일째 읽고 있어요!</string>
+
+    <string name="label_mylibrary_camera_permission">카메라 접근 권한 허용</string>
+    <string name="caption_mylibrary_camera_permission">위 접근 권한은 더 나은 서비스를 제공하기 위해 사용됩니다. 도서 등록 시 바코드 인식을 위해 사용되며, 접근 권한 미허용 시 도서 등록 서비스 이용이 불가 합니다.</string>
+    <string name="label_mylibrary_camera">카메라</string>
+    <string name="caption_mylibrary_camera">바코드 인식 시 카메라 사용</string>
+    <string name="label_mylibrary_confirm">확인</string>
 
     <string name="label_timer_total_eng">Total</string>
     <string name="label_timer_stopwatch">스톱워치</string>

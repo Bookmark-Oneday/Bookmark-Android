@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.bottomsheet_sort
+package com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.bottomsheet_sort
 
 import android.os.Bundle
 import android.view.LayoutInflater

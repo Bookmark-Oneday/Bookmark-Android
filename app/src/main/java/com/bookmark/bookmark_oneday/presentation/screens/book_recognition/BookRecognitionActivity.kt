@@ -10,7 +10,6 @@ import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -47,7 +46,7 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
         if (allPermissionGranted()) {
             startCamera()
         } else {
-            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+            Toast.makeText(this, "카메라 권한이 필요합니다", Toast.LENGTH_SHORT).show()
         }
 
         setObserver()
@@ -62,22 +61,6 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
 
     private fun allPermissionGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
-    }
-
-    // todo 이전 화면에서 호출하는 부분이므로 전 화면 구현시 제거
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionGranted()){
-                startCamera()
-            } else {
-                Toast.makeText(this, "카메라 권한이 필요합니다", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun setObserver() {
@@ -108,6 +91,7 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
         BookRecognitionFailDialog(viewModel::setScannable).show(supportFragmentManager, "BookRecognitionFail")
     }
 
+    // todo 책 인식 성공시에는 바로 종료, 책 인식 취소시에는 다시 인식 가능하도록 이벤트 발생 필요
     private fun callBookConfirmScreen(recognizedBook : RecognizedBook) {
         val intent = Intent(this, BookConfirmationActivity::class.java)
         intent.putExtra("book", recognizedBook)
@@ -216,7 +200,6 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
     }
 
     companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
             mutableListOf (
                 Manifest.permission.CAMERA
