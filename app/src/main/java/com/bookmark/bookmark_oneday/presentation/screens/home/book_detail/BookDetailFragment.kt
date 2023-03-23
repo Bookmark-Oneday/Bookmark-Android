@@ -36,14 +36,18 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
         onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // 네비게이션 종료 이벤트
-                val navController = binding.root.findNavController()
-                navController.previousBackStackEntry?.savedStateHandle?.set("book", args.bookId)
-                navController.popBackStack()
+                navigateToBack()
             }
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    // todo 책 객체를 전달하도록 직렬화 과정 필요, 단 현재 책이 로드되지 않았을 때는 그냥 popBackStack()
+    private fun navigateToBack() {
+        val navController = binding.root.findNavController()
+        navController.previousBackStackEntry?.savedStateHandle?.set("book", args.bookId)
+        navController.popBackStack()
     }
 
     override fun onDetach() {
@@ -71,7 +75,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
     private fun setButtons() {
         binding.btnBookdetailBack.setOnClickListener {
-
+            navigateToBack()
         }
 
         binding.btnBookdetailTimer.setOnClickListener {
@@ -98,7 +102,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
     }
 
     private fun removeSuccessCallback() {
-        // 이전 화면으로 돌아가되, 이전 화면에서 책목록을 수정할 수 있도록 정보를 제공해야 함
+        // todo 이전 화면으로 돌아가되, 이전 화면에서 이 책을 제거하도록 전달해야 함
         binding.root.findNavController().popBackStack()
 
     }
