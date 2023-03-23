@@ -23,5 +23,16 @@
     <string name="label_bookdetail_bookmark">책갈피</string>
     <string name="caption_bookdetail_bookmark">몇 페이지까지 읽으셨나요?</string>
     <string name="label_bookdetail_input">입력</string>
+
+    <string name="label_mylibrary">나의 서재</string>
+    <string name="label_mylibrary_title">책갈피 : 나의 서재</string>
+    <string name="label_mylibrary_profile_read_book">읽은 책</string>
+    <string name="label_mylibrary_profile_follower">팔로워</string>
+    <string name="label_mylibrary_profile_following">팔로잉</string>
     
+    <string name="label_mylibrary_sort_recently">최신순</string>
+    <string name="label_mylibrary_sort_past_order">과거순</string>
+    <string name="label_mylibrary_sort_favorite_book">즐겨찾는 책</string>
+    <string name="label_mylibrary_sort_reading_book">읽고 있는 책</string>
+
 </resources>
