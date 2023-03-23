@@ -72,7 +72,7 @@
                     android:layout_marginTop="4dp"
                     android:textColor="@color/orange"
                     android:visibility="invisible"
-                    android:text="Total"/>
+                    android:text="@string/label_timer_total_eng"/>
 
                 <com.bookmark.bookmark_oneday.presentation.screens.timer.component.ToggleButton
                     android:id="@+id/btn_timer_total"
@@ -129,7 +129,7 @@
                         android:gravity="center_vertical"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:text="스톱워치"/>
+                        android:text="@string/label_timer_stopwatch"/>
 
                     <View
                         android:id="@+id/line_bookdetail_separator_toolbar"

@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="24dp"
-        android:text="모든 기록 삭제"
+        android:text="@string/label_timer_remove_all_history"
         android:textSize="16sp"
         android:textColor="#FF0F0F"
         app:layout_constraintTop_toTopOf="parent"/>
