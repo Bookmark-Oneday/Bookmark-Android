@@ -1,6 +1,7 @@
 package com.bookmark.bookmark_oneday.presentation.screens.book_recognition
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -37,6 +39,14 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
     private lateinit var cameraExecutor : ExecutorService
     private lateinit var viewModel: BookRecognitionViewModel
     private val screenSizeAdapter = ScreenSizeAdapter()
+
+    private val bookRegisterLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            finish()
+        } else {
+            viewModel.setScannable()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,11 +101,10 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
         BookRecognitionFailDialog(viewModel::setScannable).show(supportFragmentManager, "BookRecognitionFail")
     }
 
-    // todo 책 인식 성공시에는 바로 종료, 책 인식 취소시에는 다시 인식 가능하도록 이벤트 발생 필요
     private fun callBookConfirmScreen(recognizedBook : RecognizedBook) {
         val intent = Intent(this, BookConfirmationActivity::class.java)
         intent.putExtra("book", recognizedBook)
-        this.startActivity(intent)
+        bookRegisterLauncher.launch(intent)
     }
 
     private fun setOnGlobalLayoutListener() {
@@ -164,7 +173,7 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun  processImageProxy(
+    private fun processImageProxy(
         barCodeScanner : BarcodeScanner,
         imageProxy: ImageProxy
     ) {
@@ -173,7 +182,6 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
             barCodeScanner.process(inputImage)
                 .addOnSuccessListener { barcodeList ->
                     val barcode = barcodeList.getOrNull(0)
-
                     tryBarcodeRecognize(barcode)
                 }
                 .addOnFailureListener {
@@ -184,7 +192,6 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
                     imageProxy.close()
                 }
         }
-
     }
 
     private fun tryBarcodeRecognize(barcode : Barcode?) {

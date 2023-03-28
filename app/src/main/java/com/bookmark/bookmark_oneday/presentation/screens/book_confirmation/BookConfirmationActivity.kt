@@ -75,7 +75,10 @@ class BookConfirmationActivity : ViewBindingActivity<ActivityBookConfirmationBin
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.sideEffectSuccessRegister.collectLatest { success ->
-                        if (success) finish()
+                        if (success) {
+                            setResult(RESULT_OK)
+                            finish()
+                        }
                     }
                 }
             }
