@@ -120,7 +120,7 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
                 binding.toolbarMylibrary.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
-                        R.color.white
+                        R.color.default_background
                     )
                 )
             } else {
