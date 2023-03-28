@@ -19,6 +19,6 @@
 
     <color name="black_surface">#FF111111</color>
 
-    <color name="default_background">#FFFFFFFF</color>
-    <color name="default_text">#FF000000</color>
+    <color name="default_background">#FF111111</color>
+    <color name="default_text">#FFFFFFFF</color>
 </resources>
