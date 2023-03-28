@@ -11,7 +11,7 @@
     <color name="deep_orange">#F99030</color>
     <color name="orange">#FFB35A</color>
     <color name="light_orange">#FFDDA9</color>
-    <color name="gray">#E3E3E3</color>
+    <color name="gray">#FF444444</color>
 
     <color name="black_transparent_40">#66000000</color>
     <color name="black_transparent_15">#28000000</color>
@@ -21,4 +21,6 @@
 
     <color name="default_background">#FF111111</color>
     <color name="default_text">#FFFFFFFF</color>
+    <color name="default_icon_tint">#FFFFFFFF</color>
+    <color name="default_separator">#FF444444</color>
 </resources>

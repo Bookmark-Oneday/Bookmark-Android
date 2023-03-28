@@ -10,16 +10,24 @@
         android:layout_height="0dp"
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/nav_home_bottom"
+        app:layout_constraintBottom_toTopOf="@id/line_home_bottom"
         app:defaultNavHost="true"
         app:navGraph="@navigation/home_nav_graph"
         />
+
+    <View
+        android:id="@+id/line_home_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toTopOf="@id/nav_home_bottom"
+        android:background="@color/default_separator"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_home_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:theme="@style/BottomNavigationView"
         app:menu="@menu/menu_homebottom"
         app:labelVisibilityMode="labeled"/>
 

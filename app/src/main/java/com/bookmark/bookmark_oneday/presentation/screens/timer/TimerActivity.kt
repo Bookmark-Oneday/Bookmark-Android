@@ -106,7 +106,7 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         binding.btnTimerPlay.setToggleState(state.playButtonToggled)
 
         binding.labelTimerTotal.visibility = if (state.totalButtonToggled) View.VISIBLE else View.INVISIBLE
-        val totalTextColor = if (state.totalButtonToggled) R.color.orange else R.color.black
+        val totalTextColor = if (state.totalButtonToggled) R.color.orange else R.color.default_text
         binding.labelTimerTime.setTextColor(ContextCompat.getColor(this, totalTextColor))
     }
 

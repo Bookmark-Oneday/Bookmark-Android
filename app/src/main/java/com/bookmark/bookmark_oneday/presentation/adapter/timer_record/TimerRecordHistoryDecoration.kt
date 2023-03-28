@@ -14,7 +14,7 @@ class TimerRecordHistoryDecoration(context : Context) : RecyclerView.ItemDecorat
     private val paint = Paint()
 
     init {
-        paint.color = ContextCompat.getColor(context, R.color.gray)
+        paint.color = ContextCompat.getColor(context, R.color.default_separator)
     }
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
