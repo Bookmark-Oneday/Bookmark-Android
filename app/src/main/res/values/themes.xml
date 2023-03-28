@@ -15,5 +15,21 @@
         <item name="android:colorBackground">@color/default_background</item>
         <item name="android:textColor">@color/default_text</item>
         <item name="android:tint">@color/default_text</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
     </style>
+
+    <style name="BottomNavigationView">
+        <item name="android:textColor">@color/selector_homebottom_color</item>
+        <item name="android:tint">@color/selector_homebottom_color</item>
+    </style>
+
+    <style name="BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:colorBackground">@color/default_background</item>
+    </style>
+
+    <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@color/transparent</item>
+    </style>
+
 </resources>
