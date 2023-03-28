@@ -68,13 +68,19 @@ class MyLibraryViewModel constructor(
                     currentSortData = event.sortData,
                     pagingLoading = true,
                     bookList = listOf(),
+                    footerList = List(6){ MyLibraryItem.BookLoading },
                     totalItemCountString = "-",
                     sortButtonActive = false
                 )
             }
             is MyLibraryEvent.InitPagingDataLoadingFail -> {
                 pagingCheckData.setLoadFail()
-                state.copy(showLoadingFail = true, totalLoading = false, sortButtonActive = true)
+                state.copy(
+                    showLoadingFail = true,
+                    totalLoading = false,
+                    sortButtonActive = true,
+                    footerList = listOf()
+                )
             }
             is MyLibraryEvent.InitPagingDataLoadingSuccess -> {
                 pagingCheckData.setLoadSuccess(event.pagingData.nextPageToken)
@@ -85,23 +91,36 @@ class MyLibraryViewModel constructor(
                     bookList = bookList,
                     totalLoading = false,
                     totalItemCountString = event.pagingData.totalItemCount.toString(),
-                    sortButtonActive = true
+                    sortButtonActive = true,
+                    footerList = listOf()
                 )
             }
             is MyLibraryEvent.NextPagingDataLoading -> {
                 pagingCheckData.setLoading()
-                state.copy(showPagingLoadingFail = false, pagingLoading = true)
+                state.copy(
+                    showPagingLoadingFail = false,
+                    pagingLoading = true,
+                    footerList = List(2){ MyLibraryItem.BookLoading }
+                )
             }
             is MyLibraryEvent.NextPagingDataLoadingFail -> {
                 pagingCheckData.setLoadFail()
-                state.copy(showPagingLoadingFail = true, pagingLoading = false)
+                state.copy(
+                    showPagingLoadingFail = true,
+                    pagingLoading = false,
+                    footerList = listOf()
+                )
             }
             is MyLibraryEvent.NextPagingDataLoadingSuccess -> {
                 pagingCheckData.setLoadSuccess(event.pagingData.nextPageToken)
                 if (event.pagingData.isFinish) pagingCheckData.setFinish()
 
                 val bookList = state.bookList + event.pagingData.dataList
-                state.copy(bookList = bookList, pagingLoading = false)
+                state.copy(
+                    bookList = bookList,
+                    pagingLoading = false,
+                    footerList = listOf()
+                )
             }
             is MyLibraryEvent.ChangeBookItemProperty -> {
                 // 테스팅
@@ -129,6 +148,7 @@ class MyLibraryViewModel constructor(
 
 data class MyLibraryState(
     val bookList : List<MyLibraryItem> = listOf(),
+    val footerList : List<MyLibraryItem> = listOf(),
     val totalLoading : Boolean = true,
     val showLoadingFail : Boolean = false,
     val pagingLoading : Boolean = false,

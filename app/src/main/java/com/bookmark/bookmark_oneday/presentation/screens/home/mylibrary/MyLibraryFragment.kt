@@ -1,6 +1,7 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -37,13 +38,19 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
     private lateinit var viewModel: MyLibraryViewModel
     private lateinit var sortBottomSheet: MyLibrarySortBottomSheet
 
+    private val cameraScreenLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            viewModel.tryGetInitPagingData()
+        }
+    }
+
     @androidx.annotation.OptIn(androidx.camera.core.ExperimentalGetImage::class)
     private val requestPermissions = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) {
         if (allPermissionGranted()) {
             val intent = Intent(requireActivity(), BookRecognitionActivity::class.java)
-            startActivity(intent)
+            cameraScreenLauncher.launch(intent)
         } else {
             Toast.makeText(requireContext(), "카메라 권한이 필요합니다", Toast.LENGTH_SHORT).show()
         }
@@ -99,7 +106,7 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
     private fun clickBookAdder() {
         if (allPermissionGranted()) {
             val intent = Intent(requireActivity(), BookRecognitionActivity::class.java)
-            startActivity(intent)
+            cameraScreenLauncher.launch(intent)
         } else {
             MyLibraryPermissionDialog(onClick = {
                 requestPermissions.launch(REQUIRED_PERMISSIONS)
@@ -116,7 +123,7 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
         binding.ablMylibrary.addOnOffsetChangedListener { _, verticalOffset ->
             if (abs(verticalOffset) + binding.toolbarMylibrary.height > binding.partialMylibraryProfile.viewMylibraryBackground.top) {
                 binding.viewMylibraryDivider.visibility = View.VISIBLE
-                binding.labelMylibraryTitle.setTextColor(Color.BLACK)
+                binding.labelMylibraryTitle.setTextColor(ContextCompat.getColor(requireContext(), R.color.default_text))
                 binding.toolbarMylibrary.setBackgroundColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -154,7 +161,7 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
     }
 
     private fun applyState(state: MyLibraryState) {
-        (binding.listBooklist.adapter as MyLibraryBookAdapter).updateList(state.bookList)
+        (binding.listBooklist.adapter as MyLibraryBookAdapter).updateList(state.bookList + state.footerList)
 
         binding.labelMylibrarySort.text = state.currentSortData.presentText
         binding.labelMylibraryBookcount.text = state.totalItemCountString

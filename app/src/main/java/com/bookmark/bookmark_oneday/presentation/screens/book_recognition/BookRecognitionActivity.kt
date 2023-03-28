@@ -42,6 +42,7 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
 
     private val bookRegisterLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
+            setResult(RESULT_OK)
             finish()
         } else {
             viewModel.setScannable()
@@ -59,6 +60,7 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
             Toast.makeText(this, "카메라 권한이 필요합니다", Toast.LENGTH_SHORT).show()
         }
 
+        setButton()
         setObserver()
         setOnGlobalLayoutListener()
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -71,6 +73,10 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
 
     private fun allPermissionGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun setButton() {
+        binding.btnBookrecognitionBack.setOnClickListener { finish() }
     }
 
     private fun setObserver() {
