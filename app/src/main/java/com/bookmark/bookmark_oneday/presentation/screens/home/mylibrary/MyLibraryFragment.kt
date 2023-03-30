@@ -10,8 +10,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
@@ -34,8 +34,7 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
     FragmentMylibraryBinding::bind,
     R.layout.fragment_mylibrary
 ) {
-
-    private lateinit var viewModel: MyLibraryViewModel
+    private val viewModel: MyLibraryViewModel by activityViewModels()
     private lateinit var sortBottomSheet: MyLibrarySortBottomSheet
 
     private val cameraScreenLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -58,7 +57,6 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[MyLibraryViewModel::class.java]
 
         setButton()
         setRecyclerView()

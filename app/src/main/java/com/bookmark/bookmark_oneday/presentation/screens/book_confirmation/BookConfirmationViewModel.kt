@@ -5,12 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseRegisterBook
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookConfirmationViewModel(
-    private val useCaseRegisterBook: UseCaseRegisterBook = UseCaseRegisterBook()
+@HiltViewModel
+class BookConfirmationViewModel @Inject constructor(
+    private val useCaseRegisterBook: UseCaseRegisterBook
 ) : ViewModel() {
     private val events = Channel<BookConfirmEvent>()
 

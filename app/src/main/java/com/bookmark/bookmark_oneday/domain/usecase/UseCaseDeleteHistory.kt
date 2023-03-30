@@ -1,11 +1,11 @@
 package com.bookmark.bookmark_oneday.domain.usecase
 
-import com.bookmark.bookmark_oneday.data.repository_impl.ReadingHistoryRepositoryImpl
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.repository.ReadingHistoryRepository
+import javax.inject.Inject
 
-class UseCaseDeleteHistory(
-    private val repository: ReadingHistoryRepository = ReadingHistoryRepositoryImpl()
+class UseCaseDeleteHistory @Inject constructor(
+    private val repository: ReadingHistoryRepository
 ) {
     suspend operator fun invoke(targetId : Int) : Boolean {
         val response = repository.deleteHistoryItem(targetId)

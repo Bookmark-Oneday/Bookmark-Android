@@ -3,12 +3,15 @@ package com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseDeleteHistory
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TimerRemoveHistoryDialogViewModel(
-    private val useCaseDeleteHistory: UseCaseDeleteHistory = UseCaseDeleteHistory()
+@HiltViewModel
+class TimerRemoveHistoryDialogViewModel @Inject constructor(
+    private val useCaseDeleteHistory: UseCaseDeleteHistory
 ) : ViewModel() {
 
     private val event = Channel<TimerRemoveHistoryDialogEvent>()

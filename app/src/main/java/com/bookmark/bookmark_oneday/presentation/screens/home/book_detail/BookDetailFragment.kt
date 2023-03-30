@@ -7,8 +7,8 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(FragmentBookdetailBinding::bind, R.layout.fragment_bookdetail) {
-    private lateinit var viewModel: BookDetailViewModel
+    private val viewModel: BookDetailViewModel by activityViewModels()
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private val args : BookDetailFragmentArgs by navArgs()
     override fun onAttach(context: Context) {
@@ -58,8 +58,6 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(this)[BookDetailViewModel::class.java]
 
         setRecyclerView()
         setButtons()

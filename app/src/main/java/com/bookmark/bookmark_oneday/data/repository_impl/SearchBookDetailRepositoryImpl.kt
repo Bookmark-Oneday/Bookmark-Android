@@ -1,15 +1,15 @@
 package com.bookmark.bookmark_oneday.data.repository_impl
 
 import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.BookInfoDataSource
-import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.KakaoBookInfoDataSource
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.repository.SearchBookDetailRepository
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class SearchBookDetailRepositoryImpl constructor(
-    private val dataSource: BookInfoDataSource = KakaoBookInfoDataSource()
+class SearchBookDetailRepositoryImpl @Inject constructor(
+    private val dataSource: BookInfoDataSource
 ) : SearchBookDetailRepository {
     override suspend fun searchAndGetBookDetail(isbn: String): BaseResponse<RecognizedBook> {
         val response = dataSource.getBookInfo(isbn = isbn)

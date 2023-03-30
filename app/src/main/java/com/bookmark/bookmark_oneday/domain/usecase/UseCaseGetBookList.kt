@@ -1,13 +1,13 @@
 package com.bookmark.bookmark_oneday.domain.usecase
 
-import com.bookmark.bookmark_oneday.data.repository_impl.MyLibraryRepositoryImpl
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
 import com.bookmark.bookmark_oneday.domain.model.PagingData
 import com.bookmark.bookmark_oneday.domain.repository.MyLibraryRepository
+import javax.inject.Inject
 
-class UseCaseGetBookList constructor(
-    private val repository : MyLibraryRepository = MyLibraryRepositoryImpl()
+class UseCaseGetBookList @Inject constructor(
+    private val repository : MyLibraryRepository
 ) {
     suspend operator fun invoke(key : String, sort : String = "latest") : BaseResponse<PagingData<MyLibraryItem.Book>> {
         return repository.getBookList(key = key, sortType = sort)

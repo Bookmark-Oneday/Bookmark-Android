@@ -3,13 +3,17 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.compo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseDeleteBook
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookDetailRemoveDialogViewModel : ViewModel() {
+@HiltViewModel
+class BookDetailRemoveDialogViewModel @Inject constructor(
+    private val useCaseDeleteBook : UseCaseDeleteBook
+) : ViewModel() {
 
-    private val useCaseDeleteBook = UseCaseDeleteBook()
 
     private val event = Channel<BookDetailRemoveDialogEvent>()
     val state : StateFlow<BookDetailRemoveDialogState> = event.receiveAsFlow()

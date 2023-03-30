@@ -4,12 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.*
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookList
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MyLibraryViewModel constructor(
-    private val useCaseGetBookList: UseCaseGetBookList = UseCaseGetBookList()
+@HiltViewModel
+class MyLibraryViewModel @Inject constructor(
+    private val useCaseGetBookList: UseCaseGetBookList
 ) : ViewModel() {
 
     private val event = Channel<MyLibraryEvent>()

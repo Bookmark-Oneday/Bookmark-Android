@@ -10,11 +10,11 @@ import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.ActivityBookRecognitionBinding
@@ -28,16 +28,18 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @ExperimentalGetImage
+@AndroidEntryPoint
 class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBinding>(ActivityBookRecognitionBinding::inflate) {
 
     private lateinit var cameraExecutor : ExecutorService
-    private lateinit var viewModel: BookRecognitionViewModel
+    private val viewModel: BookRecognitionViewModel by viewModels()
     private val screenSizeAdapter = ScreenSizeAdapter()
 
     private val bookRegisterLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -51,8 +53,6 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(this)[BookRecognitionViewModel::class.java]
 
         if (allPermissionGranted()) {
             startCamera()

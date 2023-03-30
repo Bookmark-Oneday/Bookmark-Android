@@ -4,14 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookDetail
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookDetailViewModel : ViewModel() {
-
-    private val useCaseGetBookDetail = UseCaseGetBookDetail()
-
+@HiltViewModel
+class BookDetailViewModel @Inject constructor(
+    private val useCaseGetBookDetail : UseCaseGetBookDetail
+): ViewModel() {
     private val events = Channel<BookDetailEvent>()
     val state : StateFlow<BookDetailState> = events.receiveAsFlow()
         .runningFold(BookDetailState(), ::reduce)

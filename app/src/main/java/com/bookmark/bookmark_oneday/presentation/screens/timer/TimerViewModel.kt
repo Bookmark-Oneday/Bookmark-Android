@@ -4,12 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 import com.bookmark.bookmark_oneday.presentation.model.Timer
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TimerViewModel : ViewModel() {
+@HiltViewModel
+class TimerViewModel @Inject constructor(
+
+) : ViewModel() {
 
     private val timer = Timer(viewModelScope, Dispatchers.Default, action = ::setStopWatchTime)
 

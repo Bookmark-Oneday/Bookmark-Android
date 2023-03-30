@@ -3,8 +3,8 @@ package com.bookmark.bookmark_oneday.presentation.screens.book_confirmation
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.ActivityBookConfirmationBinding
@@ -12,12 +12,14 @@ import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.component.BookConfirmDuplicateDialog
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class BookConfirmationActivity : ViewBindingActivity<ActivityBookConfirmationBinding>(ActivityBookConfirmationBinding::inflate) {
 
-    private lateinit var viewModel: BookConfirmationViewModel
+    private val viewModel: BookConfirmationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +30,6 @@ class BookConfirmationActivity : ViewBindingActivity<ActivityBookConfirmationBin
             intent.getSerializableExtra("book") as RecognizedBook
         }
 
-        viewModel = ViewModelProvider(this)[BookConfirmationViewModel::class.java]
         viewModel.applyBookInfo(bookInfo!!)
 
         setButton()

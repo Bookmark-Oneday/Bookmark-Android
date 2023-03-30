@@ -5,7 +5,9 @@ import androidx.navigation.fragment.NavHostFragment
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ActivityHomeBinding
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : ViewBindingActivity<ActivityHomeBinding>(ActivityHomeBinding::inflate) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
