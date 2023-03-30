@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout android:id="@+id/cl_bookdetail_loading"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/default_background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bookdetail_loading_begin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="24dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bookdetail_loading_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="24dp"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_bookdetail_loading_bookcover"
+        android:layout_width="170dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="0.68"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="4dp"
+        android:layout_marginTop="36dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_bookdetail_loading_bookcover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray"
+            android:scaleType="centerCrop"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_bookdetail_loading_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/card_bookdetail_loading_bookcover"
+        app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_loading_begin"
+        app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_loading_end"
+        android:layout_marginTop="24dp"
+        android:layout_marginHorizontal="56dp"
+        android:background="@color/gray"
+        android:textAlignment="center"
+        android:textSize="18sp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_bookdetail_loading_author"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/label_bookdetail_loading_title"
+        app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_loading_begin"
+        app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_loading_end"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="96dp"
+        android:background="@color/gray"
+        android:textAlignment="center"
+        android:textSize="15sp"/>
+
+    <View
+        android:id="@+id/line_bookdetail_loading_separator_info"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_loading_begin"
+        app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_loading_end"
+        app:layout_constraintTop_toBottomOf="@id/label_bookdetail_loading_author"
+        android:layout_marginTop="27dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_bookdetail_loading_timeinfos"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_loading_begin"
+        app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_loading_end"
+        app:layout_constraintTop_toBottomOf="@id/line_bookdetail_loading_separator_info">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingVertical="24dp"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_loading_title_first_read_day"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:textSize="15sp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_loading_first_read_day"
+                android:layout_width="96dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/gray"
+                android:textSize="17sp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:background="@color/default_separator"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingVertical="24dp"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_loading_title_total_reading_time"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:textSize="15sp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_loading_total_reading_time"
+                android:layout_width="96dp"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:layout_marginTop="8dp"
+                android:textSize="17sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,16 +34,17 @@ class BookDetailViewModel : ViewModel() {
     private fun reduce(state : BookDetailState, event : BookDetailEvent) : BookDetailState {
         return when(event) {
             BookDetailEvent.GetBookDetailLoading -> {
-                state.copy(toolbarButtonActive = false, inputPageButtonActive = false)
+                state.copy(toolbarButtonActive = false, inputPageButtonActive = false, isShowingLoadingView = true)
             }
             BookDetailEvent.GetBookDetailFail -> {
-                state.copy(toolbarButtonActive = false, inputPageButtonActive = false)
+                state.copy(toolbarButtonActive = false, inputPageButtonActive = false, isShowingLoadingView = false)
             }
             is BookDetailEvent.GetBookDetailSuccess -> {
                 BookDetailState(
                     bookDetail = event.bookDetail,
                     toolbarButtonActive = true,
-                    inputPageButtonActive = true
+                    inputPageButtonActive = true,
+                    isShowingLoadingView = false
                 )
             }
             is BookDetailEvent.SetPageInfo -> {
@@ -63,6 +64,7 @@ data class BookDetailState(
     val bookDetail: BookDetail? = null,
     val toolbarButtonActive : Boolean = false,
     val inputPageButtonActive : Boolean = false,
+    val isShowingLoadingView : Boolean = true,
 )
 
 sealed class BookDetailEvent {

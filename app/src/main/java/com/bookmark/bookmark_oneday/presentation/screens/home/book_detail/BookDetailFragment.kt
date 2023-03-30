@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -118,6 +119,8 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
                     binding.btnBookdetailMore.isEnabled = bookDetailState.toolbarButtonActive
                     binding.btnBookdetailLike.isEnabled = bookDetailState.toolbarButtonActive
                     binding.btnBookdetailTimer.isEnabled = bookDetailState.toolbarButtonActive
+
+                    showLoadingView(bookDetailState.isShowingLoadingView)
                 }
             }
         }
@@ -139,4 +142,21 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
         (binding.listReadinghistory.adapter as BookDetailReadingHistoryAdapter).setReadingHistoryListData(bookDetail.history)
     }
+
+    private fun showLoadingView(show : Boolean) {
+        if (show) {
+            binding.partialBookdetailLoading.root.visibility = View.VISIBLE
+            val animation = AnimationUtils.loadAnimation(context, R.anim.place_holder)
+            binding.partialBookdetailLoading.imgBookdetailLoadingBookcover.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingTitle.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingAuthor.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingTitleFirstReadDay.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingFirstReadDay.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingTitleTotalReadingTime.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingTotalReadingTime.startAnimation(animation)
+        } else {
+            binding.partialBookdetailLoading.root.visibility = View.GONE
+        }
+    }
+
 }
