@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.R
@@ -20,7 +20,7 @@ class BookDetailRemoveDialog(
     private val onRemoveSuccess : () -> Unit = {}
 ) : DialogFragment() {
     private lateinit var binding : DialogBookdetailRemoveBinding
-    private lateinit var viewModel: BookDetailRemoveDialogViewModel
+    private val viewModel : BookDetailRemoveDialogViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,8 +34,6 @@ class BookDetailRemoveDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(requireParentFragment())[BookDetailRemoveDialogViewModel::class.java]
 
         setButton()
         setObserver()

@@ -4,8 +4,11 @@ import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.repository.RegisterBookRepository
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class RegisterBookRepositoryImpl : RegisterBookRepository {
+class RegisterBookRepositoryImpl @Inject constructor(
+
+) : RegisterBookRepository {
     override suspend fun registerBook(book: RecognizedBook): BaseResponse<Nothing> {
         delay(1000L)
         return BaseResponse.EmptySuccess

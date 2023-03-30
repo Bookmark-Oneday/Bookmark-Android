@@ -3,6 +3,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.timer
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -17,16 +18,16 @@ import com.bookmark.bookmark_oneday.presentation.adapter.timer_record.TimerRecor
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.bottomsheet_more.TimerMoreBottomSheetDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_remove.TimerRemoveHistoryDialog
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBinding::inflate) {
 
-    private lateinit var viewModel: TimerViewModel
+    private val viewModel: TimerViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProvider(this)[TimerViewModel::class.java]
 
         // 실제로는 이전 화면에서 받아옵니다.
         viewModel.setReadingHistory(List(30){ ReadingHistory(it, "23.01.01", it * 30) })
@@ -106,7 +107,7 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         binding.btnTimerPlay.setToggleState(state.playButtonToggled)
 
         binding.labelTimerTotal.visibility = if (state.totalButtonToggled) View.VISIBLE else View.INVISIBLE
-        val totalTextColor = if (state.totalButtonToggled) R.color.orange else R.color.black
+        val totalTextColor = if (state.totalButtonToggled) R.color.orange else R.color.default_text
         binding.labelTimerTime.setTextColor(ContextCompat.getColor(this, totalTextColor))
     }
 

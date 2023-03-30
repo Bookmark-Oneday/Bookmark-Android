@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.DialogBookdetailBookmarkBinding
@@ -21,7 +21,7 @@ class BookDetailEditPageDialog(
     private val totalPage : Int ?= null
 ) : DialogFragment() {
     private lateinit var binding : DialogBookdetailBookmarkBinding
-    private lateinit var viewModel : BookDetailEditPageDialogViewModel
+    private val viewModel : BookDetailEditPageDialogViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +37,6 @@ class BookDetailEditPageDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(requireParentFragment())[BookDetailEditPageDialogViewModel::class.java]
         viewModel.initPageInfo(currentPage ?: 0, totalPage ?: 1)
 
         setButton()

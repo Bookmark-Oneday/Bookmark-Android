@@ -56,6 +56,7 @@
                 android:padding="6dp"
                 android:textStyle="bold"
                 android:textColor="@color/orange"
+                android:inputType="numberDecimal"
                 android:background="@drawable/bookdetail_edittextbackground"
                 />
 
@@ -74,6 +75,7 @@
                 android:textSize="16sp"
                 android:padding="6dp"
                 android:textStyle="bold"
+                android:inputType="numberDecimal"
                 android:background="@drawable/bookdetail_edittextbackground"
                 />
 
@@ -88,7 +90,7 @@
             android:minHeight="0dp"
             android:text="@string/label_bookdetail_input"
             android:background="@drawable/all_roundbutton_positive"
-            android:textColor="@color/white"
+            android:textColor="@color/default_background"
             android:textSize="16sp"
             android:textStyle="bold"
             android:paddingHorizontal="32dp"

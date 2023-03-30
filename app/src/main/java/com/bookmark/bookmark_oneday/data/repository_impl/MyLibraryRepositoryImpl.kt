@@ -5,8 +5,11 @@ import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
 import com.bookmark.bookmark_oneday.domain.model.PagingData
 import com.bookmark.bookmark_oneday.domain.repository.MyLibraryRepository
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class MyLibraryRepositoryImpl : MyLibraryRepository {
+class MyLibraryRepositoryImpl @Inject constructor(
+
+) : MyLibraryRepository {
     override suspend fun getBookList(
         perPage: Int,
         key: String,

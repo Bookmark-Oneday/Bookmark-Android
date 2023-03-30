@@ -23,7 +23,7 @@
             android:layout_marginTop="10dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="인식 실패" />
+            android:text="@string/label_bookrecognition_scan_fail" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/label_bookrecognition_fail_caption"
@@ -34,7 +34,7 @@
             app:layout_constraintTop_toBottomOf="@id/label_bookrecognition_fail_title"
             android:layout_marginTop="10dp"
             android:textSize="15sp"
-            android:text="바코드가 인식되지 않습니다."/>
+            android:text="@string/caption_bookrecognition_scan_fail"/>
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -42,9 +42,9 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:minHeight="0dp"
-            android:text="확인"
+            android:text="@string/label_bookrecognition_confirm"
             android:background="@drawable/all_roundbutton_positive"
-            android:textColor="@color/white"
+            android:textColor="@color/default_background"
             android:textSize="16sp"
             android:textStyle="bold"
             android:paddingHorizontal="32dp"

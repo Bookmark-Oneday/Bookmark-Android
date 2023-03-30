@@ -11,9 +11,12 @@ sealed class MyLibraryItem(val viewType : Int) {
         val favorite : Boolean = false
     ) : MyLibraryItem(BOOK_NORMAL)
 
+    object BookLoading : MyLibraryItem(BOOK_LOADING)
+
     companion object {
         const val BOOK_ADDER = 0
         const val BOOK_NORMAL = 1
+        const val BOOK_LOADING = 2
     }
 
 }

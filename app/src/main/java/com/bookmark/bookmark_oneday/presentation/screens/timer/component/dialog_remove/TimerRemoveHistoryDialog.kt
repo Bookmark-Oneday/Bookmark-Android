@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.DialogTimerRemoveHistoryBinding
@@ -21,7 +21,7 @@ class TimerRemoveHistoryDialog(
 ) : DialogFragment() {
 
     private lateinit var binding : DialogTimerRemoveHistoryBinding
-    private lateinit var viewModel : TimerRemoveHistoryDialogViewModel
+    private val viewModel : TimerRemoveHistoryDialogViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +30,6 @@ class TimerRemoveHistoryDialog(
     ): View {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        viewModel = ViewModelProvider(requireActivity())[TimerRemoveHistoryDialogViewModel::class.java]
         binding = DialogTimerRemoveHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }

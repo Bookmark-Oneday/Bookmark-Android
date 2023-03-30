@@ -3,8 +3,11 @@ package com.bookmark.bookmark_oneday.domain.usecase
 import com.bookmark.bookmark_oneday.domain.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
-class UseCaseGetBookDetail() {
+class UseCaseGetBookDetail @Inject constructor(
+    
+) {
     // todo 테스트용 코드 수정하기
     suspend fun invoke(bookId : Int) : BookDetail {
         delay(1000L)

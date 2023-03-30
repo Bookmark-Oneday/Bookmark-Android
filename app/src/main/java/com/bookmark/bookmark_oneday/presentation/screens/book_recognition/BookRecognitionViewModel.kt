@@ -5,12 +5,15 @@ import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseSearchBookInfo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookRecognitionViewModel constructor(
-    private val useCaseSearchBookInfo: UseCaseSearchBookInfo = UseCaseSearchBookInfo()
+@HiltViewModel
+class BookRecognitionViewModel @Inject constructor(
+    private val useCaseSearchBookInfo: UseCaseSearchBookInfo
 ) : ViewModel() {
 
     private val events = Channel<BookRecognitionEvent>()
@@ -37,7 +40,7 @@ class BookRecognitionViewModel constructor(
         }
     }
 
-    fun closePopup() {
+    fun setScannable() {
         viewModelScope.launch {
             events.send(BookRecognitionEvent.SearchingBarcode)
         }

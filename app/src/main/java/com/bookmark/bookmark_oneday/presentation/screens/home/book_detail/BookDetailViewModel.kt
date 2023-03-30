@@ -4,23 +4,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookDetail
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookDetailViewModel : ViewModel() {
-
-    private val useCaseGetBookDetail = UseCaseGetBookDetail()
-
+@HiltViewModel
+class BookDetailViewModel @Inject constructor(
+    private val useCaseGetBookDetail : UseCaseGetBookDetail
+): ViewModel() {
     private val events = Channel<BookDetailEvent>()
     val state : StateFlow<BookDetailState> = events.receiveAsFlow()
         .runningFold(BookDetailState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, BookDetailState())
 
-    fun tryGetBookDetail() {
+    fun tryGetBookDetail(bookId : Int) {
         viewModelScope.launch {
             events.send(BookDetailEvent.GetBookDetailLoading)
-            val bookDetail = useCaseGetBookDetail.invoke(1)
+            val bookDetail = useCaseGetBookDetail.invoke(bookId)
             events.send(BookDetailEvent.GetBookDetailSuccess(bookDetail))
         }
     }
@@ -34,16 +36,17 @@ class BookDetailViewModel : ViewModel() {
     private fun reduce(state : BookDetailState, event : BookDetailEvent) : BookDetailState {
         return when(event) {
             BookDetailEvent.GetBookDetailLoading -> {
-                state.copy(toolbarButtonActive = false, inputPageButtonActive = false)
+                state.copy(toolbarButtonActive = false, inputPageButtonActive = false, isShowingLoadingView = true)
             }
             BookDetailEvent.GetBookDetailFail -> {
-                state.copy(toolbarButtonActive = false, inputPageButtonActive = false)
+                state.copy(toolbarButtonActive = false, inputPageButtonActive = false, isShowingLoadingView = false)
             }
             is BookDetailEvent.GetBookDetailSuccess -> {
                 BookDetailState(
                     bookDetail = event.bookDetail,
                     toolbarButtonActive = true,
-                    inputPageButtonActive = true
+                    inputPageButtonActive = true,
+                    isShowingLoadingView = false
                 )
             }
             is BookDetailEvent.SetPageInfo -> {
@@ -63,6 +66,7 @@ data class BookDetailState(
     val bookDetail: BookDetail? = null,
     val toolbarButtonActive : Boolean = false,
     val inputPageButtonActive : Boolean = false,
+    val isShowingLoadingView : Boolean = true,
 )
 
 sealed class BookDetailEvent {

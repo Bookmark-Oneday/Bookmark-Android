@@ -1,12 +1,26 @@
 <resources>
-    <string name="app_name">Bookmark-Oneday</string>
-    
+    <string name="app_name">오늘 한줄</string>
+
     <string name="menu_homebottom_mylibrary">나의 서재</string>
     <string name="menu_homebottom_bookclub">책 모임</string>
     <string name="menu_homebottom_todayoneline">오늘 한줄</string>
     <string name="menu_homebottom_scrapbook">스크랩 북</string>
     <string name="menu_homebottom_mypage">마이페이지</string>
-    
+
+    <string name="label_bookrecognition_scan_barcode">바코드 인식</string>
+    <string name="caption_bookrecognition_scan_barcode">책의 바코드를 인식해 주세요.</string>
+    <string name="label_bookrecognition_scan_fail">인식 실패</string>
+    <string name="caption_bookrecognition_scan_fail">바코드가 인식되지 않습니다.</string>
+    <string name="label_bookrecognition_confirm">확인</string>
+
+    <string name="label_bookconfirm_register">등록</string>
+    <string name="label_bookconfirm_cancel">취소</string>
+    <string name="label_bookconfirm_publisher">출판사</string>
+    <string name="label_bookconfirm_publish_date">발행일</string>
+    <string name="label_bookconfirm_summary">줄거리</string>
+    <string name="label_bookconfirm_duplicate_register">중복 등록</string>
+    <string name="caption_bookconfirm_duplicate_register">이전에 등록한 책입니다. \n중복등록 하시겠습니까?</string>
+
     <string name="label_bookdetail_first_read_day">처음 읽은 날</string>
     <string name="label_bookdetail_total_reading_time">총 독서 시간</string>
     <string name="label_bookdetail_input_page">페이지 입력</string>
@@ -34,5 +48,18 @@
     <string name="label_mylibrary_sort_past_order">과거순</string>
     <string name="label_mylibrary_sort_favorite_book">즐겨찾는 책</string>
     <string name="label_mylibrary_sort_reading_book">읽고 있는 책</string>
+    <string name="label_mylibrary_chain">연속 %d일째 읽고 있어요!</string>
+
+    <string name="label_mylibrary_camera_permission">카메라 접근 권한 허용</string>
+    <string name="caption_mylibrary_camera_permission">위 접근 권한은 더 나은 서비스를 제공하기 위해 사용됩니다. 도서 등록 시 바코드 인식을 위해 사용되며, 접근 권한 미허용 시 도서 등록 서비스 이용이 불가 합니다.</string>
+    <string name="label_mylibrary_camera">카메라</string>
+    <string name="caption_mylibrary_camera">바코드 인식 시 카메라 사용</string>
+    <string name="label_mylibrary_confirm">확인</string>
+
+    <string name="label_timer_total_eng">Total</string>
+    <string name="label_timer_stopwatch">스톱워치</string>
+    <string name="label_timer_remove_all_history">모든 기록 삭제</string>
+    <string name="label_timer_remove_history">기록 삭제</string>
+    <string name="caption_timer_remove_history">기록을 정말 삭제하시겠습니까?</string>
 
 </resources>

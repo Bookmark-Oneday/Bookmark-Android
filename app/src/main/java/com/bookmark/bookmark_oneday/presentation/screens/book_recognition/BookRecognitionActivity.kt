@@ -1,21 +1,24 @@
 package com.bookmark.bookmark_oneday.presentation.screens.book_recognition
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.ActivityBookRecognitionBinding
+import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.BookConfirmationActivity
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.component.BookRecognitionFailDialog
@@ -25,30 +28,41 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @ExperimentalGetImage
+@AndroidEntryPoint
 class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBinding>(ActivityBookRecognitionBinding::inflate) {
 
     private lateinit var cameraExecutor : ExecutorService
-    private lateinit var screenSizeAdapter: ScreenSizeAdapter
-    private lateinit var viewModel: BookRecognitionViewModel
+    private val viewModel: BookRecognitionViewModel by viewModels()
+    private val screenSizeAdapter = ScreenSizeAdapter()
+
+    private val bookRegisterLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            setResult(RESULT_OK)
+            finish()
+        } else {
+            viewModel.setScannable()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[BookRecognitionViewModel::class.java]
-
         if (allPermissionGranted()) {
             startCamera()
         } else {
-            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+            Toast.makeText(this, "카메라 권한이 필요합니다", Toast.LENGTH_SHORT).show()
         }
 
+        setButton()
         setObserver()
+        setOnGlobalLayoutListener()
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
@@ -61,20 +75,8 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
-    // todo 이전 화면에서 호출하는 부분이므로 전 화면 구현시 제거
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionGranted()){
-                startCamera()
-            } else {
-                Toast.makeText(this, "카메라 권한이 필요합니다", Toast.LENGTH_SHORT).show()
-            }
-        }
+    private fun setButton() {
+        binding.btnBookrecognitionBack.setOnClickListener { finish() }
     }
 
     private fun setObserver() {
@@ -93,10 +95,7 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
             launch {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     viewModel.sideEffectsSearchBookSuccess.collectLatest {
-                        val intent = Intent(this@BookRecognitionActivity, BookConfirmationActivity::class.java)
-                        intent.putExtra("book", it)
-                        this@BookRecognitionActivity.startActivity(intent)
-                        this@BookRecognitionActivity.finish()
+                        callBookConfirmScreen(it)
                     }
                 }
             }
@@ -105,7 +104,30 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
     }
 
     private fun showFailDialog() {
-        BookRecognitionFailDialog(viewModel::closePopup).show(supportFragmentManager, "BookRecognitionFail")
+        BookRecognitionFailDialog(viewModel::setScannable).show(supportFragmentManager, "BookRecognitionFail")
+    }
+
+    private fun callBookConfirmScreen(recognizedBook : RecognizedBook) {
+        val intent = Intent(this, BookConfirmationActivity::class.java)
+        intent.putExtra("book", recognizedBook)
+        bookRegisterLauncher.launch(intent)
+    }
+
+    private fun setOnGlobalLayoutListener() {
+        binding.clBookrecognitionRoot.viewTreeObserver.addOnGlobalLayoutListener(
+            object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    screenSizeAdapter.setViewSizeInfo(
+                        totalHeightPx = binding.root.height,
+                        totalWidthPx = binding.root.width,
+                        targetHeightPx = binding.viewBookrecognitionArea.height,
+                        targetWidthPx = binding.viewBookrecognitionArea.width
+                    )
+
+                    binding.clBookrecognitionRoot.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+            }
+        )
     }
 
     private fun startCamera() {
@@ -113,7 +135,6 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
 
         cameraProviderFuture.addListener({
             val cameraProvider : ProcessCameraProvider = cameraProviderFuture.get()
-
             val preview = Preview.Builder()
                 .build()
                 .also {
@@ -147,13 +168,9 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
                 val resolution = analysisPreview.resolutionInfo
                 // 카메라 해상도의 가로 세로가 반대로 적용되어있는 이유는, 핸드폰을 세로로 사용할 때,
                 // 카메라 해상도 값의 가로 세로가 90도 기울어져 있기 때문입니다.
-                screenSizeAdapter = ScreenSizeAdapter(
-                    originalHeightPx = binding.clBookrecognitionRoot.height,
-                    originalWidthPx = binding.clBookrecognitionRoot.width,
-                    boundingBoxHeightPx = binding.viewBookrecognitionArea.height,
-                    boundingBoxWidthPx = binding.viewBookrecognitionArea.width,
-                    cameraResolutionHeight = resolution?.resolution?.width ?: 640,
-                    cameraResolutionWidth = resolution?.resolution?.height ?: 480
+                screenSizeAdapter.setCameraResolutionInfo(
+                    heightPx = resolution?.resolution?.width ?: 640,
+                    widthPx = resolution?.resolution?.height ?: 480
                 )
             } catch (e : Exception) {
                 Log.e("TAG", "Use case binding failed", e)
@@ -162,7 +179,7 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun  processImageProxy(
+    private fun processImageProxy(
         barCodeScanner : BarcodeScanner,
         imageProxy: ImageProxy
     ) {
@@ -171,7 +188,6 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
             barCodeScanner.process(inputImage)
                 .addOnSuccessListener { barcodeList ->
                     val barcode = barcodeList.getOrNull(0)
-
                     tryBarcodeRecognize(barcode)
                 }
                 .addOnFailureListener {
@@ -182,11 +198,10 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
                     imageProxy.close()
                 }
         }
-
     }
 
     private fun tryBarcodeRecognize(barcode : Barcode?) {
-        val canRecognizeBarcode = (::screenSizeAdapter.isInitialized && barcode != null && barcode.boundingBox != null)
+        val canRecognizeBarcode = (barcode != null && barcode.boundingBox != null && screenSizeAdapter.checkAllInitialize())
         if (!canRecognizeBarcode) return
 
         val barcodeInBoundingBox = screenSizeAdapter.checkInBoundingBox(barcode!!.boundingBox!!)
@@ -198,7 +213,6 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
     }
 
     companion object {
-        private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
             mutableListOf (
                 Manifest.permission.CAMERA

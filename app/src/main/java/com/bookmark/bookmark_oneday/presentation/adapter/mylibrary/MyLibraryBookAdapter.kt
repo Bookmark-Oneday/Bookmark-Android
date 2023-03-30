@@ -3,11 +3,14 @@ package com.bookmark.bookmark_oneday.presentation.adapter.mylibrary
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ItemMylibraryBookAddBinding
+import com.bookmark.bookmark_oneday.databinding.ItemMylibraryBookLoadingBinding
 import com.bookmark.bookmark_oneday.databinding.ItemMylibraryBookNormalBinding
 import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
 import com.bumptech.glide.Glide
@@ -30,9 +33,13 @@ class MyLibraryBookAdapter(
                 val binding = ItemMylibraryBookNormalBinding.inflate(inflater, parent, false)
                 MyLibraryBookNormalViewHolder(binding, onClickBook)
             }
+            MyLibraryItem.BOOK_LOADING -> {
+                val binding = ItemMylibraryBookLoadingBinding.inflate(inflater, parent, false)
+                MyLibraryBookLoadingViewHolder(binding)
+            }
             else -> {
-                val binding = ItemMylibraryBookNormalBinding.inflate(inflater, parent, false)
-                MyLibraryBookNormalViewHolder(binding, onClickBook)
+                val binding = ItemMylibraryBookLoadingBinding.inflate(inflater, parent, false)
+                MyLibraryBookLoadingViewHolder(binding)
             }
         }
 
@@ -47,6 +54,9 @@ class MyLibraryBookAdapter(
             }
             is MyLibraryBookNormalViewHolder -> {
                 holder.bind(asyncDiffer.currentList[position] as MyLibraryItem.Book)
+            }
+            is MyLibraryBookLoadingViewHolder -> {
+                holder.bind()
             }
         }
     }
@@ -97,6 +107,16 @@ class MyLibraryBookAdderViewHolder(
 
     fun bind() {
 
+    }
+}
+
+class MyLibraryBookLoadingViewHolder(
+    private val binding : ItemMylibraryBookLoadingBinding
+) : ViewHolder(binding.root) {
+    fun bind() {
+        binding.cvItemMylibraryBook.startAnimation(AnimationUtils.loadAnimation(binding.root.context, R.anim.place_holder))
+        binding.labelItemMylibraryBookAuthor.startAnimation(AnimationUtils.loadAnimation(binding.root.context, R.anim.place_holder))
+        binding.labelItemMylibraryBookTitle.startAnimation(AnimationUtils.loadAnimation(binding.root.context, R.anim.place_holder))
     }
 }
 

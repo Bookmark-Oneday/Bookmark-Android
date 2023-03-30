@@ -2,8 +2,9 @@ package com.bookmark.bookmark_oneday.data.datasource.token_datasource
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import javax.inject.Inject
 
-class TokenDataSourceImpl(
+class TokenDataSourceImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : TokenDataSource {
     override var accessToken: String?

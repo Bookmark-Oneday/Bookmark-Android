@@ -3,13 +3,16 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.compo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseEditReadingPage
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class BookDetailEditPageDialogViewModel : ViewModel() {
-
-    private val useCaseEditPage = UseCaseEditReadingPage()
+@HiltViewModel
+class BookDetailEditPageDialogViewModel @Inject constructor(
+    private val useCaseEditPage : UseCaseEditReadingPage
+) : ViewModel() {
 
     private val _currentPage = MutableStateFlow(0)
     val currentPage = _currentPage.asStateFlow()

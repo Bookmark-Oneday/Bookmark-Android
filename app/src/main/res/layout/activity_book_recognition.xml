@@ -14,7 +14,9 @@
         android:padding="10dp"
         android:layout_marginStart="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:tint="@color/default_icon_tint"
+        android:src="@drawable/ic_all_back"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
@@ -23,7 +25,7 @@
         app:layout_constraintBottom_toBottomOf="@id/btn_bookrecognition_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="바코드 인식"
+        android:text="@string/label_bookrecognition_scan_barcode"
         android:textSize="18sp"/>
 
     <androidx.camera.view.PreviewView
@@ -96,7 +98,7 @@
         android:layout_marginTop="24dp"
         android:textColor="@color/white"
         android:textSize="17sp"
-        android:text="책의 바코드를 인식해 주세요."/>
+        android:text="@string/caption_bookrecognition_scan_barcode"/>
 
     <ProgressBar
         android:id="@+id/pb_bookrecognition_loading"

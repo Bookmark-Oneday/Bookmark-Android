@@ -1,12 +1,18 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.book_detail
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentBookdetailBinding
@@ -17,23 +23,47 @@ import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_editpage.BookDetailEditPageDialog
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.bottomsheet_more.BookDetailMoreBottomSheetDialog
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_remove.BookDetailRemoveDialog
+import com.bookmark.bookmark_oneday.presentation.screens.timer.TimerActivity
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(FragmentBookdetailBinding::bind, R.layout.fragment_bookdetail) {
-    private lateinit var viewModel: BookDetailViewModel
+    private val viewModel: BookDetailViewModel by activityViewModels()
+    private lateinit var onBackPressedCallback: OnBackPressedCallback
+    private val args : BookDetailFragmentArgs by navArgs()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navigateToBack()
+            }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    // todo 책 객체를 전달하도록 직렬화 과정 필요, 단 현재 책이 로드되지 않았을 때는 그냥 popBackStack()
+    private fun navigateToBack() {
+        val navController = binding.root.findNavController()
+        navController.previousBackStackEntry?.savedStateHandle?.set("book", args.bookId)
+        navController.popBackStack()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        onBackPressedCallback.remove()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProvider(this)[BookDetailViewModel::class.java]
 
         setRecyclerView()
         setButtons()
         setObserver()
 
-        viewModel.tryGetBookDetail()
+        viewModel.tryGetBookDetail(args.bookId)
     }
 
     private fun setRecyclerView() {
@@ -44,7 +74,13 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
     private fun setButtons() {
         binding.btnBookdetailBack.setOnClickListener {
+            navigateToBack()
+        }
 
+        binding.btnBookdetailTimer.setOnClickListener {
+            // timer 화면에서 결과 받아야함, bookId 전달 필요
+            val intent = Intent(requireActivity(), TimerActivity::class.java)
+            startActivity(intent)
         }
 
         binding.btnBookdetailInputPage.setOnClickListener {
@@ -65,7 +101,9 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
     }
 
     private fun removeSuccessCallback() {
-        // 이전 화면으로 돌아가되, 이전 화면에서 책목록을 수정할 수 있도록 정보를 제공해야 함
+        // todo 이전 화면으로 돌아가되, 이전 화면에서 이 책을 제거하도록 전달해야 함
+        binding.root.findNavController().popBackStack()
+
     }
 
     private fun setObserver() {
@@ -79,6 +117,8 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
                     binding.btnBookdetailMore.isEnabled = bookDetailState.toolbarButtonActive
                     binding.btnBookdetailLike.isEnabled = bookDetailState.toolbarButtonActive
                     binding.btnBookdetailTimer.isEnabled = bookDetailState.toolbarButtonActive
+
+                    showLoadingView(bookDetailState.isShowingLoadingView)
                 }
             }
         }
@@ -100,4 +140,21 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
         (binding.listReadinghistory.adapter as BookDetailReadingHistoryAdapter).setReadingHistoryListData(bookDetail.history)
     }
+
+    private fun showLoadingView(show : Boolean) {
+        if (show) {
+            binding.partialBookdetailLoading.root.visibility = View.VISIBLE
+            val animation = AnimationUtils.loadAnimation(context, R.anim.place_holder)
+            binding.partialBookdetailLoading.imgBookdetailLoadingBookcover.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingTitle.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingAuthor.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingTitleFirstReadDay.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingFirstReadDay.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingTitleTotalReadingTime.startAnimation(animation)
+            binding.partialBookdetailLoading.labelBookdetailLoadingTotalReadingTime.startAnimation(animation)
+        } else {
+            binding.partialBookdetailLoading.root.visibility = View.GONE
+        }
+    }
+
 }
