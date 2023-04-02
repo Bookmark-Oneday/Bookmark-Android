@@ -1,25 +1,28 @@
 package com.bookmark.bookmark_oneday.data.repository_impl
 
 import com.bookmark.bookmark_oneday.data.datasource.book_datasource.BookDataSource
+import com.bookmark.bookmark_oneday.data.models.dto.BookTimerDto
+import com.bookmark.bookmark_oneday.data.utils.mapBaseResponse
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
 import com.bookmark.bookmark_oneday.domain.repository.ReadingHistoryRepository
 import javax.inject.Inject
 
 class ReadingHistoryRepositoryImpl @Inject constructor(
     private val bookDataSource: BookDataSource
 ) : ReadingHistoryRepository {
-    // todo EmptySuccess 에서 BaseResponse.Success<List<HistoryItem>> 으로 수정
-    override suspend fun deleteHistoryItem(bookId : String, targetId: String): BaseResponse<Nothing> {
+    override suspend fun deleteHistoryItem(bookId : String, targetId: String): BaseResponse<ReadingInfo> {
         val response = bookDataSource.deleteReadingHistory(bookId, targetId)
-
-        return if (response is BaseResponse.Failure) response
-        else BaseResponse.EmptySuccess
+        return mapBaseResponse(response, BookTimerDto::toReadingInfo)
     }
 
-    override suspend fun deleteHistoryAll(bookId: String): BaseResponse<Nothing> {
+    override suspend fun deleteHistoryAll(bookId: String): BaseResponse<ReadingInfo> {
         val response = bookDataSource.deleteReadingHistory(bookId)
+        return mapBaseResponse(response, BookTimerDto::toReadingInfo)
+    }
 
-        return if (response is BaseResponse.Failure) response
-        else BaseResponse.EmptySuccess
+    override suspend fun getReadingInfo(bookId: String): BaseResponse<ReadingInfo> {
+        val response = bookDataSource.getBookTimer(book_id = bookId)
+        return mapBaseResponse(response, BookTimerDto::toReadingInfo)
     }
 }

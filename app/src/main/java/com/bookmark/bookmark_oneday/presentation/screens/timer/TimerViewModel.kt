@@ -2,7 +2,10 @@ package com.bookmark.bookmark_oneday.presentation.screens.timer
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
+import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
+import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetReadingHistory
 import com.bookmark.bookmark_oneday.presentation.model.Timer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TimerViewModel @Inject constructor(
-
+    private val useCaseGetReadingHistory: UseCaseGetReadingHistory
 ) : ViewModel() {
 
     private val timer = Timer(viewModelScope, Dispatchers.Default, action = ::setStopWatchTime)
@@ -33,6 +36,9 @@ class TimerViewModel @Inject constructor(
     private val totalTime = 30
     private var addedTime = 0
 
+    // Todo @assited inject 사용해서 bookId 는 생성 인자로 받아올 것.
+    var bookId : String = ""
+
     private fun setStopWatchTime(time : Int) {
         viewModelScope.launch {
             val appliedTimeSecond = time + addedTime
@@ -43,9 +49,16 @@ class TimerViewModel @Inject constructor(
         }
     }
 
-    fun setReadingHistory(historyList : List<ReadingHistory>) {
+    fun tryGetReadingHistory(bookId : String) {
         viewModelScope.launch {
-            events.send(TimerViewEvent.ChangeHistoryList(historyList))
+            events.send(TimerViewEvent.ApiResponseLoading)
+            val response = useCaseGetReadingHistory(bookId)
+            if (response is BaseResponse.Success) {
+
+                events.send(TimerViewEvent.ReadingInfoLoadSuccess(response.data))
+            } else {
+                events.send(TimerViewEvent.ReadingInfoLoadFail)
+            }
         }
     }
 
@@ -77,10 +90,9 @@ class TimerViewModel @Inject constructor(
         }
     }
 
-    fun applyRemovedItemToList(targetId : String?) {
+    fun setReadingInfo(readingInfo: ReadingInfo) {
         viewModelScope.launch {
-            if (targetId == null) events.send(TimerViewEvent.RemoveHistoryAllSuccess)
-            else events.send(TimerViewEvent.RemoveHistoryItemSuccess(targetId))
+            events.send(TimerViewEvent.ChangeReadingInfo(readingInfo))
         }
     }
 
@@ -88,6 +100,15 @@ class TimerViewModel @Inject constructor(
         return when (event) {
             TimerViewEvent.ApiResponseLoading -> {
                 state.copy(buttonActive = false)
+            }
+            is TimerViewEvent.ReadingInfoLoadSuccess -> {
+                state.copy(
+                    buttonActive = true,
+                    readingHistoryList = event.readingInfo.readingHistoryList
+                )
+            }
+            TimerViewEvent.ReadingInfoLoadFail -> {
+                state.copy(buttonActive = true)
             }
             TimerViewEvent.RecordFail -> {
                 state.copy(buttonActive = true)
@@ -103,24 +124,8 @@ class TimerViewModel @Inject constructor(
             is TimerViewEvent.TogglePlayButton -> {
                 state.copy(playButtonToggled = event.playing)
             }
-            TimerViewEvent.RemoveHistoryFail -> {
-                state.copy(buttonActive = true)
-            }
-            TimerViewEvent.RemoveHistoryAllSuccess -> {
-                state.copy(
-                    buttonActive = true,
-                    readingHistoryList = listOf()
-                )
-            }
-            is TimerViewEvent.ChangeHistoryList -> {
-                state.copy(readingHistoryList = event.readingHistoryList)
-            }
-            is TimerViewEvent.RemoveHistoryItemSuccess -> {
-                val filteredReadingHistory = state.readingHistoryList.filter { it.id != event.targetItemId }
-                state.copy(
-                    buttonActive = true,
-                    readingHistoryList = filteredReadingHistory
-                )
+            is TimerViewEvent.ChangeReadingInfo -> {
+                state.copy(readingHistoryList = event.readingInfo.readingHistoryList)
             }
         }
     }
@@ -146,12 +151,11 @@ data class TimerViewState (
 
 sealed class TimerViewEvent {
     object ApiResponseLoading : TimerViewEvent()
+    class ReadingInfoLoadSuccess(val readingInfo: ReadingInfo) : TimerViewEvent()
+    object ReadingInfoLoadFail : TimerViewEvent()
     object RecordFail : TimerViewEvent()
     object RecordSuccess : TimerViewEvent()
     class ToggleTotalButton(val total : Boolean) : TimerViewEvent()
     class TogglePlayButton(val playing : Boolean) : TimerViewEvent()
-    object RemoveHistoryFail : TimerViewEvent()
-    object RemoveHistoryAllSuccess : TimerViewEvent()
-    class RemoveHistoryItemSuccess(val targetItemId : String) : TimerViewEvent()
-    class ChangeHistoryList(val readingHistoryList : List<ReadingHistory>) : TimerViewEvent()
+    class ChangeReadingInfo(val readingInfo : ReadingInfo) : TimerViewEvent()
 }

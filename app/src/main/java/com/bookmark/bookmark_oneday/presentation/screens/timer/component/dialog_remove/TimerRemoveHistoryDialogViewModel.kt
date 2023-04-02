@@ -2,6 +2,8 @@ package com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseDeleteHistory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -19,22 +21,28 @@ class TimerRemoveHistoryDialogViewModel @Inject constructor(
         .runningFold(TimerRemoveHistoryDialogState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, TimerRemoveHistoryDialogState())
 
-    private val _sideEffectsCloseDialog = MutableSharedFlow<Boolean>()
-    val sideEffectsCloseDialog = _sideEffectsCloseDialog.asSharedFlow()
+    private val _sideEffectsNewReadingInfo = MutableSharedFlow<ReadingInfo>()
+    val sideEffectsNewReadingInfo = _sideEffectsNewReadingInfo.asSharedFlow()
+
+    private var bookId : String = ""
+
+    fun setBookId(bookId : String) {
+        this.bookId = bookId
+    }
 
     fun tryRemoveHistory(targetIdx : String?) {
         viewModelScope.launch {
             event.send(TimerRemoveHistoryDialogEvent.RemoveLoading)
 
-            val result = if (targetIdx != null) {
-                useCaseDeleteHistory("1", targetIdx)
+            val response = if (targetIdx != null) {
+                useCaseDeleteHistory(bookId, targetIdx)
             } else {
-                useCaseDeleteHistory.deleteAll()
+                useCaseDeleteHistory.deleteAll(bookId)
             }
 
-            if (result) {
+            if (response is BaseResponse.Success) {
                 event.send(TimerRemoveHistoryDialogEvent.RemoveSuccess)
-                _sideEffectsCloseDialog.emit(true)
+                _sideEffectsNewReadingInfo.emit(response.data)
             } else {
                 event.send(TimerRemoveHistoryDialogEvent.RemoveFail)
             }

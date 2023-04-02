@@ -12,12 +12,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.DialogTimerRemoveHistoryBinding
+import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class TimerRemoveHistoryDialog(
-    private val onRemoveItemSuccess : (String?) -> Unit = {},
-    private val targetId : String ?= null
+    private val onRemoveItemSuccess : (ReadingInfo) -> Unit = {},
+    private val targetId : String ?= null,
+    private val bookId : String
 ) : DialogFragment() {
 
     private lateinit var binding : DialogTimerRemoveHistoryBinding
@@ -36,6 +38,8 @@ class TimerRemoveHistoryDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setBookId(bookId)
 
         setButton()
         setObserver()
@@ -60,9 +64,11 @@ class TimerRemoveHistoryDialog(
                     }
                 }
 
+                // 삭제 후 변경된 readingInfo 데이터를 관찰합니다.
                 launch {
-                    viewModel.sideEffectsCloseDialog.collectLatest { isCloseDialog ->
-                        handleCloseEvent(isCloseDialog)
+                    viewModel.sideEffectsNewReadingInfo.collectLatest { readingInfo ->
+                        onRemoveItemSuccess(readingInfo)
+                        dismiss()
                     }
                 }
 
@@ -83,13 +89,6 @@ class TimerRemoveHistoryDialog(
             binding.pbTimerRemoveHistoryDialogLoading.visibility = View.GONE
             binding.btnTimerRemoveHistoryDialogRemove.text = "삭제"
         }
-    }
-
-    private fun handleCloseEvent(isCloseDialog : Boolean) {
-        if (!isCloseDialog) return
-
-        onRemoveItemSuccess(targetId)
-        dismiss()
     }
 
 }

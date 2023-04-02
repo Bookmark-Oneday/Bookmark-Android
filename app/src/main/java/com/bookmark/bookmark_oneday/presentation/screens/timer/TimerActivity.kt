@@ -11,7 +11,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ActivityTimerBinding
-import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 import com.bookmark.bookmark_oneday.presentation.adapter.timer_record.TimerRecordHistoryAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.timer_record.TimerRecordHistoryDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
@@ -28,8 +27,8 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 실제로는 이전 화면에서 받아옵니다.
-        viewModel.setReadingHistory(List(30){ ReadingHistory(it.toString(), "23.01.01", it * 30) })
+        val bookId = intent.getStringExtra("book_id") ?: "1"
+        viewModel.tryGetReadingHistory(bookId)
 
         setButton()
         setRecyclerView()
@@ -63,8 +62,9 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
 
     private fun callRemoveDialog(targetId : String ?= null) {
         TimerRemoveHistoryDialog(
-            onRemoveItemSuccess = viewModel::applyRemovedItemToList,
-            targetId = targetId
+            onRemoveItemSuccess = viewModel::setReadingInfo,
+            targetId = targetId,
+            bookId = viewModel.bookId
         ).show(supportFragmentManager, "TimerRemoveHistoryDialog")
     }
 

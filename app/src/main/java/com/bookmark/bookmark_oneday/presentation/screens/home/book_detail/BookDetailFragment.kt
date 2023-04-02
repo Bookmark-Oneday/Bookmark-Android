@@ -80,6 +80,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
         binding.btnBookdetailTimer.setOnClickListener {
             // timer 화면에서 결과 받아야함, bookId 전달 필요
             val intent = Intent(requireActivity(), TimerActivity::class.java)
+            intent.putExtra("book_id", args.bookId)
             startActivity(intent)
         }
 

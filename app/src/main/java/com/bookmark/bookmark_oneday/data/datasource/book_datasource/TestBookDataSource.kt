@@ -147,17 +147,21 @@ class TestBookDataSource @Inject constructor(
             daily = 1800,
             book = BookTimerDto.BookTimerBookDto(
                 book_id = "1",
-                history = listOf(
-                    HistoryDto("1", "2022.12.23", 3602),
-                    HistoryDto("2", "2022.12.24", 1500),
-                    HistoryDto("3", "2022.12.25", 3200),
-                    HistoryDto("4", "2022.12.26", 4400),
-                    HistoryDto("5", "2022.12.27", 3200),
-                    HistoryDto("6", "2022.12.28", 2300),
-                    HistoryDto("7", "2022.12.29", 560),
-                    HistoryDto("8", "2022.12.30", 1500),
-                    HistoryDto("9", "2022.12.31", 1200),
-                ).filter { it.id != historyId }
+                history = if (historyId != null) {
+                    listOf(
+                        HistoryDto("1", "2022.12.23", 3602),
+                        HistoryDto("2", "2022.12.24", 1500),
+                        HistoryDto("3", "2022.12.25", 3200),
+                        HistoryDto("4", "2022.12.26", 4400),
+                        HistoryDto("5", "2022.12.27", 3200),
+                        HistoryDto("6", "2022.12.28", 2300),
+                        HistoryDto("7", "2022.12.29", 560),
+                        HistoryDto("8", "2022.12.30", 1500),
+                        HistoryDto("9", "2022.12.31", 1200),
+                    ).filter { it.id != historyId }
+                } else {
+                    listOf()
+                }
             )
         )
         return BaseResponse.Success(testBookTimerDto)
