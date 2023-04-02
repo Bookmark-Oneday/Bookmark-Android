@@ -1,14 +1,14 @@
 package com.bookmark.bookmark_oneday.domain.usecase
 
-import kotlinx.coroutines.delay
+import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.repository.DeleteBookRepository
 import javax.inject.Inject
 
 class UseCaseDeleteBook @Inject constructor(
-
+    private val repository : DeleteBookRepository
 ) {
-    // 테스트용
-    suspend operator fun invoke() : Boolean {
-        delay(1000L)
-        return true
+    suspend operator fun invoke(bookId : String) : Boolean {
+        val response = repository.removeBook(bookId)
+        return response is BaseResponse.EmptySuccess
     }
 }
