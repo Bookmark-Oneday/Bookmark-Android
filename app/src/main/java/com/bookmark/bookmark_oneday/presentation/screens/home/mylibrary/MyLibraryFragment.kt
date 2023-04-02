@@ -112,8 +112,8 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
         }
     }
 
-    private fun clickBookDetail(bookId : Int) {
-        val action = MyLibraryFragmentDirections.actionMyLibraryFragmentToBookDetailFragment(bookId.toString())
+    private fun clickBookDetail(bookId : String) {
+        val action = MyLibraryFragmentDirections.actionMyLibraryFragmentToBookDetailFragment(bookId)
         binding.root.findNavController().navigate(action)
     }
 
@@ -154,7 +154,7 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
 
         // todo 직렬화된 책 객체를 받아 반영하도록 변경 필요
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("book")?.observe(viewLifecycleOwner){
-            viewModel.applyItemChange(it.toIntOrNull() ?: 0)
+            viewModel.applyItemChange(it)
         }
     }
 

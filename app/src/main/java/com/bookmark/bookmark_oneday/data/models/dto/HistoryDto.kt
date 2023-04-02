@@ -10,7 +10,7 @@ data class HistoryDto(
     companion object {
         fun toReadingHistory(historyDto: HistoryDto) : ReadingHistory {
             return ReadingHistory(
-                id = historyDto.id.toIntOrNull() ?: 1,
+                id = historyDto.id,
                 dateString = historyDto.date,
                 time = historyDto.time
             )

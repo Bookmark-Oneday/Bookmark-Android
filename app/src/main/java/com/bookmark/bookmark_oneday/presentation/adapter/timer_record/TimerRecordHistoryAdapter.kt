@@ -9,7 +9,7 @@ import com.bookmark.bookmark_oneday.databinding.ItemTimerHistoryBinding
 import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 
 class TimerRecordHistoryAdapter(
-    private val onClickRemove: (Int) -> Unit
+    private val onClickRemove: (String) -> Unit
 ) : RecyclerView.Adapter<TimerRecordHistoryViewHolder>() {
 
     private val asyncDiffer = AsyncListDiffer(this, ReadingHistoryDiffUtil())
@@ -41,7 +41,7 @@ class TimerRecordHistoryAdapter(
 
 class TimerRecordHistoryViewHolder(
     private val binding : ItemTimerHistoryBinding,
-    private val onClickRemove : (Int) -> Unit
+    private val onClickRemove : (String) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
     private lateinit var history : ReadingHistory
 

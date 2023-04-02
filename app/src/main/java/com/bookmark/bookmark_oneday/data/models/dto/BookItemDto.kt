@@ -15,7 +15,7 @@ data class BookItemDto(
     companion object {
         fun toMyLibraryBookItem(bookItemDto: BookItemDto) : MyLibraryItem.Book {
             return MyLibraryItem.Book(
-                id = bookItemDto.book_id.toIntOrNull() ?: 0,
+                id = bookItemDto.book_id,
                 thumbnail = bookItemDto.titleImage,
                 title = bookItemDto.title,
                 author = bookItemDto.authors.joinToString(","),

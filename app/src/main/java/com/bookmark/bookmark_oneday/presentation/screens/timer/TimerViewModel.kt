@@ -77,7 +77,7 @@ class TimerViewModel @Inject constructor(
         }
     }
 
-    fun applyRemovedItemToList(targetId : Int?) {
+    fun applyRemovedItemToList(targetId : String?) {
         viewModelScope.launch {
             if (targetId == null) events.send(TimerViewEvent.RemoveHistoryAllSuccess)
             else events.send(TimerViewEvent.RemoveHistoryItemSuccess(targetId))
@@ -152,6 +152,6 @@ sealed class TimerViewEvent {
     class TogglePlayButton(val playing : Boolean) : TimerViewEvent()
     object RemoveHistoryFail : TimerViewEvent()
     object RemoveHistoryAllSuccess : TimerViewEvent()
-    class RemoveHistoryItemSuccess(val targetItemId : Int) : TimerViewEvent()
+    class RemoveHistoryItemSuccess(val targetItemId : String) : TimerViewEvent()
     class ChangeHistoryList(val readingHistoryList : List<ReadingHistory>) : TimerViewEvent()
 }

@@ -3,7 +3,7 @@ package com.bookmark.bookmark_oneday.domain.model
 sealed class MyLibraryItem(val viewType : Int) {
     object BookAdder : MyLibraryItem(BOOK_ADDER)
     data class Book(
-        val id : Int,
+        val id : String,
         val thumbnail : String,
         val title : String,
         val author : String,

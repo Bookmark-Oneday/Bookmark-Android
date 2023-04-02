@@ -6,7 +6,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +29,7 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         super.onCreate(savedInstanceState)
 
         // 실제로는 이전 화면에서 받아옵니다.
-        viewModel.setReadingHistory(List(30){ ReadingHistory(it, "23.01.01", it * 30) })
+        viewModel.setReadingHistory(List(30){ ReadingHistory(it.toString(), "23.01.01", it * 30) })
 
         setButton()
         setRecyclerView()
@@ -62,7 +61,7 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         TimerMoreBottomSheetDialog(::callRemoveDialog).show(supportFragmentManager, "TimerMoreBottomSheet")
     }
 
-    private fun callRemoveDialog(targetId : Int ?= null) {
+    private fun callRemoveDialog(targetId : String ?= null) {
         TimerRemoveHistoryDialog(
             onRemoveItemSuccess = viewModel::applyRemovedItemToList,
             targetId = targetId

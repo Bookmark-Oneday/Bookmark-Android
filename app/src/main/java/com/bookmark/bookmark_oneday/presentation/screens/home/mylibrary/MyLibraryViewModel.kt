@@ -57,7 +57,7 @@ class MyLibraryViewModel @Inject constructor(
         }
     }
 
-    fun applyItemChange(bookId : Int) {
+    fun applyItemChange(bookId : String) {
         viewModelScope.launch {
             event.send(MyLibraryEvent.ChangeBookItemProperty(bookId))
         }
@@ -168,5 +168,5 @@ sealed class MyLibraryEvent {
     object NextPagingDataLoading : MyLibraryEvent()
     object NextPagingDataLoadingFail : MyLibraryEvent()
     class NextPagingDataLoadingSuccess(val pagingData : PagingData<MyLibraryItem>) : MyLibraryEvent()
-    class ChangeBookItemProperty(val bookId : Int) : MyLibraryEvent()
+    class ChangeBookItemProperty(val bookId : String) : MyLibraryEvent()
 }

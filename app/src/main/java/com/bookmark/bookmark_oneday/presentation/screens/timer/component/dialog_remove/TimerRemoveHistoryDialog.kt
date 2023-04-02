@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class TimerRemoveHistoryDialog(
-    private val onRemoveItemSuccess : (Int?) -> Unit = {},
-    private val targetId : Int ?= null
+    private val onRemoveItemSuccess : (String?) -> Unit = {},
+    private val targetId : String ?= null
 ) : DialogFragment() {
 
     private lateinit var binding : DialogTimerRemoveHistoryBinding

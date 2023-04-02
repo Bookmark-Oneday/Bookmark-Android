@@ -1,7 +1,7 @@
 package com.bookmark.bookmark_oneday.domain.model
 
 data class BookDetail(
-    val bookId: Int,
+    val bookId: String,
     val title: String,
     val author: String,
     val translators: String,

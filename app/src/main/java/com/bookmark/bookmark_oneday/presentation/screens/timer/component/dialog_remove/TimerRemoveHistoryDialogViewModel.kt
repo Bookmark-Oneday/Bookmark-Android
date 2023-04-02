@@ -22,7 +22,7 @@ class TimerRemoveHistoryDialogViewModel @Inject constructor(
     private val _sideEffectsCloseDialog = MutableSharedFlow<Boolean>()
     val sideEffectsCloseDialog = _sideEffectsCloseDialog.asSharedFlow()
 
-    fun tryRemoveHistory(targetIdx : Int?) {
+    fun tryRemoveHistory(targetIdx : String?) {
         viewModelScope.launch {
             event.send(TimerRemoveHistoryDialogEvent.RemoveLoading)
 

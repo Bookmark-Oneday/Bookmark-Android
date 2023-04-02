@@ -9,8 +9,8 @@ class ReadingHistoryRepositoryImpl @Inject constructor(
     private val bookDataSource: BookDataSource
 ) : ReadingHistoryRepository {
     // todo EmptySuccess 에서 BaseResponse.Success<List<HistoryItem>> 으로 수정
-    override suspend fun deleteHistoryItem(bookId : String, targetId: Int): BaseResponse<Nothing> {
-        val response = bookDataSource.deleteReadingHistory(bookId, targetId.toString())
+    override suspend fun deleteHistoryItem(bookId : String, targetId: String): BaseResponse<Nothing> {
+        val response = bookDataSource.deleteReadingHistory(bookId, targetId)
 
         return if (response is BaseResponse.Failure) response
         else BaseResponse.EmptySuccess

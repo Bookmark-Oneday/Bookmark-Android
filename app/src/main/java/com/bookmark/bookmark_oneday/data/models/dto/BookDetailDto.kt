@@ -16,7 +16,7 @@ data class BookDetailDto(
     companion object {
         fun toBookDetail(bookDetailDto: BookDetailDto) : BookDetail {
             return BookDetail(
-                bookId = bookDetailDto.book_id.toIntOrNull() ?: 1,
+                bookId = bookDetailDto.book_id,
                 title = bookDetailDto.title,
                 author = bookDetailDto.authors.joinToString(","),
                 translators = bookDetailDto.translators.joinToString(","),

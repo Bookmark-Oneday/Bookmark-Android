@@ -7,7 +7,7 @@ import javax.inject.Inject
 class UseCaseDeleteHistory @Inject constructor(
     private val repository: ReadingHistoryRepository
 ) {
-    suspend operator fun invoke(bookId : String = "1", targetId : Int) : Boolean {
+    suspend operator fun invoke(bookId : String = "1", targetId : String) : Boolean {
         val response = repository.deleteHistoryItem(bookId, targetId)
         return (response is BaseResponse.EmptySuccess)
     }
