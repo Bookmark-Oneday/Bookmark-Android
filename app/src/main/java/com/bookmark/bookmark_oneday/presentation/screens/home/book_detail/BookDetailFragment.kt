@@ -85,6 +85,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
         binding.btnBookdetailInputPage.setOnClickListener {
             BookDetailEditPageDialog(
+                bookId = args.bookId,
                 onSuccess = viewModel::setPageInfo,
                 currentPage = viewModel.state.value.bookDetail?.currentPage,
                 totalPage = viewModel.state.value.bookDetail?.totalPage
@@ -97,7 +98,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
     }
 
     private fun showRemoveConfirmDialog() {
-        BookDetailRemoveDialog(::removeSuccessCallback).show(childFragmentManager, "BookDetailRemoveDialog")
+        BookDetailRemoveDialog(onRemoveSuccess = ::removeSuccessCallback, bookId = args.bookId).show(childFragmentManager, "BookDetailRemoveDialog")
     }
 
     private fun removeSuccessCallback() {

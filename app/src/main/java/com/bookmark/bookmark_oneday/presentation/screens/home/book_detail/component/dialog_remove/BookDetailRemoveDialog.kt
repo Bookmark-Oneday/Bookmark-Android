@@ -17,7 +17,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class BookDetailRemoveDialog(
-    private val onRemoveSuccess : () -> Unit = {}
+    private val onRemoveSuccess : () -> Unit = {},
+    private val bookId : String
 ) : DialogFragment() {
     private lateinit var binding : DialogBookdetailRemoveBinding
     private val viewModel : BookDetailRemoveDialogViewModel by activityViewModels()
@@ -34,6 +35,8 @@ class BookDetailRemoveDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setBookId(bookId)
 
         setButton()
         setObserver()

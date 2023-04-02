@@ -28,6 +28,12 @@ class BookDetailEditPageDialogViewModel @Inject constructor(
         .runningFold(BookDetailEditPageDialogState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, BookDetailEditPageDialogState())
 
+    private var bookId = ""
+
+    fun setBookId(bookId : String) {
+        this.bookId = bookId
+    }
+
     fun initPageInfo(currentPage : Int, totalPage : Int) {
         _currentPage.value = currentPage
         _totalPage.value = totalPage
@@ -48,7 +54,7 @@ class BookDetailEditPageDialogViewModel @Inject constructor(
         viewModelScope.launch {
             events.send(BookDetailEditPageEvent.EditPageLoading)
 
-            val response = useCaseEditPage(currentPage, totalPage)
+            val response = useCaseEditPage(bookId, currentPage, totalPage)
             if (response) {
                 _totalPage.value = totalPage
                 _currentPage.value = currentPage

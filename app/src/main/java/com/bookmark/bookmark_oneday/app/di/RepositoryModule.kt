@@ -36,4 +36,8 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindBookDetailRepository(impl : BookDetailRepositoryImpl) : BookDetailRepository
 
+    @Singleton
+    @Binds
+    abstract fun bindEditPageRepository(impl : EditPageRepositoryImpl) : EditPageRepository
+
 }

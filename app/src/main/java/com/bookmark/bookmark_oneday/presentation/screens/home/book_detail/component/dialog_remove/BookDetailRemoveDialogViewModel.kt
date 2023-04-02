@@ -14,7 +14,6 @@ class BookDetailRemoveDialogViewModel @Inject constructor(
     private val useCaseDeleteBook : UseCaseDeleteBook
 ) : ViewModel() {
 
-
     private val event = Channel<BookDetailRemoveDialogEvent>()
     val state : StateFlow<BookDetailRemoveDialogState> = event.receiveAsFlow()
         .runningFold(BookDetailRemoveDialogState(), ::reduce)
@@ -23,10 +22,16 @@ class BookDetailRemoveDialogViewModel @Inject constructor(
     private val _sideEffectsCloseDialog = MutableSharedFlow<Boolean>()
     val sideEffectsCloseDialog = _sideEffectsCloseDialog.asSharedFlow()
 
+    private var bookId = ""
+
+    fun setBookId(bookId : String) {
+        this.bookId = bookId
+    }
+
     fun tryDeleteBook() {
         viewModelScope.launch {
             event.send(BookDetailRemoveDialogEvent.RemoveLoading)
-            val response = useCaseDeleteBook()
+            val response = useCaseDeleteBook(bookId)
             if (response) {
                 event.send(BookDetailRemoveDialogEvent.RemoveSuccess)
                 _sideEffectsCloseDialog.emit(true)

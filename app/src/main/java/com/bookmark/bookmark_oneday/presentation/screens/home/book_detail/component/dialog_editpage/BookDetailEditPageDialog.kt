@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class BookDetailEditPageDialog(
+    private val bookId : String,
     private val onSuccess : (Int, Int) -> Unit,
     private val currentPage : Int ?= null,
     private val totalPage : Int ?= null
@@ -37,6 +38,7 @@ class BookDetailEditPageDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.setBookId(bookId)
         viewModel.initPageInfo(currentPage ?: 0, totalPage ?: 1)
 
         setButton()
