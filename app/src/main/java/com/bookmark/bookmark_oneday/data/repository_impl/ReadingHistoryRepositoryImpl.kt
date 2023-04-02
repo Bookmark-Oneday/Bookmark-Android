@@ -1,20 +1,25 @@
 package com.bookmark.bookmark_oneday.data.repository_impl
 
+import com.bookmark.bookmark_oneday.data.datasource.book_datasource.BookDataSource
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.repository.ReadingHistoryRepository
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class ReadingHistoryRepositoryImpl @Inject constructor(
-
+    private val bookDataSource: BookDataSource
 ) : ReadingHistoryRepository {
-    override suspend fun deleteHistoryItem(targetId: Int): BaseResponse<Nothing> {
-        delay(1000L)
-        return BaseResponse.EmptySuccess
+    // todo EmptySuccess 에서 BaseResponse.Success<List<HistoryItem>> 으로 수정
+    override suspend fun deleteHistoryItem(bookId : String, targetId: Int): BaseResponse<Nothing> {
+        val response = bookDataSource.deleteReadingHistory(bookId, targetId.toString())
+
+        return if (response is BaseResponse.Failure) response
+        else BaseResponse.EmptySuccess
     }
 
-    override suspend fun deleteHistoryAll(): BaseResponse<Nothing> {
-        delay(1000L)
-        return BaseResponse.EmptySuccess
+    override suspend fun deleteHistoryAll(bookId: String): BaseResponse<Nothing> {
+        val response = bookDataSource.deleteReadingHistory(bookId)
+
+        return if (response is BaseResponse.Failure) response
+        else BaseResponse.EmptySuccess
     }
 }

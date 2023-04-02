@@ -2,6 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.book_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,11 +20,17 @@ class BookDetailViewModel @Inject constructor(
         .runningFold(BookDetailState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, BookDetailState())
 
-    fun tryGetBookDetail(bookId : Int) {
+    fun tryGetBookDetail(bookId : String) {
         viewModelScope.launch {
             events.send(BookDetailEvent.GetBookDetailLoading)
-            val bookDetail = useCaseGetBookDetail.invoke(bookId)
-            events.send(BookDetailEvent.GetBookDetailSuccess(bookDetail))
+            val response = useCaseGetBookDetail.invoke(bookId)
+
+            if (response is BaseResponse.Success) {
+                events.send(BookDetailEvent.GetBookDetailSuccess(response.data))
+            } else {
+                events.send(BookDetailEvent.GetBookDetailFail)
+            }
+
         }
     }
 

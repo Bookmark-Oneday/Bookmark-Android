@@ -27,7 +27,7 @@ class TimerRemoveHistoryDialogViewModel @Inject constructor(
             event.send(TimerRemoveHistoryDialogEvent.RemoveLoading)
 
             val result = if (targetIdx != null) {
-                useCaseDeleteHistory(targetIdx)
+                useCaseDeleteHistory("1", targetIdx)
             } else {
                 useCaseDeleteHistory.deleteAll()
             }
