@@ -26,6 +26,7 @@ import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.BookRecognitionActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.bottomsheet_sort.MyLibrarySortBottomSheet
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.dialog_permission.MyLibraryPermissionDialog
+import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.abs

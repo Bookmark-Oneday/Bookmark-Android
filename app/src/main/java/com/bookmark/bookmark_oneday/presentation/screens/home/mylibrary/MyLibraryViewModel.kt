@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.*
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookList
+import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryEvent
+import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -147,26 +149,4 @@ class MyLibraryViewModel @Inject constructor(
             SortData("읽고 있는 책", "reading"),
         )
     }
-}
-
-data class MyLibraryState(
-    val bookList : List<MyLibraryItem> = listOf(),
-    val footerList : List<MyLibraryItem> = listOf(),
-    val totalLoading : Boolean = true,
-    val showLoadingFail : Boolean = false,
-    val pagingLoading : Boolean = false,
-    val showPagingLoadingFail : Boolean = false,
-    val currentSortData: SortData = MyLibraryViewModel.sortList[0],
-    val totalItemCountString : String = "-",
-    val sortButtonActive : Boolean = false
-)
-
-sealed class MyLibraryEvent {
-    class InitPagingDataLoading(val sortData: SortData) : MyLibraryEvent()
-    object InitPagingDataLoadingFail : MyLibraryEvent()
-    class InitPagingDataLoadingSuccess(val pagingData : PagingData<MyLibraryItem>) : MyLibraryEvent()
-    object NextPagingDataLoading : MyLibraryEvent()
-    object NextPagingDataLoadingFail : MyLibraryEvent()
-    class NextPagingDataLoadingSuccess(val pagingData : PagingData<MyLibraryItem>) : MyLibraryEvent()
-    class ChangeBookItemProperty(val bookId : String) : MyLibraryEvent()
 }
