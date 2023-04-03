@@ -12,7 +12,7 @@ object SharedPreferenceInstance {
         if (!::sharedPreference.isInitialized) {
             sharedPreference = EncryptedSharedPreferences.create(
                 context,
-                context.packageName,
+                "${context.packageName}_secret_shared_prefs",
                 getMasterKey(context),
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
