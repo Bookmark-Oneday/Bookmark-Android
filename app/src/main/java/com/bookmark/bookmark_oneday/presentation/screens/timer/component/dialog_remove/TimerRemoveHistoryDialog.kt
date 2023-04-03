@@ -7,15 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.DialogTimerRemoveHistoryBinding
 import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
+import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_remove.model.TimerRemoveHistoryDialogState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class TimerRemoveHistoryDialog(
     private val onRemoveItemSuccess : (ReadingInfo) -> Unit = {},
     private val targetId : String ?= null,
@@ -23,7 +27,14 @@ class TimerRemoveHistoryDialog(
 ) : DialogFragment() {
 
     private lateinit var binding : DialogTimerRemoveHistoryBinding
-    private val viewModel : TimerRemoveHistoryDialogViewModel by activityViewModels()
+    @Inject
+    lateinit var assistedViewModelFactory : TimerRemoveHistoryDialogViewModel.AssistedViewModelFactory
+    private val viewModel : TimerRemoveHistoryDialogViewModel by viewModels {
+        TimerRemoveHistoryDialogViewModel.provideViewModelFactory(
+            assistedFactory = assistedViewModelFactory,
+            bookId = bookId
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,8 +49,6 @@ class TimerRemoveHistoryDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.setBookId(bookId)
 
         setButton()
         setObserver()

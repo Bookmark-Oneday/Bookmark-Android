@@ -1,6 +1,5 @@
 package com.bookmark.bookmark_oneday.presentation.screens.timer
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -16,19 +15,29 @@ import com.bookmark.bookmark_oneday.presentation.adapter.timer_record.TimerRecor
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.bottomsheet_more.TimerMoreBottomSheetDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_remove.TimerRemoveHistoryDialog
+import com.bookmark.bookmark_oneday.presentation.screens.timer.model.StopWatchState
+import com.bookmark.bookmark_oneday.presentation.screens.timer.model.TimerViewState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBinding::inflate) {
 
-    private val viewModel: TimerViewModel by viewModels()
+    @Inject
+    lateinit var timerViewModelFactory : TimerViewModel.AssistedViewModelFactory
+    private val viewModel: TimerViewModel by viewModels{
+        TimerViewModel.provideViewModelFactory(
+            assistedFactory = timerViewModelFactory,
+            bookId = intent.getStringExtra("book_id") ?: "1"
+        )
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val bookId = intent.getStringExtra("book_id") ?: "1"
-        viewModel.tryGetReadingHistory(bookId)
+        viewModel.tryGetReadingHistory()
 
         setButton()
         setRecyclerView()
@@ -84,12 +93,6 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
                 }
 
                 launch {
-                    viewModel.sideEffects.collectLatest { sideEffect ->
-                        handleSideEffects(sideEffect)
-                    }
-                }
-
-                launch {
                     viewModel.stopWatchState.collectLatest { state ->
                         applyStopWatchState(state)
                     }
@@ -108,18 +111,6 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         binding.labelTimerTotal.visibility = if (state.totalButtonToggled) View.VISIBLE else View.INVISIBLE
         val totalTextColor = if (state.totalButtonToggled) R.color.orange else R.color.default_text
         binding.labelTimerTime.setTextColor(ContextCompat.getColor(this, totalTextColor))
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun handleSideEffects(sideEffect: TimerViewSideEffect) {
-        when (sideEffect) {
-            is TimerViewSideEffect.RemoveReadingHistory -> {
-                (binding.listTimerHistory.adapter as TimerRecordHistoryAdapter).notifyItemRemoved(sideEffect.position)
-            }
-            TimerViewSideEffect.ClearReadingHistory -> {
-                (binding.listTimerHistory.adapter as TimerRecordHistoryAdapter).notifyDataSetChanged()
-            }
-        }
     }
 
     private fun applyStopWatchState(state : StopWatchState) {

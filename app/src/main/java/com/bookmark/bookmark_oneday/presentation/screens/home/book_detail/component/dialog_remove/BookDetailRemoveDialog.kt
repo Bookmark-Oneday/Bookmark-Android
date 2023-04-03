@@ -7,21 +7,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.DialogBookdetailRemoveBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class BookDetailRemoveDialog(
     private val onRemoveSuccess : () -> Unit = {},
     private val bookId : String
 ) : DialogFragment() {
     private lateinit var binding : DialogBookdetailRemoveBinding
-    private val viewModel : BookDetailRemoveDialogViewModel by activityViewModels()
+
+    @Inject
+    lateinit var viewModelFactory : BookDetailRemoveDialogViewModel.ViewModelAssistedFactory
+
+    private val viewModel : BookDetailRemoveDialogViewModel by viewModels {
+        BookDetailRemoveDialogViewModel.provideViewModelFactory(
+            viewModelFactory,
+            bookId
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,8 +47,6 @@ class BookDetailRemoveDialog(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.setBookId(bookId)
 
         setButton()
         setObserver()

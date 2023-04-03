@@ -1,26 +1,30 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.book_detail
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookDetail
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.model.BookDetailEvent
+import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.model.BookDetailState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
-@HiltViewModel
-class BookDetailViewModel @Inject constructor(
-    private val useCaseGetBookDetail : UseCaseGetBookDetail
+class BookDetailViewModel @AssistedInject constructor(
+    private val useCaseGetBookDetail : UseCaseGetBookDetail,
+    @Assisted private val bookId : String
 ): ViewModel() {
+
     private val events = Channel<BookDetailEvent>()
     val state : StateFlow<BookDetailState> = events.receiveAsFlow()
         .runningFold(BookDetailState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, BookDetailState())
 
-    fun tryGetBookDetail(bookId : String) {
+    fun tryGetBookDetail() {
         viewModelScope.launch {
             events.send(BookDetailEvent.GetBookDetailLoading)
             val response = useCaseGetBookDetail.invoke(bookId)
@@ -67,18 +71,21 @@ class BookDetailViewModel @Inject constructor(
             }
         }
     }
-}
 
-data class BookDetailState(
-    val bookDetail: BookDetail? = null,
-    val toolbarButtonActive : Boolean = false,
-    val inputPageButtonActive : Boolean = false,
-    val isShowingLoadingView : Boolean = true,
-)
+    @AssistedFactory
+    interface ViewModelAssistedFactory {
+        fun create(bookId : String) : BookDetailViewModel
+    }
 
-sealed class BookDetailEvent {
-    object GetBookDetailLoading : BookDetailEvent()
-    object GetBookDetailFail : BookDetailEvent()
-    class GetBookDetailSuccess(val bookDetail: BookDetail) : BookDetailEvent()
-    class SetPageInfo(val currentPage : Int, val totalPage : Int) : BookDetailEvent()
+    companion object {
+        fun provideViewModelFactory(
+            assistedFactory: ViewModelAssistedFactory,
+            bookId : String
+        ) : ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return assistedFactory.create(bookId) as T
+            }
+        }
+    }
 }

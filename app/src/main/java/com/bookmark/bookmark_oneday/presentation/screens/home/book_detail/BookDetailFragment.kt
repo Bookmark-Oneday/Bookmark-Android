@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -25,13 +25,26 @@ import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.compon
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_remove.BookDetailRemoveDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.TimerActivity
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(FragmentBookdetailBinding::bind, R.layout.fragment_bookdetail) {
-    private val viewModel: BookDetailViewModel by activityViewModels()
+
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private val args : BookDetailFragmentArgs by navArgs()
+
+    @Inject
+    lateinit var bookDetailViewModelFactory : BookDetailViewModel.ViewModelAssistedFactory
+
+    private val viewModel: BookDetailViewModel by viewModels {
+        BookDetailViewModel.provideViewModelFactory(
+            assistedFactory = bookDetailViewModelFactory,
+            bookId = args.bookId
+        )
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -63,7 +76,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
         setButtons()
         setObserver()
 
-        viewModel.tryGetBookDetail(args.bookId)
+        viewModel.tryGetBookDetail()
     }
 
     private fun setRecyclerView() {

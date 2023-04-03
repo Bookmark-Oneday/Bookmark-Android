@@ -7,14 +7,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.DialogBookdetailBookmarkBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class BookDetailEditPageDialog(
     private val bookId : String,
     private val onSuccess : (Int, Int) -> Unit,
@@ -22,7 +25,12 @@ class BookDetailEditPageDialog(
     private val totalPage : Int ?= null
 ) : DialogFragment() {
     private lateinit var binding : DialogBookdetailBookmarkBinding
-    private val viewModel : BookDetailEditPageDialogViewModel by activityViewModels()
+    @Inject
+    lateinit var viewModelFactory : BookDetailEditPageDialogViewModel.AssistedViewModelFactory
+
+    private val viewModel by viewModels<BookDetailEditPageDialogViewModel>{
+        BookDetailEditPageDialogViewModel.provideFactory(viewModelFactory, bookId)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +46,6 @@ class BookDetailEditPageDialog(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.setBookId(bookId)
         viewModel.initPageInfo(currentPage ?: 0, totalPage ?: 1)
 
         setButton()
