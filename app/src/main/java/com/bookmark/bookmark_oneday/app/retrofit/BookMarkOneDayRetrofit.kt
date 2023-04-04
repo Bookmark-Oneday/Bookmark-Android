@@ -5,12 +5,14 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-object RetrofitInstance {
-    private const val BASE_URL = "https://test"
+class BookMarkOneDayRetrofit @Inject constructor(
+    private val tokenDataSource: TokenDataSource
+) {
     private lateinit var retrofit : Retrofit
 
-    fun init(tokenDataSource: TokenDataSource) {
+    fun init() {
         if (!::retrofit.isInitialized) {
             val okhttpClient = getOkHttpClient(tokenDataSource)
 
@@ -31,7 +33,11 @@ object RetrofitInstance {
             .build()
     }
 
-    fun getInstance() : Retrofit {
+    fun getRetrofit() : Retrofit {
         return retrofit
+    }
+
+    companion object {
+        private const val BASE_URL = "https://test.com"
     }
 }
