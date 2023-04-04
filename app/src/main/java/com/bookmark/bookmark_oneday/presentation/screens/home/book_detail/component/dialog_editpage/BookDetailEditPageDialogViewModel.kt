@@ -1,17 +1,21 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_editpage
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseEditReadingPage
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_editpage.model.BookDetailEditPageDialogState
+import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_editpage.model.BookDetailEditPageEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
-@HiltViewModel
-class BookDetailEditPageDialogViewModel @Inject constructor(
-    private val useCaseEditPage : UseCaseEditReadingPage
+class BookDetailEditPageDialogViewModel @AssistedInject constructor(
+    private val useCaseEditPage : UseCaseEditReadingPage,
+    @Assisted private val bookId : String
 ) : ViewModel() {
 
     private val _currentPage = MutableStateFlow(0)
@@ -27,6 +31,7 @@ class BookDetailEditPageDialogViewModel @Inject constructor(
     val state : StateFlow<BookDetailEditPageDialogState> = events.receiveAsFlow()
         .runningFold(BookDetailEditPageDialogState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, BookDetailEditPageDialogState())
+
 
     fun initPageInfo(currentPage : Int, totalPage : Int) {
         _currentPage.value = currentPage
@@ -48,7 +53,7 @@ class BookDetailEditPageDialogViewModel @Inject constructor(
         viewModelScope.launch {
             events.send(BookDetailEditPageEvent.EditPageLoading)
 
-            val response = useCaseEditPage(currentPage, totalPage)
+            val response = useCaseEditPage(bookId, currentPage, totalPage)
             if (response) {
                 _totalPage.value = totalPage
                 _currentPage.value = currentPage
@@ -87,16 +92,23 @@ class BookDetailEditPageDialogViewModel @Inject constructor(
             }
         }
     }
+
+    @AssistedFactory
+    interface AssistedViewModelFactory {
+        fun create(bookId : String) : BookDetailEditPageDialogViewModel
+    }
+
+    companion object {
+        fun provideFactory(
+            assistedFactory : AssistedViewModelFactory,
+            bookId : String
+        ) : ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return assistedFactory.create(bookId) as T
+            }
+        }
+    }
 }
 
-data class BookDetailEditPageDialogState(
-    val inputButtonActive : Boolean = true,
-    val editTextActive : Boolean = true,
-    val availableClose : Boolean = true
-)
 
-sealed class BookDetailEditPageEvent {
-    object EditPageLoading : BookDetailEditPageEvent()
-    object EditPageFail : BookDetailEditPageEvent()
-    object EditPageSuccess : BookDetailEditPageEvent()
-}

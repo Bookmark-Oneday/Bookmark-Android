@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseRegisterBook
+import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.model.BookConfirmEvent
+import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.model.BookConfirmState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -97,17 +99,4 @@ class BookConfirmationViewModel @Inject constructor(
             }
         }
     }
-}
-
-data class BookConfirmState(
-    val book: RecognizedBook ?= null,
-    val buttonActive : Boolean = true
-)
-
-sealed class BookConfirmEvent {
-    object BookConfirmEventNormal : BookConfirmEvent()
-    object RegisterBookLoading : BookConfirmEvent()
-    object RegisterBookDuplicate : BookConfirmEvent()
-    object RegisterBookFail : BookConfirmEvent()
-    class ChangeBookInfo(val book: RecognizedBook) : BookConfirmEvent()
 }

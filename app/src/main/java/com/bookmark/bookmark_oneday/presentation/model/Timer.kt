@@ -14,7 +14,7 @@ class Timer(
         timerJob = coroutineScope.launch(dispatcher) {
             while(true) {
                 delay(1000L)
-                action(currentTime++)
+                action(++currentTime)
             }
         }
     }

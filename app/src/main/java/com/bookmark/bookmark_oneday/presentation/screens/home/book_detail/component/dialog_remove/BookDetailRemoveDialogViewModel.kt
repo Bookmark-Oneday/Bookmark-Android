@@ -1,19 +1,22 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_remove
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseDeleteBook
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_remove.model.BookDetailRemoveDialogEvent
+import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_remove.model.BookDetailRemoveDialogState
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class BookDetailRemoveDialogViewModel @Inject constructor(
-    private val useCaseDeleteBook : UseCaseDeleteBook
+class BookDetailRemoveDialogViewModel @AssistedInject constructor(
+    private val useCaseDeleteBook : UseCaseDeleteBook,
+    @Assisted private val bookId : String
 ) : ViewModel() {
-
 
     private val event = Channel<BookDetailRemoveDialogEvent>()
     val state : StateFlow<BookDetailRemoveDialogState> = event.receiveAsFlow()
@@ -26,7 +29,7 @@ class BookDetailRemoveDialogViewModel @Inject constructor(
     fun tryDeleteBook() {
         viewModelScope.launch {
             event.send(BookDetailRemoveDialogEvent.RemoveLoading)
-            val response = useCaseDeleteBook()
+            val response = useCaseDeleteBook(bookId)
             if (response) {
                 event.send(BookDetailRemoveDialogEvent.RemoveSuccess)
                 _sideEffectsCloseDialog.emit(true)
@@ -62,16 +65,21 @@ class BookDetailRemoveDialogViewModel @Inject constructor(
             }
         }
     }
-}
 
-data class BookDetailRemoveDialogState(
-    val buttonActive : Boolean = true,
-    val availableClose : Boolean = true,
-    val showLoadingProgressBar : Boolean = false
-)
+    @AssistedFactory
+    interface ViewModelAssistedFactory {
+        fun create(bookId : String) : BookDetailRemoveDialogViewModel
+    }
 
-sealed class BookDetailRemoveDialogEvent {
-    object RemoveLoading : BookDetailRemoveDialogEvent()
-    object RemoveFail : BookDetailRemoveDialogEvent()
-    object RemoveSuccess : BookDetailRemoveDialogEvent()
+    companion object {
+        fun provideViewModelFactory(
+            assistedFactory: ViewModelAssistedFactory,
+            bookId : String
+        ) : ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return assistedFactory.create(bookId) as T
+            }
+        }
+    }
 }

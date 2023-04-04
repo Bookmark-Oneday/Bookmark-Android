@@ -1,3 +1,4 @@
 /build
 /src/androidTest/java/com/bookmark/bookmark_oneday/ExampleInstrumentedTest.kt
 /src/test/java/com/bookmark/bookmark_oneday/ExampleUnitTest.kt
+/src/main/java/com/bookmark/bookmark_oneday/test

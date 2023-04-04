@@ -26,6 +26,7 @@ import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.BookRecognitionActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.bottomsheet_sort.MyLibrarySortBottomSheet
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.dialog_permission.MyLibraryPermissionDialog
+import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -112,7 +113,7 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
         }
     }
 
-    private fun clickBookDetail(bookId : Int) {
+    private fun clickBookDetail(bookId : String) {
         val action = MyLibraryFragmentDirections.actionMyLibraryFragmentToBookDetailFragment(bookId)
         binding.root.findNavController().navigate(action)
     }
@@ -153,7 +154,7 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
         }
 
         // todo 직렬화된 책 객체를 받아 반영하도록 변경 필요
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Int>("book")?.observe(viewLifecycleOwner){
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("book")?.observe(viewLifecycleOwner){
             viewModel.applyItemChange(it)
         }
     }

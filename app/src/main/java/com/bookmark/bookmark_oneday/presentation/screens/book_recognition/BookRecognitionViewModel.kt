@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseSearchBookInfo
+import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.model.BookRecognitionEvent
+import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.model.BookRecognitionState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -60,16 +62,4 @@ class BookRecognitionViewModel @Inject constructor(
             }
         }
     }
-}
-
-data class BookRecognitionState(
-    val buttonActive : Boolean = true,
-    val showLoadingDialog : Boolean = false,
-    val showErrorDialog : Boolean = false
-)
-
-sealed class BookRecognitionEvent {
-    object SearchBookInfoLoading : BookRecognitionEvent()
-    object SearchBookInfoFail : BookRecognitionEvent()
-    object SearchingBarcode : BookRecognitionEvent()
 }

@@ -16,7 +16,7 @@ import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
 import com.bumptech.glide.Glide
 
 class MyLibraryBookAdapter(
-    private val onClickBook : (Int) -> Unit,
+    private val onClickBook : (String) -> Unit,
     private val onClickAdder : () -> Unit,
 ) : RecyclerView.Adapter<ViewHolder>() {
 
@@ -73,7 +73,7 @@ class MyLibraryBookAdapter(
 
 class MyLibraryBookNormalViewHolder(
     private val binding : ItemMylibraryBookNormalBinding,
-    private val onClick : (Int) -> Unit
+    private val onClick : (String) -> Unit
 ) : ViewHolder(binding.root) {
     private lateinit var currentBook : MyLibraryItem.Book
 

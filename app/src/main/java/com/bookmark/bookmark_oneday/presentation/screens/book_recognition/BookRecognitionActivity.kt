@@ -22,12 +22,10 @@ import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.BookConfirmationActivity
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.component.BookRecognitionFailDialog
+import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.model.CameraFeature
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.model.ScreenSizeAdapter
-import com.google.mlkit.vision.barcode.BarcodeScanner
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
-import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
-import com.google.mlkit.vision.common.InputImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -132,29 +130,23 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        val cameraFeature = CameraFeature(cameraProviderFuture)
 
-        cameraProviderFuture.addListener({
-            val cameraProvider : ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(binding.previewBookrecognition.surfaceProvider)
-                }
+        cameraFeature.addListener({
+            val cameraProvider : ProcessCameraProvider = cameraFeature.get()
 
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
-            val options = BarcodeScannerOptions.Builder()
+            val preview = cameraFeature.getPreview(binding.previewBookrecognition.surfaceProvider)
+
+            val analysisPreviewOptions = BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(Barcode.FORMAT_EAN_13)
                 .build()
-            val barcodeScanner = BarcodeScanning.getClient(options)
-            val analysisPreview = ImageAnalysis.Builder()
-                .build()
-
-            analysisPreview.setAnalyzer(
-                Executors.newSingleThreadExecutor()
-            ) { imageProxy ->
-                processImageProxy(barcodeScanner, imageProxy)
-            }
+            val analysisPreview = cameraFeature.getBarcodeAnalysisPreview(
+                options = analysisPreviewOptions,
+                onRecognizeCallback = viewModel::trySearchAndGetBookInfo,
+                checkCanRecognizeBarcode = ::checkCanRecognizeBarcode
+            )
 
             try {
                 cameraProvider.unbindAll()
@@ -166,7 +158,7 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
                 )
 
                 val resolution = analysisPreview.resolutionInfo
-                // 카메라 해상도의 가로 세로가 반대로 적용되어있는 이유는, 핸드폰을 세로로 사용할 때,
+                // 카메라 해상도의 가로 세로가 반대로 적용되어있는 이유는 핸드폰을 세로로 사용할 때
                 // 카메라 해상도 값의 가로 세로가 90도 기울어져 있기 때문입니다.
                 screenSizeAdapter.setCameraResolutionInfo(
                     heightPx = resolution?.resolution?.width ?: 640,
@@ -179,37 +171,12 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
         }, ContextCompat.getMainExecutor(this))
     }
 
-    private fun processImageProxy(
-        barCodeScanner : BarcodeScanner,
-        imageProxy: ImageProxy
-    ) {
-        imageProxy.image?.let { image ->
-            val inputImage = InputImage.fromMediaImage(image, imageProxy.imageInfo.rotationDegrees)
-            barCodeScanner.process(inputImage)
-                .addOnSuccessListener { barcodeList ->
-                    val barcode = barcodeList.getOrNull(0)
-                    tryBarcodeRecognize(barcode)
-                }
-                .addOnFailureListener {
-
-                }
-                .addOnCompleteListener {
-                    imageProxy.image?.close()
-                    imageProxy.close()
-                }
-        }
-    }
-
-    private fun tryBarcodeRecognize(barcode : Barcode?) {
-        val canRecognizeBarcode = (barcode != null && barcode.boundingBox != null && screenSizeAdapter.checkAllInitialize())
-        if (!canRecognizeBarcode) return
-
-        val barcodeInBoundingBox = screenSizeAdapter.checkInBoundingBox(barcode!!.boundingBox!!)
-        if (barcodeInBoundingBox) {
-            barcode.rawValue?.let { value ->
-                viewModel.trySearchAndGetBookInfo(value)
-            }
-        }
+    // 바코드를 인식할 수 있는 상황인지 여부를 리턴합니다.
+    private fun checkCanRecognizeBarcode(barcode: Barcode?): Boolean {
+        return (barcode != null
+                && barcode.boundingBox != null
+                && screenSizeAdapter.checkAllInitialize()
+                && screenSizeAdapter.checkInBoundingBox(barcode.boundingBox!!))
     }
 
     companion object {

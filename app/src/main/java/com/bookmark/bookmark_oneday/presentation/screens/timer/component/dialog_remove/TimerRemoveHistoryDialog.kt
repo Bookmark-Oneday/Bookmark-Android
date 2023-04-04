@@ -7,21 +7,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.DialogTimerRemoveHistoryBinding
+import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
+import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_remove.model.TimerRemoveHistoryDialogState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class TimerRemoveHistoryDialog(
-    private val onRemoveItemSuccess : (Int?) -> Unit = {},
-    private val targetId : Int ?= null
+    private val onRemoveItemSuccess : (ReadingInfo) -> Unit = {},
+    private val targetId : String ?= null,
+    private val bookId : String
 ) : DialogFragment() {
 
     private lateinit var binding : DialogTimerRemoveHistoryBinding
-    private val viewModel : TimerRemoveHistoryDialogViewModel by activityViewModels()
+    @Inject
+    lateinit var assistedViewModelFactory : TimerRemoveHistoryDialogViewModel.AssistedViewModelFactory
+    private val viewModel : TimerRemoveHistoryDialogViewModel by viewModels {
+        TimerRemoveHistoryDialogViewModel.provideViewModelFactory(
+            assistedFactory = assistedViewModelFactory,
+            bookId = bookId
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,9 +73,11 @@ class TimerRemoveHistoryDialog(
                     }
                 }
 
+                // 삭제 후 변경된 readingInfo 데이터를 관찰합니다.
                 launch {
-                    viewModel.sideEffectsCloseDialog.collectLatest { isCloseDialog ->
-                        handleCloseEvent(isCloseDialog)
+                    viewModel.sideEffectsNewReadingInfo.collectLatest { readingInfo ->
+                        onRemoveItemSuccess(readingInfo)
+                        dismiss()
                     }
                 }
 
@@ -83,13 +98,6 @@ class TimerRemoveHistoryDialog(
             binding.pbTimerRemoveHistoryDialogLoading.visibility = View.GONE
             binding.btnTimerRemoveHistoryDialogRemove.text = "삭제"
         }
-    }
-
-    private fun handleCloseEvent(isCloseDialog : Boolean) {
-        if (!isCloseDialog) return
-
-        onRemoveItemSuccess(targetId)
-        dismiss()
     }
 
 }
