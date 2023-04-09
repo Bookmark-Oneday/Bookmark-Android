@@ -11,9 +11,13 @@ data class HistoryDto(
         fun toReadingHistory(historyDto: HistoryDto) : ReadingHistory {
             return ReadingHistory(
                 id = historyDto.id,
-                dateString = historyDto.date,
+                dateString = mapDateString(historyDto.date),
                 time = historyDto.time
             )
+        }
+
+        private fun mapDateString(string : String) : String {
+            return string.split("T")[0].replace('-', '.')
         }
     }
 }
