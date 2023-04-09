@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.presentation.adapter
+package com.bookmark.bookmark_oneday.presentation.adapter.reading_history
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.databinding.ItemReadinghistoryBinding
 import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 import com.bookmark.bookmark_oneday.presentation.util.dpToPx
+import kotlin.math.max
 
 class BookDetailReadingHistoryAdapter : RecyclerView.Adapter<ReadingHistoryViewHolder>() {
     private val readingHistoryList = arrayListOf<ReadingHistory>()
@@ -41,6 +42,6 @@ class ReadingHistoryViewHolder(private val binding : ItemReadinghistoryBinding) 
 
         val maxHeight = dpToPx(binding.root.context, 190)
 
-        binding.viewReadinghistoryBar.layoutParams.height = (maxHeight * (readingHistory.time / maxValue.toFloat())).toInt()
+        binding.viewReadinghistoryBar.layoutParams.height = max((maxHeight * (readingHistory.time / maxValue.toFloat())).toInt(), 1)
     }
 }

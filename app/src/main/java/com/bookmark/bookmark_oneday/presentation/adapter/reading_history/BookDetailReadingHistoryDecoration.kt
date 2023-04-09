@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.presentation.adapter
+package com.bookmark.bookmark_oneday.presentation.adapter.reading_history
 
 import android.content.Context
 import android.graphics.Rect
