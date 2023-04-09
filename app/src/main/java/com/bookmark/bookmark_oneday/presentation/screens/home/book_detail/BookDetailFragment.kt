@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentBookdetailBinding
 import com.bookmark.bookmark_oneday.domain.model.BookDetail
-import com.bookmark.bookmark_oneday.presentation.adapter.BookDetailReadingHistoryAdapter
-import com.bookmark.bookmark_oneday.presentation.adapter.BookDetailReadingHistoryDecoration
+import com.bookmark.bookmark_oneday.presentation.adapter.reading_history.BookDetailReadingHistoryAdapter
+import com.bookmark.bookmark_oneday.presentation.adapter.reading_history.BookDetailReadingHistoryDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_editpage.BookDetailEditPageDialog
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.bottomsheet_more.BookDetailMoreBottomSheetDialog
