@@ -8,7 +8,7 @@ class TokenDataSourceImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : TokenDataSource {
     override var accessToken: String?
-        get() = sharedPreferences.getString(ACCESS_TOKEN, null)
+        get() = sharedPreferences.getString(ACCESS_TOKEN, "74d18bfc-14c5-46d2-a1a8-1eb627918859")
         set(value) { sharedPreferences.edit { putString(ACCESS_TOKEN, value) } }
 
     override var refreshToken: String?
