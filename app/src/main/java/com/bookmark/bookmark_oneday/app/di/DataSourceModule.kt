@@ -1,6 +1,7 @@
 package com.bookmark.bookmark_oneday.app.di
 
 import com.bookmark.bookmark_oneday.data.datasource.book_datasource.BookDataSource
+import com.bookmark.bookmark_oneday.data.datasource.book_datasource.RemoteBookDataSource
 import com.bookmark.bookmark_oneday.data.datasource.book_datasource.TestBookDataSource
 import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.BookInfoDataSource
 import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.KakaoBookInfoDataSource
@@ -26,5 +27,5 @@ abstract class DataSourceModule {
 
     @Singleton
     @Binds
-    abstract fun bindBookDataSource(impl : TestBookDataSource) : BookDataSource
+    abstract fun bindBookDataSource(impl : RemoteBookDataSource) : BookDataSource
 }
