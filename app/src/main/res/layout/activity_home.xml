@@ -27,8 +27,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="0dp"
         android:theme="@style/BottomNavigationView"
         app:menu="@menu/menu_homebottom"
         app:labelVisibilityMode="labeled"/>
+
+    <include
+        android:id="@+id/partial_home_network_error"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        layout="@layout/partial_network_error"
+        app:elevation="1dp"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

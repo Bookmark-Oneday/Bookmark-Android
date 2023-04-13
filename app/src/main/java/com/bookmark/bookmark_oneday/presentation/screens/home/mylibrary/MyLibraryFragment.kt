@@ -24,6 +24,7 @@ import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBook
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.BookRecognitionActivity
+import com.bookmark.bookmark_oneday.presentation.screens.home.HomeActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.bottomsheet_sort.MyLibrarySortBottomSheet
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.dialog_permission.MyLibraryPermissionDialog
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryState
@@ -167,12 +168,22 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
         binding.llbtnMylibrarySort.isEnabled = state.sortButtonActive
 
         sortBottomSheet.setCurrentSort(state.currentSortData)
+
+        if (state.showLoadingFail) { callErrorViewInActivity() }
     }
 
     private fun setBottomSheet() {
         sortBottomSheet = MyLibrarySortBottomSheet(
             MyLibraryViewModel.sortList,
             viewModel::tryGetInitPagingData
+        )
+    }
+
+    // HomeActivity 에 정의된 네트워크 에러 view 를 보여줍니다.
+    private fun callErrorViewInActivity() {
+        (activity as HomeActivity).callErrorView(
+            retry = viewModel::tryGetInitPagingData,
+            title = getString(R.string.label_mylibrary_title)
         )
     }
 
