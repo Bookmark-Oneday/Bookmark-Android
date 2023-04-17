@@ -7,7 +7,6 @@ import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.MyLibrar
 data class MyLibraryState(
     val bookList : List<MyLibraryItem> = listOf(),
     val footerList : List<MyLibraryItem> = listOf(),
-    val totalLoading : Boolean = true,
     val showLoadingFail : Boolean = false,
     val pagingLoading : Boolean = false,
     val showPagingLoadingFail : Boolean = false,

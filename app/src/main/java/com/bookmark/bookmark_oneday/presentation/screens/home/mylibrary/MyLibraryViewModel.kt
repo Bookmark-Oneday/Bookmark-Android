@@ -70,6 +70,7 @@ class MyLibraryViewModel @Inject constructor(
             is MyLibraryEvent.InitPagingDataLoading -> {
                 pagingCheckData.setRefresh()
                 state.copy(
+                    showLoadingFail = false,
                     currentSortData = event.sortData,
                     pagingLoading = true,
                     bookList = listOf(),
@@ -82,7 +83,6 @@ class MyLibraryViewModel @Inject constructor(
                 pagingCheckData.setLoadFail()
                 state.copy(
                     showLoadingFail = true,
-                    totalLoading = false,
                     sortButtonActive = true,
                     footerList = listOf()
                 )
@@ -93,8 +93,8 @@ class MyLibraryViewModel @Inject constructor(
 
                 val bookList = listOf(MyLibraryItem.BookAdder) + event.pagingData.dataList
                 state.copy(
+                    showLoadingFail = false,
                     bookList = bookList,
-                    totalLoading = false,
                     totalItemCountString = event.pagingData.totalItemCount.toString(),
                     sortButtonActive = true,
                     footerList = listOf()
