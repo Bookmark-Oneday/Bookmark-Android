@@ -31,4 +31,8 @@ data class BookDetail(
             String.format("%d:%02d:%02d", totalTime / 3600, (totalTime % 3600) / 60, totalTime % 60)
         }
     }
+
+    fun checkIsReading() : Boolean {
+        return (currentPage > 0)
+    }
 }
