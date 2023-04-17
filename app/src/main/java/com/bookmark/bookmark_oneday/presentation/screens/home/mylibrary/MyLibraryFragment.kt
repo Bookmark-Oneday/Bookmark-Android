@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentMylibraryBinding
+import com.bookmark.bookmark_oneday.domain.model.BookState
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
@@ -154,8 +155,7 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
             }
         }
 
-        // todo 직렬화된 책 객체를 받아 반영하도록 변경 필요
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>("book")?.observe(viewLifecycleOwner){
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BookState>("book_state")?.observe(viewLifecycleOwner){
             viewModel.applyItemChange(it)
         }
     }

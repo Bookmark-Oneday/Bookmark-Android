@@ -59,9 +59,12 @@ class MyLibraryViewModel @Inject constructor(
         }
     }
 
-    fun applyItemChange(bookId : String) {
+    fun applyItemChange(bookState: BookState) {
         viewModelScope.launch {
-            event.send(MyLibraryEvent.ChangeBookItemProperty(bookId))
+            if (!bookState.isRemoved)
+                event.send(MyLibraryEvent.ChangeBookItemProperty(bookState))
+            else
+                event.send(MyLibraryEvent.RemoveBookItem(bookState.bookId))
         }
     }
 
@@ -128,13 +131,19 @@ class MyLibraryViewModel @Inject constructor(
                 )
             }
             is MyLibraryEvent.ChangeBookItemProperty -> {
-                // 테스팅
+                val bookState = event.bookState
                 val bookList = state.bookList.map { item ->
-                    return@map if (item is MyLibraryItem.Book && item.id == event.bookId) {
-                        item.copy(reading = true)
+                    return@map if (item is MyLibraryItem.Book && item.id == bookState.bookId) {
+                        item.copy(reading = bookState.isReading, favorite = bookState.isLike)
                     } else {
                         item
                     }
+                }
+                state.copy(bookList = bookList)
+            }
+            is MyLibraryEvent.RemoveBookItem -> {
+                val bookList = state.bookList.filter {
+                    it !is MyLibraryItem.Book || it.id != event.bookId
                 }
                 state.copy(bookList = bookList)
             }

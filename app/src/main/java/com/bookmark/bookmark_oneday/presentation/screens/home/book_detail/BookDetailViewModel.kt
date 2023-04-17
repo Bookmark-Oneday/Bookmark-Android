@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.model.BookState
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookDetail
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.model.BookDetailEvent
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.model.BookDetailState
@@ -42,6 +43,12 @@ class BookDetailViewModel @AssistedInject constructor(
         viewModelScope.launch {
             events.send(BookDetailEvent.SetPageInfo(currentPage, totalPage))
         }
+    }
+
+    fun getBookState(removeState : Boolean = false) : BookState? {
+        val bookDetail = state.value.bookDetail ?: return null
+
+        return BookState.fromBookDetail(bookDetail, removeState)
     }
 
     private fun reduce(state : BookDetailState, event : BookDetailEvent) : BookDetailState {
