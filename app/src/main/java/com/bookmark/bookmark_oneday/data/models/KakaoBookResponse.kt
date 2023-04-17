@@ -18,7 +18,17 @@ data class KakaoBookDetail(
     val title : String,
     val translators : List<String>,
     val url : String
-)
+) {
+    // 카카오 책 인식 api 에서, isbn 값이 2개가 나오는 경우가 있다.
+    fun getSingleIsbn() : String {
+        return try {
+            val isbnList = isbn.split(" ")
+            isbnList.last()
+        } catch (e : Exception) {
+            isbn
+        }
+    }
+}
 
 data class KakaoBookMeta(
     val is_end : Boolean,

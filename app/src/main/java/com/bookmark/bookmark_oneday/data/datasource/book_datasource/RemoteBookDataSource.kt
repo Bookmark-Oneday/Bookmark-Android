@@ -13,6 +13,7 @@ import com.bookmark.bookmark_oneday.data.models.response_meta.PagingResponseMeta
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.PagingData
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
@@ -96,7 +97,7 @@ class RemoteBookDataSource @Inject constructor(
         total_page: Int
     ): BaseResponse<Nothing> {
         val requestBody = UpdateReadingPageRequestBody(book_id, current_page, total_page)
-        val response = service.updateReadingPage(requestBody)
+        val response = service.updateReadingPage(book_id, requestBody)
 
         return if (response.isSuccessful) {
             BaseResponse.EmptySuccess
@@ -159,13 +160,13 @@ interface BookDataApi {
     suspend fun getBookDetail(@Path("bookId") bookId : String) : Response<DefaultResponseBody<BookDetailDto, DefaultResponseMeta>>
 
     @POST("/v1/library/mylist/book")
-    suspend fun registerBook(@Body params : RegisterBookRequestBody) : Response<Nothing>
+    suspend fun registerBook(@Body params : RegisterBookRequestBody) : Response<ResponseBody>
 
     @DELETE("/v1/library/timer/{bookId}")
-    suspend fun deleteBook(@Path("bookId") bookId : String) : Response<Nothing>
+    suspend fun deleteBook(@Path("bookId") bookId : String) : Response<ResponseBody>
 
     @POST("/v1/library/lastpage/{bookId}")
-    suspend fun updateReadingPage(@Body params : UpdateReadingPageRequestBody) : Response<Nothing>
+    suspend fun updateReadingPage(@Path("bookId") bookId : String, @Body params : UpdateReadingPageRequestBody) : Response<ResponseBody>
 
     @GET("/v1/library/timer/{bookId}")
     suspend fun getBookTimer(@Path("bookId") bookId : String) : Response<DefaultResponseBody<BookTimerDto, DefaultResponseMeta>>

@@ -26,8 +26,8 @@ class SearchBookDetailRepositoryImpl @Inject constructor(
                 authors = data.authors,
                 translators = data.translators,
                 thumbnail_url = data.thumbnail,
-                isbn = data.isbn,
-                total_page = 0,
+                isbn = data.getSingleIsbn(),
+                total_page = 100,
                 meta = response.raw().toString(),
                 publisher = data.publisher,
                 dateTime = mapDateString(data.datetime)
