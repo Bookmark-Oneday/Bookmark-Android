@@ -125,7 +125,7 @@ class RemoteBookDataSource @Inject constructor(
         reading_time: Int
     ): BaseResponse<BookTimerDto> {
         val requestBody = UpdateReadingTimeRequestBody(book_id, reading_time)
-        val response = service.updateReadingTime(requestBody)
+        val response = service.updateReadingTime(book_id, requestBody)
 
         return if (response.isSuccessful && response.body() != null) {
             BaseResponse.Success(response.body()!!.data)
@@ -172,7 +172,7 @@ interface BookDataApi {
     suspend fun getBookTimer(@Path("bookId") bookId : String) : Response<DefaultResponseBody<BookTimerDto, DefaultResponseMeta>>
 
     @POST("/v1/library/timer/{bookId}")
-    suspend fun updateReadingTime(@Body params : UpdateReadingTimeRequestBody) : Response<DefaultResponseBody<BookTimerDto, DefaultResponseMeta>>
+    suspend fun updateReadingTime(@Path("bookId") bookId : String, @Body params : UpdateReadingTimeRequestBody) : Response<DefaultResponseBody<BookTimerDto, DefaultResponseMeta>>
 
     @DELETE("/v1/library/timer/{bookId}")
     suspend fun deleteReadingHistory(@Path("bookId") bookId : String, @Query("historyId") historyId : String?) : Response<DefaultResponseBody<BookTimerDto, DefaultResponseMeta>>

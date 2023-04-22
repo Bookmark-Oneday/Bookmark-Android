@@ -89,12 +89,7 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
                 launch {
                     viewModel.state.collectLatest { state ->
                         applyState(state)
-                    }
-                }
-
-                launch {
-                    viewModel.stopWatchState.collectLatest { state ->
-                        applyStopWatchState(state)
+                        applyStopWatchState(state.stopWatchState)
                     }
                 }
             }
@@ -114,8 +109,8 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
     }
 
     private fun applyStopWatchState(state : StopWatchState) {
-        binding.labelTimerTime.text = state.timeString
-        binding.partialTimerStopwatch.setProgress(state.progress)
+        binding.labelTimerTime.text = state.getTimerText()
+        binding.partialTimerStopwatch.setProgress(state.getProgress())
     }
 
 }

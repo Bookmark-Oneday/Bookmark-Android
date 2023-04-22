@@ -25,4 +25,9 @@ class ReadingHistoryRepositoryImpl @Inject constructor(
         val response = bookDataSource.getBookTimer(book_id = bookId)
         return mapBaseResponse(response, BookTimerDto::toReadingInfo)
     }
+
+    override suspend fun updateHistory(bookId: String, time: Int): BaseResponse<ReadingInfo> {
+        val response = bookDataSource.updateReadingHistory(book_id = bookId, reading_time = time)
+        return mapBaseResponse(response, BookTimerDto::toReadingInfo)
+    }
 }
