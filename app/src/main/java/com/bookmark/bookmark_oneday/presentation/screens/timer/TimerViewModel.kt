@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetReadingHistory
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseSaveReadingHistory
@@ -90,6 +91,11 @@ class TimerViewModel @AssistedInject constructor(
         viewModelScope.launch {
             events.send(TimerViewEvent.ChangeReadingInfo(readingInfo))
         }
+    }
+
+    fun getReadingHistoryIfNotEmpty() : List<ReadingHistory>? {
+        val readingHistoryList = state.value.readingHistoryList.map { it.copy(dateString = it.dateString.split(" ")[0]) }
+        return readingHistoryList.ifEmpty { null }
     }
 
     private fun reduce(state : TimerViewState, event : TimerViewEvent) : TimerViewState {

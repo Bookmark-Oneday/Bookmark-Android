@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.BookState
+import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookDetail
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.model.BookDetailEvent
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.model.BookDetailState
@@ -51,6 +52,13 @@ class BookDetailViewModel @AssistedInject constructor(
         return BookState.fromBookDetail(bookDetail, removeState)
     }
 
+    fun applyChangedReadingHistory(readingHistoryList : List<ReadingHistory>) {
+        viewModelScope.launch {
+            events.send(BookDetailEvent.UpdateReadingHistory(readingHistoryList))
+        }
+    }
+
+    // todo 기록 제거 시 현재 목표 시간 및 오늘 읽은 시간 관련 반영 필요
     private fun reduce(state : BookDetailState, event : BookDetailEvent) : BookDetailState {
         return when(event) {
             BookDetailEvent.GetBookDetailLoading -> {
@@ -74,6 +82,12 @@ class BookDetailViewModel @AssistedInject constructor(
                         currentPage = event.currentPage
                     ),
                     inputPageButtonActive = true
+                )
+            }
+            is BookDetailEvent.UpdateReadingHistory -> {
+                val bookDetail = state.bookDetail?.copy(history = event.readingHistoryList)
+                state.copy(
+                    bookDetail = bookDetail
                 )
             }
         }

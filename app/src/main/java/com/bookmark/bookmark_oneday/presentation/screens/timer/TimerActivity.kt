@@ -2,6 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.timer
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -34,19 +35,37 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         )
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel.tryGetReadingHistory()
 
+        setBackButtonCallback()
         setButton()
         setRecyclerView()
         setObserver()
     }
 
+    private fun setBackButtonCallback() {
+        val onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val readingHistoryArray = viewModel.getReadingHistoryIfNotEmpty()?.let {
+                    ArrayList(it)
+                }
+                intent.putExtra("reading_history", readingHistoryArray)
+                setResult(RESULT_OK, intent)
+
+                finish()
+            }
+        }
+
+        onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
     private fun setButton() {
         binding.btnTimerBack.setOnClickListener {
-            finish()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.btnTimerMore.setOnClickListener {
@@ -57,7 +76,6 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
             setToggleOffClick(viewModel::showTotalTime)
             setToggleOnClick(viewModel::hideTotalTime)
         }
-
 
         binding.btnTimerPlay.apply {
             setToggleOffClick(viewModel::playTimer)
