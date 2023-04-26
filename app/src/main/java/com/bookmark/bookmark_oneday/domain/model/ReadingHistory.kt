@@ -1,3 +1,7 @@
 package com.bookmark.bookmark_oneday.domain.model
 
-data class ReadingHistory(val id : String, val dateString : String, val time : Int)
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class ReadingHistory(val id : String, val dateString : String, val time : Int) : Parcelable

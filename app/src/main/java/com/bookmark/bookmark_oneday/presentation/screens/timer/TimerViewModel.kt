@@ -4,10 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetReadingHistory
+import com.bookmark.bookmark_oneday.domain.usecase.UseCaseSaveReadingHistory
 import com.bookmark.bookmark_oneday.presentation.model.Timer
-import com.bookmark.bookmark_oneday.presentation.screens.timer.model.StopWatchState
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.TimerViewEvent
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.TimerViewState
 import dagger.assisted.Assisted
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 
 class TimerViewModel @AssistedInject constructor(
     private val useCaseGetReadingHistory: UseCaseGetReadingHistory,
+    private val useCaseSaveReadingHistory: UseCaseSaveReadingHistory,
     @Assisted val bookId : String
 ) : ViewModel() {
 
@@ -30,20 +32,9 @@ class TimerViewModel @AssistedInject constructor(
         .runningFold(TimerViewState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, TimerViewState())
 
-    private val _stopWatchState = MutableStateFlow(StopWatchState())
-    val stopWatchState = _stopWatchState.asStateFlow()
-
-    // 현재 total time 은 임시
-    private var dailyReadingTime = 0
-    private var addedTime = 0
-
     private fun setStopWatchTime(time : Int) {
         viewModelScope.launch {
-            val appliedTimeSecond = time + addedTime
-            _stopWatchState.value = StopWatchState(
-                timeString = String.format("%02d:%02d", appliedTimeSecond / 60, appliedTimeSecond % 60),
-                progress = appliedTimeSecond
-            )
+            events.send(TimerViewEvent.UpdateTimer(time))
         }
     }
 
@@ -66,10 +57,22 @@ class TimerViewModel @AssistedInject constructor(
         }
     }
 
+    // 타이머 중지 시 지금까지의 독서 기록을 저장하는 api를 호출합니다.
     fun pauseTimer() {
         viewModelScope.launch {
             events.send(TimerViewEvent.TogglePlayButton(playing = false))
             timer.pause()
+
+            events.send(TimerViewEvent.ApiResponseLoading)
+            val currentTimerTime = state.value.stopWatchState.currentTime
+            val response = useCaseSaveReadingHistory(bookId, currentTimerTime)
+
+            if (response is BaseResponse.Success) {
+                events.send(TimerViewEvent.RecordSuccess(response.data))
+                timer.resetTime()
+            } else {
+                events.send(TimerViewEvent.RecordFail)
+            }
         }
     }
 
@@ -87,8 +90,13 @@ class TimerViewModel @AssistedInject constructor(
 
     fun setReadingInfo(readingInfo: ReadingInfo) {
         viewModelScope.launch {
-            events.send(TimerViewEvent.ChangeReadingInfo(readingInfo))
+            events.send(TimerViewEvent.UpdateReadingInfo(readingInfo))
         }
+    }
+
+    fun getReadingHistoryIfNotEmpty() : List<ReadingHistory>? {
+        val readingHistoryList = state.value.readingHistoryList.map { it.copy(dateString = it.dateString.split(" ")[0]) }
+        return readingHistoryList.ifEmpty { null }
     }
 
     private fun reduce(state : TimerViewState, event : TimerViewEvent) : TimerViewState {
@@ -97,9 +105,14 @@ class TimerViewModel @AssistedInject constructor(
                 state.copy(buttonActive = false)
             }
             is TimerViewEvent.ReadingInfoLoadSuccess -> {
+                val stopWatchState = state.stopWatchState.copy (
+                    dailyGoalTime = event.readingInfo.dailyGoalTime,
+                    dailyTotalTime = event.readingInfo.dailyReadingTime
+                )
                 state.copy(
                     buttonActive = true,
-                    readingHistoryList = event.readingInfo.readingHistoryList
+                    readingHistoryList = event.readingInfo.readingHistoryList,
+                    stopWatchState = stopWatchState
                 )
             }
             TimerViewEvent.ReadingInfoLoadFail -> {
@@ -108,19 +121,38 @@ class TimerViewModel @AssistedInject constructor(
             TimerViewEvent.RecordFail -> {
                 state.copy(buttonActive = true)
             }
-            TimerViewEvent.RecordSuccess -> {
-                state.copy(buttonActive = true)
+            is TimerViewEvent.RecordSuccess -> {
+                val stopWatchState = state.stopWatchState.copy (
+                    dailyGoalTime = event.readingInfo.dailyGoalTime,
+                    dailyTotalTime = event.readingInfo.dailyReadingTime,
+                    currentTime = 0,
+                )
+                state.copy(
+                    buttonActive = true,
+                    stopWatchState = stopWatchState,
+                    readingHistoryList = event.readingInfo.readingHistoryList
+                )
             }
             is TimerViewEvent.ToggleTotalButton -> {
-                addedTime = if (event.total) dailyReadingTime else 0
-                setStopWatchTime(timer.getCurrentTime())
-                state.copy(totalButtonToggled = event.total)
+                val stopWatchState = state.stopWatchState.copy(showTodayTotal = event.total)
+                state.copy(totalButtonToggled = event.total, stopWatchState = stopWatchState)
             }
             is TimerViewEvent.TogglePlayButton -> {
                 state.copy(playButtonToggled = event.playing)
             }
-            is TimerViewEvent.ChangeReadingInfo -> {
-                state.copy(readingHistoryList = event.readingInfo.readingHistoryList)
+            is TimerViewEvent.UpdateReadingInfo -> {
+                val stopWatchState = state.stopWatchState.copy (
+                    dailyGoalTime = event.readingInfo.dailyGoalTime,
+                    dailyTotalTime = event.readingInfo.dailyReadingTime
+                )
+                state.copy(
+                    readingHistoryList = event.readingInfo.readingHistoryList,
+                    stopWatchState = stopWatchState
+                )
+            }
+            is TimerViewEvent.UpdateTimer -> {
+                val stopWatchState = state.stopWatchState.copy(currentTime = event.time)
+                state.copy(stopWatchState = stopWatchState)
             }
         }
     }
@@ -141,6 +173,5 @@ class TimerViewModel @AssistedInject constructor(
             }
         }
     }
-
 
 }

@@ -27,6 +27,7 @@ class BookDetailReadingHistoryAdapter : RecyclerView.Adapter<ReadingHistoryViewH
 
     @SuppressLint("NotifyDataSetChanged")
     fun setReadingHistoryListData(newReadingHistoryList : List<ReadingHistory>) {
+        readingHistoryList.clear()
         readingHistoryList.addAll(newReadingHistoryList)
         maxReadingValue = newReadingHistoryList.maxOfOrNull { it.time } ?: 100
         notifyDataSetChanged()

@@ -1,12 +1,15 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.book_detail
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentBookdetailBinding
 import com.bookmark.bookmark_oneday.domain.model.BookDetail
+import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 import com.bookmark.bookmark_oneday.presentation.adapter.reading_history.BookDetailReadingHistoryAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.reading_history.BookDetailReadingHistoryDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
@@ -35,6 +39,21 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private val args : BookDetailFragmentArgs by navArgs()
+
+    // getParcelableArray 사용시 type cast 에러 발생
+    // 참고 : https://stackoverflow.com/questions/51714927/pass-array-in-intent-using-parcelable
+    private val timerScreenLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        @Suppress("UNCHECKED_CAST")
+        val response = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            result.data?.getParcelableArrayListExtra("reading_history", ReadingHistory::class.java)
+        } else {
+            result.data?.getParcelableArrayListExtra("reading_history")
+        }
+
+        if (result.resultCode == Activity.RESULT_OK && response != null) {
+            viewModel.applyChangedReadingHistory(response.toList())
+        }
+    }
 
     @Inject
     lateinit var bookDetailViewModelFactory : BookDetailViewModel.ViewModelAssistedFactory
@@ -94,10 +113,10 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
         }
 
         binding.btnBookdetailTimer.setOnClickListener {
-            // timer 화면에서 결과 받아야함, bookId 전달 필요
             val intent = Intent(requireActivity(), TimerActivity::class.java)
             intent.putExtra("book_id", args.bookId)
             startActivity(intent)
+            timerScreenLauncher.launch(intent)
         }
 
         binding.btnBookdetailInputPage.setOnClickListener {
