@@ -114,6 +114,8 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
         binding.btnBookdetailTimer.setOnClickListener {
             val intent = Intent(requireActivity(), TimerActivity::class.java)
+            intent.putExtra("book_id", args.bookId)
+            startActivity(intent)
             timerScreenLauncher.launch(intent)
         }
 
