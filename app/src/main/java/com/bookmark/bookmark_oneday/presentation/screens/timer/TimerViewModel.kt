@@ -69,6 +69,7 @@ class TimerViewModel @AssistedInject constructor(
 
             if (response is BaseResponse.Success) {
                 events.send(TimerViewEvent.RecordSuccess(response.data))
+                timer.resetTime()
             } else {
                 events.send(TimerViewEvent.RecordFail)
             }
@@ -89,7 +90,7 @@ class TimerViewModel @AssistedInject constructor(
 
     fun setReadingInfo(readingInfo: ReadingInfo) {
         viewModelScope.launch {
-            events.send(TimerViewEvent.ChangeReadingInfo(readingInfo))
+            events.send(TimerViewEvent.UpdateReadingInfo(readingInfo))
         }
     }
 
@@ -139,8 +140,15 @@ class TimerViewModel @AssistedInject constructor(
             is TimerViewEvent.TogglePlayButton -> {
                 state.copy(playButtonToggled = event.playing)
             }
-            is TimerViewEvent.ChangeReadingInfo -> {
-                state.copy(readingHistoryList = event.readingInfo.readingHistoryList)
+            is TimerViewEvent.UpdateReadingInfo -> {
+                val stopWatchState = state.stopWatchState.copy (
+                    dailyGoalTime = event.readingInfo.dailyGoalTime,
+                    dailyTotalTime = event.readingInfo.dailyReadingTime
+                )
+                state.copy(
+                    readingHistoryList = event.readingInfo.readingHistoryList,
+                    stopWatchState = stopWatchState
+                )
             }
             is TimerViewEvent.UpdateTimer -> {
                 val stopWatchState = state.stopWatchState.copy(currentTime = event.time)
@@ -165,6 +173,5 @@ class TimerViewModel @AssistedInject constructor(
             }
         }
     }
-
 
 }

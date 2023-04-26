@@ -23,5 +23,7 @@ class Timer(
         timerJob?.cancel()
     }
 
-    fun getCurrentTime() = currentTime
+    fun resetTime() {
+        currentTime = 0
+    }
 }

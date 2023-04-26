@@ -10,6 +10,6 @@ sealed class TimerViewEvent {
     class RecordSuccess(val readingInfo: ReadingInfo) : TimerViewEvent()
     class ToggleTotalButton(val total : Boolean) : TimerViewEvent()
     class TogglePlayButton(val playing : Boolean) : TimerViewEvent()
-    class ChangeReadingInfo(val readingInfo : ReadingInfo) : TimerViewEvent()
+    class UpdateReadingInfo(val readingInfo : ReadingInfo) : TimerViewEvent()
     class UpdateTimer(val time : Int) : TimerViewEvent()
 }
