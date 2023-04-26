@@ -56,7 +56,7 @@ class TimerRecordHistoryViewHolder(
 
     fun bind(readingHistory : ReadingHistory) {
         history = readingHistory
-        binding.labelTimerHistoryDate.text = history.dateString
+        binding.labelTimerHistoryDate.text = history.dateString.split(" ")[0]
         binding.labelTimerHistoryTime.text = history.time.toString()
     }
 
