@@ -29,8 +29,15 @@ class BookDetailReadingHistoryAdapter : RecyclerView.Adapter<ReadingHistoryViewH
     fun setReadingHistoryListData(newReadingHistoryList : List<ReadingHistory>) {
         readingHistoryList.clear()
         readingHistoryList.addAll(newReadingHistoryList)
-        maxReadingValue = newReadingHistoryList.maxOfOrNull { it.time } ?: 100
+
+        setMaxReadingValue(newReadingHistoryList)
         notifyDataSetChanged()
+    }
+
+    private fun setMaxReadingValue(readingHistoryList : List<ReadingHistory>, minOfMaxTime : Int = 300) {
+        maxReadingValue = readingHistoryList.maxOfOrNull { it.time }?.let { maxValue ->
+            max(maxValue, minOfMaxTime)
+        } ?: minOfMaxTime
     }
 
 }
