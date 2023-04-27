@@ -40,8 +40,6 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
     private lateinit var onBackPressedCallback: OnBackPressedCallback
     private val args : BookDetailFragmentArgs by navArgs()
 
-    // getParcelableArray 사용시 type cast 에러 발생
-    // 참고 : https://stackoverflow.com/questions/51714927/pass-array-in-intent-using-parcelable
     private val timerScreenLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         @Suppress("UNCHECKED_CAST")
         val response = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -115,7 +113,6 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
         binding.btnBookdetailTimer.setOnClickListener {
             val intent = Intent(requireActivity(), TimerActivity::class.java)
             intent.putExtra("book_id", args.bookId)
-            startActivity(intent)
             timerScreenLauncher.launch(intent)
         }
 
