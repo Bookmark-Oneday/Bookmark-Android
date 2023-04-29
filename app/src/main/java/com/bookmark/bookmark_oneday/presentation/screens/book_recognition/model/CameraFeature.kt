@@ -12,11 +12,12 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
-import java.util.concurrent.Executors
+import java.util.concurrent.ExecutorService
 
 @ExperimentalGetImage
 class CameraFeature(
-    private val cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+    private val cameraProviderFuture: ListenableFuture<ProcessCameraProvider>,
+    private val cameraExecutor : ExecutorService
 ) : ListenableFuture<ProcessCameraProvider> by cameraProviderFuture {
 
     fun getPreview(
@@ -41,7 +42,7 @@ class CameraFeature(
             .build()
 
         analysisPreview.setAnalyzer(
-            Executors.newSingleThreadExecutor()
+            cameraExecutor
         ) { imageProxy ->
             this.processImageProxy(
                 barCodeScanner = barcodeScanner,
