@@ -8,14 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.DialogBookdetailRemoveBinding
+import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -63,39 +59,27 @@ class BookDetailRemoveDialog(
     }
 
     private fun setObserver() {
-        viewLifecycleOwner.lifecycleScope.apply {
-            launch{
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.state.collectLatest { state ->
-                        binding.btnBookdetailRemovedialogRemove.isEnabled = state.buttonActive
-                        binding.btnBookdetailRemovedialogCancel.isEnabled = state.buttonActive
+        viewModel.state.collectLatestInLifecycle(viewLifecycleOwner) { state ->
+            binding.btnBookdetailRemovedialogRemove.isEnabled = state.buttonActive
+            binding.btnBookdetailRemovedialogCancel.isEnabled = state.buttonActive
 
-                        isCancelable = state.availableClose
+            isCancelable = state.availableClose
 
-                        if (state.showLoadingProgressBar) {
-                            binding.pbBookdetailRemovedialogLoading.visibility = View.VISIBLE
-                            binding.btnBookdetailRemovedialogRemove.text = " "
-                        } else {
-                            binding.pbBookdetailRemovedialogLoading.visibility = View.GONE
-                            binding.btnBookdetailRemovedialogRemove.text = getString(R.string.label_bookdetail_remove)
-                        }
-
-
-                    }
-                }
+            if (state.showLoadingProgressBar) {
+                binding.pbBookdetailRemovedialogLoading.visibility = View.VISIBLE
+                binding.btnBookdetailRemovedialogRemove.text = " "
+            } else {
+                binding.pbBookdetailRemovedialogLoading.visibility = View.GONE
+                binding.btnBookdetailRemovedialogRemove.text = getString(R.string.label_bookdetail_remove)
             }
-
-            launch{
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.sideEffectsCloseDialog.collectLatest { isCloseDialog ->
-                        if (isCloseDialog) {
-                            onRemoveSuccess()
-                            dismiss()
-                        }
-                    }
-                }
-            }
-
         }
+
+        viewModel.sideEffectsCloseDialog.collectLatestInLifecycle(viewLifecycleOwner) { isCloseDialog ->
+            if (isCloseDialog) {
+                onRemoveSuccess()
+                dismiss()
+            }
+        }
+
     }
 }

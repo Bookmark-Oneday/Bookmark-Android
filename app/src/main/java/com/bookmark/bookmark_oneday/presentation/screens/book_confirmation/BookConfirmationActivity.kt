@@ -4,17 +4,13 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.ActivityBookConfirmationBinding
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.component.BookConfirmDuplicateDialog
+import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class BookConfirmationActivity : ViewBindingActivity<ActivityBookConfirmationBinding>(ActivityBookConfirmationBinding::inflate) {
@@ -47,43 +43,26 @@ class BookConfirmationActivity : ViewBindingActivity<ActivityBookConfirmationBin
     }
 
     private fun setObserver() {
-        lifecycleScope.apply {
-            launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.state.collectLatest { state ->
-                        state.book?.let { applyBookData(it) }
-                        binding.btnBookconfirmConfirm.isEnabled = state.buttonActive
-                        binding.btnBookconfirmBack.isEnabled = state.buttonActive
+        viewModel.state.collectLatestInLifecycle(this) { state ->
+            state.book?.let { applyBookData(it) }
+            binding.btnBookconfirmConfirm.isEnabled = state.buttonActive
+            binding.btnBookconfirmBack.isEnabled = state.buttonActive
+        }
 
-                    }
-                }
+        viewModel.sideEffectShowDuplicateDialog.collectLatestInLifecycle(this) { show ->
+            if (show) {
+                BookConfirmDuplicateDialog(
+                    onClose = viewModel::cancelRegister,
+                    onClickRegister = viewModel::tryRegisterBook
+                ).show(supportFragmentManager, "BookConfirmDuplicate")
             }
+        }
 
-            launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.sideEffectShowDuplicateDialog.collectLatest { show ->
-                        if (show) {
-                            BookConfirmDuplicateDialog(
-                                onClose = viewModel::cancelRegister,
-                                onClickRegister = viewModel::tryRegisterBook
-                            ).show(supportFragmentManager, "BookConfirmDuplicate")
-                        }
-
-                    }
-                }
+        viewModel.sideEffectSuccessRegister.collectLatestInLifecycle(this) { success ->
+            if (success) {
+                setResult(RESULT_OK)
+                finish()
             }
-
-            launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.sideEffectSuccessRegister.collectLatest { success ->
-                        if (success) {
-                            setResult(RESULT_OK)
-                            finish()
-                        }
-                    }
-                }
-            }
-
         }
     }
 
