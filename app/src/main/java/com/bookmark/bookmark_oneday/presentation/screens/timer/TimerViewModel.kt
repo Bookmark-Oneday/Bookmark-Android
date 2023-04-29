@@ -32,6 +32,9 @@ class TimerViewModel @AssistedInject constructor(
         .runningFold(TimerViewState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, TimerViewState())
 
+    // 기록 추가 및 삭제와 같은 이벤트로 인해, 기록의 변화가 발생했는지 여부를 나타냅니다.
+    private var readingHistoryChanged = false
+
     private fun setStopWatchTime(time : Int) {
         viewModelScope.launch {
             events.send(TimerViewEvent.UpdateTimer(time))
@@ -94,9 +97,9 @@ class TimerViewModel @AssistedInject constructor(
         }
     }
 
-    fun getReadingHistoryIfNotEmpty() : List<ReadingHistory>? {
+    fun getReadingHistoryIfChanged() : List<ReadingHistory>? {
         val readingHistoryList = state.value.readingHistoryList.map { it.copy(dateString = it.dateString.split(" ")[0]) }
-        return readingHistoryList.ifEmpty { null }
+        return if (readingHistoryChanged) readingHistoryList else null
     }
 
     private fun reduce(state : TimerViewState, event : TimerViewEvent) : TimerViewState {
@@ -122,6 +125,7 @@ class TimerViewModel @AssistedInject constructor(
                 state.copy(buttonActive = true)
             }
             is TimerViewEvent.RecordSuccess -> {
+                readingHistoryChanged = true
                 val stopWatchState = state.stopWatchState.copy (
                     dailyGoalTime = event.readingInfo.dailyGoalTime,
                     dailyTotalTime = event.readingInfo.dailyReadingTime,
@@ -141,6 +145,7 @@ class TimerViewModel @AssistedInject constructor(
                 state.copy(playButtonToggled = event.playing)
             }
             is TimerViewEvent.UpdateReadingInfo -> {
+                readingHistoryChanged = true
                 val stopWatchState = state.stopWatchState.copy (
                     dailyGoalTime = event.readingInfo.dailyGoalTime,
                     dailyTotalTime = event.readingInfo.dailyReadingTime
