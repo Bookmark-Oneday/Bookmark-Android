@@ -58,7 +58,6 @@ class BookDetailViewModel @AssistedInject constructor(
         }
     }
 
-    // todo 기록 제거 시 현재 목표 시간 및 오늘 읽은 시간 관련 반영 필요
     private fun reduce(state : BookDetailState, event : BookDetailEvent) : BookDetailState {
         return when(event) {
             BookDetailEvent.GetBookDetailLoading -> {
