@@ -19,7 +19,7 @@ data class BookDetail(
         return if (history.isEmpty()) {
             "-"
         } else {
-            history[0].dateString
+            history[0].dateString.getOnlyDate()
         }
     }
 

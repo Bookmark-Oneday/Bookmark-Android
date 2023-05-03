@@ -12,7 +12,7 @@ class BookDetailRepositoryImpl @Inject constructor(
     private val bookDataSource: BookDataSource
 ) : BookDetailRepository {
     override suspend fun getBookDetail(bookId: String): BaseResponse<BookDetail> {
-        val response = bookDataSource.getBookDetail(book_id = bookId)
+        val response = bookDataSource.getBookDetail(bookId = bookId)
         return mapBaseResponse(response = response, BookDetailDto::toBookDetail)
     }
 }

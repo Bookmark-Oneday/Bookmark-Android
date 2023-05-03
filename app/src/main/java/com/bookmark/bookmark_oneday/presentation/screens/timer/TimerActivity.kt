@@ -35,7 +35,6 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         )
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,11 +49,11 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
     private fun setBackButtonCallback() {
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val readingHistoryArray = viewModel.getReadingHistoryIfNotEmpty()?.let {
-                    ArrayList(it)
+                viewModel.getReadingHistoryIfChanged()?.let {
+                    val readingHistoryArray = ArrayList(it)
+                    intent.putExtra("reading_history", readingHistoryArray)
+                    setResult(RESULT_OK, intent)
                 }
-                intent.putExtra("reading_history", readingHistoryArray)
-                setResult(RESULT_OK, intent)
 
                 finish()
             }

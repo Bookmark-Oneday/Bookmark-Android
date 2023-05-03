@@ -16,10 +16,10 @@ class TestBookDataSource @Inject constructor(
         return BaseResponse.EmptySuccess
     }
 
-    override suspend fun getBookDetail(book_id: String): BaseResponse<BookDetailDto> {
+    override suspend fun getBookDetail(bookId: String): BaseResponse<BookDetailDto> {
         delay(1000L)
         val testBookDetail = BookDetailDto(
-            book_id = book_id,
+            book_id = bookId,
             title = "세상의 마지막 기차역에서",
             authors = listOf("무라세 다케시"),
             translators = listOf("김지연"),
@@ -71,21 +71,21 @@ class TestBookDataSource @Inject constructor(
 
     }
 
-    override suspend fun deleteBook(book_id: String): BaseResponse<Nothing> {
+    override suspend fun deleteBook(bookId: String): BaseResponse<Nothing> {
         delay(1000L)
         return BaseResponse.EmptySuccess
     }
 
     override suspend fun updateReadingPage(
-        book_id: String,
-        current_page: Int,
-        total_page: Int
+        bookId: String,
+        currentPage: Int,
+        totalPage: Int
     ): BaseResponse<Nothing> {
         delay(1000L)
         return BaseResponse.EmptySuccess
     }
 
-    override suspend fun getBookTimer(book_id: String): BaseResponse<BookTimerDto> {
+    override suspend fun getBookTimer(bookId: String): BaseResponse<BookTimerDto> {
         delay(1000L)
         val testBookTimerDto = BookTimerDto(
             user_id = "1",
@@ -110,8 +110,8 @@ class TestBookDataSource @Inject constructor(
     }
 
     override suspend fun updateReadingHistory(
-        book_id: String,
-        reading_time: Int
+        bookId: String,
+        readingTime: Int
     ): BaseResponse<BookTimerDto> {
         delay(1000L)
         val testBookTimerDto = BookTimerDto(
@@ -137,7 +137,7 @@ class TestBookDataSource @Inject constructor(
     }
 
     override suspend fun deleteReadingHistory(
-        book_id: String,
+        bookId: String,
         historyId: String?
     ): BaseResponse<BookTimerDto> {
         delay(1000L)

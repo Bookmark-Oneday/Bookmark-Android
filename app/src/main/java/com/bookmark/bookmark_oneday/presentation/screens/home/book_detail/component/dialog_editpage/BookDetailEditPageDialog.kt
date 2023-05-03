@@ -8,13 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.DialogBookdetailBookmarkBinding
+import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -62,48 +58,29 @@ class BookDetailEditPageDialog(
     }
 
     private fun setObserver() {
-        viewLifecycleOwner.lifecycleScope.apply{
-            launch{
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.state.collectLatest { state ->
-                        binding.inputBookdetailCurrentpage.isEnabled = state.editTextActive
-                        binding.inputBookdetailTotalPage.isEnabled = state.editTextActive
+        viewModel.state.collectLatestInLifecycle(viewLifecycleOwner) { state ->
+            binding.inputBookdetailCurrentpage.isEnabled = state.editTextActive
+            binding.inputBookdetailTotalPage.isEnabled = state.editTextActive
 
-                        binding.btnBookdetailBookmarkdialogInput.isEnabled = state.inputButtonActive
+            binding.btnBookdetailBookmarkdialogInput.isEnabled = state.inputButtonActive
 
-                        isCancelable = state.availableClose
-                    }
-                }
-            }
-
-            launch{
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.sideEffectsCloseDialog.collectLatest { isCloseDialog ->
-                        if (isCloseDialog) {
-                            onSuccess(viewModel.currentPage.value, viewModel.totalPage.value)
-                            dismiss()
-                        }
-
-                    }
-                }
-            }
-
-            launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.currentPage.collectLatest {
-                        binding.inputBookdetailCurrentpage.setText(it.toString())
-                    }
-                }
-            }
-
-            launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.totalPage.collectLatest {
-                        binding.inputBookdetailTotalPage.setText(it.toString())
-                    }
-                }
-            }
-
+            isCancelable = state.availableClose
         }
+
+        viewModel.sideEffectsCloseDialog.collectLatestInLifecycle(viewLifecycleOwner) { isCloseDialog ->
+            if (isCloseDialog) {
+                onSuccess(viewModel.currentPage.value, viewModel.totalPage.value)
+                dismiss()
+            }
+        }
+
+        viewModel.currentPage.collectLatestInLifecycle(viewLifecycleOwner) {
+            binding.inputBookdetailCurrentpage.setText(it.toString())
+        }
+
+        viewModel.totalPage.collectLatestInLifecycle(viewLifecycleOwner) {
+            binding.inputBookdetailTotalPage.setText(it.toString())
+        }
+
     }
 }

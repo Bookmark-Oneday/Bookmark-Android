@@ -4,4 +4,4 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ReadingHistory(val id : String, val dateString : String, val time : Int) : Parcelable
+data class ReadingHistory(val id : String, val dateString : TimeString, val time : Int) : Parcelable

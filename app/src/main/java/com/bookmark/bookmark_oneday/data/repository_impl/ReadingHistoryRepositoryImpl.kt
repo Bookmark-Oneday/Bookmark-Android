@@ -22,12 +22,12 @@ class ReadingHistoryRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getReadingInfo(bookId: String): BaseResponse<ReadingInfo> {
-        val response = bookDataSource.getBookTimer(book_id = bookId)
+        val response = bookDataSource.getBookTimer(bookId = bookId)
         return mapBaseResponse(response, BookTimerDto::toReadingInfo)
     }
 
     override suspend fun updateHistory(bookId: String, time: Int): BaseResponse<ReadingInfo> {
-        val response = bookDataSource.updateReadingHistory(book_id = bookId, reading_time = time)
+        val response = bookDataSource.updateReadingHistory(bookId = bookId, readingTime = time)
         return mapBaseResponse(response, BookTimerDto::toReadingInfo)
     }
 }

@@ -25,7 +25,6 @@ import retrofit2.http.Query
 import javax.inject.Inject
 
 // TODO response 받고 실패인 경우 처리하는 코드 중복 extension 으로 해결하기
-// TODO 변수명 다 카멜케이스로 변경하기
 class RemoteBookDataSource @Inject constructor(
     @RetrofitModule.BookmarkOneDayClient retrofit: Retrofit
 ) : BookDataSource {
@@ -45,8 +44,8 @@ class RemoteBookDataSource @Inject constructor(
         }
     }
 
-    override suspend fun getBookDetail(book_id: String): BaseResponse<BookDetailDto> {
-        val response = service.getBookDetail(bookId = book_id)
+    override suspend fun getBookDetail(bookId: String): BaseResponse<BookDetailDto> {
+        val response = service.getBookDetail(bookId = bookId)
 
         return if (response.isSuccessful && response.body() != null) {
             BaseResponse.Success(response.body()!!.data)
@@ -79,8 +78,8 @@ class RemoteBookDataSource @Inject constructor(
         }
     }
 
-    override suspend fun deleteBook(book_id: String): BaseResponse<Nothing> {
-        val response = service.deleteBook(book_id)
+    override suspend fun deleteBook(bookId: String): BaseResponse<Nothing> {
+        val response = service.deleteBook(bookId)
 
         return if (response.isSuccessful) {
             BaseResponse.EmptySuccess
@@ -92,12 +91,12 @@ class RemoteBookDataSource @Inject constructor(
     }
 
     override suspend fun updateReadingPage(
-        book_id: String,
-        current_page: Int,
-        total_page: Int
+        bookId: String,
+        currentPage: Int,
+        totalPage: Int
     ): BaseResponse<Nothing> {
-        val requestBody = UpdateReadingPageRequestBody(book_id, current_page, total_page)
-        val response = service.updateReadingPage(book_id, requestBody)
+        val requestBody = UpdateReadingPageRequestBody(bookId, currentPage, totalPage)
+        val response = service.updateReadingPage(bookId, requestBody)
 
         return if (response.isSuccessful) {
             BaseResponse.EmptySuccess
@@ -108,8 +107,8 @@ class RemoteBookDataSource @Inject constructor(
         }
     }
 
-    override suspend fun getBookTimer(book_id: String): BaseResponse<BookTimerDto> {
-        val response = service.getBookTimer(book_id)
+    override suspend fun getBookTimer(bookId: String): BaseResponse<BookTimerDto> {
+        val response = service.getBookTimer(bookId)
 
         return if (response.isSuccessful && response.body() != null) {
             BaseResponse.Success(response.body()!!.data)
@@ -121,11 +120,11 @@ class RemoteBookDataSource @Inject constructor(
     }
 
     override suspend fun updateReadingHistory(
-        book_id: String,
-        reading_time: Int
+        bookId: String,
+        readingTime: Int
     ): BaseResponse<BookTimerDto> {
-        val requestBody = UpdateReadingTimeRequestBody(book_id, reading_time)
-        val response = service.updateReadingTime(book_id, requestBody)
+        val requestBody = UpdateReadingTimeRequestBody(bookId, readingTime)
+        val response = service.updateReadingTime(bookId, requestBody)
 
         return if (response.isSuccessful && response.body() != null) {
             BaseResponse.Success(response.body()!!.data)
@@ -137,10 +136,10 @@ class RemoteBookDataSource @Inject constructor(
     }
 
     override suspend fun deleteReadingHistory(
-        book_id: String,
+        bookId: String,
         historyId: String?
     ): BaseResponse<BookTimerDto> {
-        val response = service.deleteReadingHistory(bookId = book_id, historyId = historyId)
+        val response = service.deleteReadingHistory(bookId = bookId, historyId = historyId)
 
         return if (response.isSuccessful && response.body() != null) {
             BaseResponse.Success(response.body()!!.data)

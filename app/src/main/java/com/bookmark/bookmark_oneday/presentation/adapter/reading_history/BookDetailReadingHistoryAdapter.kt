@@ -45,7 +45,7 @@ class BookDetailReadingHistoryAdapter : RecyclerView.Adapter<ReadingHistoryViewH
 class ReadingHistoryViewHolder(private val binding : ItemReadinghistoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(readingHistory: ReadingHistory, maxValue : Int) {
-        binding.labelReadinghistoryDate.text = readingHistory.dateString.split(".").slice(1..2).joinToString("/")
+        binding.labelReadinghistoryDate.text = readingHistory.dateString.getOnlyMonthAndDay()
         binding.labelReadinghistoryTime.text = (readingHistory.time / 60).toString()
 
         val maxHeight = dpToPx(binding.root.context, 190)

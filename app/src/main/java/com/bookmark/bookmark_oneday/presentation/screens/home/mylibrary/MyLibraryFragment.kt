@@ -11,9 +11,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -29,8 +26,7 @@ import com.bookmark.bookmark_oneday.presentation.screens.home.HomeActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.bottomsheet_sort.MyLibrarySortBottomSheet
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.dialog_permission.MyLibraryPermissionDialog
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryState
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import kotlin.math.abs
 
 class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
@@ -145,14 +141,8 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
     }
 
     private fun setObserver() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.state.collectLatest { state ->
-                        applyState(state)
-                    }
-                }
-            }
+        viewModel.state.collectLatestInLifecycle(owner = this) { state ->
+            applyState(state)
         }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BookState>("book_state")?.observe(viewLifecycleOwner){

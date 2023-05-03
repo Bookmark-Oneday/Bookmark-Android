@@ -14,9 +14,6 @@ import androidx.activity.viewModels
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.bookmark.bookmark_oneday.databinding.ActivityBookRecognitionBinding
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
@@ -24,11 +21,10 @@ import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.BookC
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.component.BookRecognitionFailDialog
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.model.CameraFeature
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.model.ScreenSizeAdapter
+import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.common.Barcode
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -36,7 +32,7 @@ import java.util.concurrent.Executors
 @AndroidEntryPoint
 class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBinding>(ActivityBookRecognitionBinding::inflate) {
 
-    private lateinit var cameraExecutor : ExecutorService
+    private val cameraExecutor : ExecutorService by lazy { Executors.newSingleThreadExecutor() }
     private val viewModel: BookRecognitionViewModel by viewModels()
     private val screenSizeAdapter = ScreenSizeAdapter()
 
@@ -61,7 +57,6 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
         setButton()
         setObserver()
         setOnGlobalLayoutListener()
-        cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
     override fun onDestroy() {
@@ -78,26 +73,14 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
     }
 
     private fun setObserver() {
-        lifecycleScope.apply{
-            launch{
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.state.collectLatest { state ->
-                        binding.btnBookrecognitionBack.isEnabled = state.buttonActive
-                        binding.pbBookrecognitionLoading.visibility = if (state.showLoadingDialog) View.VISIBLE else View.GONE
-                        if (state.showErrorDialog) showFailDialog()
+        viewModel.state.collectLatestInLifecycle(this) { state ->
+            binding.btnBookrecognitionBack.isEnabled = state.buttonActive
+            binding.pbBookrecognitionLoading.visibility = if (state.showLoadingDialog) View.VISIBLE else View.GONE
+            if (state.showErrorDialog) showFailDialog()
+        }
 
-                    }
-                }
-            }
-
-            launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.sideEffectsSearchBookSuccess.collectLatest {
-                        callBookConfirmScreen(it)
-                    }
-                }
-            }
-
+        viewModel.sideEffectsSearchBookSuccess.collectLatestInLifecycle(this) { recognizedBook ->
+            callBookConfirmScreen(recognizedBook)
         }
     }
 
@@ -130,7 +113,7 @@ class BookRecognitionActivity : ViewBindingActivity<ActivityBookRecognitionBindi
 
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-        val cameraFeature = CameraFeature(cameraProviderFuture)
+        val cameraFeature = CameraFeature(cameraProviderFuture, cameraExecutor)
 
         cameraFeature.addListener({
             val cameraProvider : ProcessCameraProvider = cameraFeature.get()

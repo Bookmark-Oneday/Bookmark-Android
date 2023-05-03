@@ -11,9 +11,6 @@ import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,10 +25,9 @@ import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.compon
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.bottomsheet_more.BookDetailMoreBottomSheetDialog
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_remove.BookDetailRemoveDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.TimerActivity
+import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -145,20 +141,16 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
     }
 
     private fun setObserver() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.state.collectLatest { bookDetailState ->
-                    bookDetailState.bookDetail?.let { bookDetail -> renderBookDetail(bookDetail) }
+        viewModel.state.collectLatestInLifecycle(owner = viewLifecycleOwner) { bookDetailState ->
+            bookDetailState.bookDetail?.let { bookDetail -> renderBookDetail(bookDetail) }
 
-                    binding.btnBookdetailInputPage.isEnabled = bookDetailState.inputPageButtonActive
+            binding.btnBookdetailInputPage.isEnabled = bookDetailState.inputPageButtonActive
 
-                    binding.btnBookdetailMore.isEnabled = bookDetailState.toolbarButtonActive
-                    binding.btnBookdetailLike.isEnabled = bookDetailState.toolbarButtonActive
-                    binding.btnBookdetailTimer.isEnabled = bookDetailState.toolbarButtonActive
+            binding.btnBookdetailMore.isEnabled = bookDetailState.toolbarButtonActive
+            binding.btnBookdetailLike.isEnabled = bookDetailState.toolbarButtonActive
+            binding.btnBookdetailTimer.isEnabled = bookDetailState.toolbarButtonActive
 
-                    showLoadingView(bookDetailState.isShowingLoadingView)
-                }
-            }
+            showLoadingView(bookDetailState.isShowingLoadingView)
         }
     }
 

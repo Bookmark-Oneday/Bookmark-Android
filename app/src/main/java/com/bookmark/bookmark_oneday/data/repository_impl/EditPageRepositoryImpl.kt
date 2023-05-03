@@ -9,6 +9,6 @@ class EditPageRepositoryImpl @Inject constructor(
     private val bookDataSource: BookDataSource
 ) : EditPageRepository {
     override suspend fun updateReadingPage(bookId: String, currentPage: Int, totalPage: Int) : BaseResponse<Nothing> {
-        return bookDataSource.updateReadingPage(book_id = bookId, current_page = currentPage, total_page = totalPage)
+        return bookDataSource.updateReadingPage(bookId = bookId, currentPage = currentPage, totalPage = totalPage)
     }
 }
