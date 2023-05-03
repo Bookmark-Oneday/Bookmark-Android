@@ -1,6 +1,7 @@
 package com.bookmark.bookmark_oneday.data.models.dto
 
 import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
+import com.bookmark.bookmark_oneday.domain.model.toTimeString
 
 data class HistoryDto(
     val id : String,
@@ -11,13 +12,11 @@ data class HistoryDto(
         fun toReadingHistory(historyDto: HistoryDto) : ReadingHistory {
             return ReadingHistory(
                 id = historyDto.id,
-                dateString = mapDateString(historyDto.date),
+                dateString = historyDto.date.toTimeString(),
                 time = historyDto.time
             )
         }
 
-        private fun mapDateString(string : String) : String {
-            return string.split("T")[0].replace('-', '.')
-        }
     }
+
 }

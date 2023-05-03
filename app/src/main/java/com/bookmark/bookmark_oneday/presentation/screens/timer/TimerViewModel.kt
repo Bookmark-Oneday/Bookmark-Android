@@ -98,7 +98,7 @@ class TimerViewModel @AssistedInject constructor(
     }
 
     fun getReadingHistoryIfChanged() : List<ReadingHistory>? {
-        val readingHistoryList = state.value.readingHistoryList.map { it.copy(dateString = it.dateString.split(" ")[0]) }
+        val readingHistoryList = state.value.readingHistoryList
         return if (readingHistoryChanged) readingHistoryList else null
     }
 
