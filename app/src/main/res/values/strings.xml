@@ -76,4 +76,20 @@
     <string name="label_intro_today_one_line">한 줄의 독서, 오늘 한줄</string>
     <string name="caption_intro_today_one_line">책을 읽고 기억에 남았던 문장을 공유해보세요.</string>
 
+    <string name="label_login_google">Google계정으로 시작</string>
+    <string name="label_signup_next">다음</string>
+    <string name="label_signup_set_later"><u>나중에 설정하기</u></string>
+    <string name="label_signup_complete">가입 완료</string>
+    <string name="label_signup_text_count_format">(%d/%d)</string>
+    <string name="label_signup_set_nickname_title">사용할 <font color="#F99030">닉네임</font>을\n설정해 주세요.</string>
+    <string name="label_signup_set_nickname_place_holder">닉네임 입력</string>
+    <string name="label_signup_set_profile_title">사용할 <font color="#F99030">프로필</font>을\n설정해 주세요.</string>
+    <string name="label_signup_set_profile_place_holder">소개말 입력</string>
+    <string name="label_signup_set_reading_time_title"><font color="#F99030">목표 독서시간</font>을\n설정하고 실천해보세요.</string>
+    <string name="label_signup_set_reading_time_format">%d시간 %d분</string>
+    <string name="label_signup_set_reading_time_format_exclude_hour">%d분</string>
+    <string name="label_signup_set_reading_time_format_exclude_minute">%d시간</string>
+    <string name="html_caption_signup_set_reading_time_more"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>많아요]]></string>
+    <string name="html_caption_signup_set_reading_time_less"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>적어요]]></string>
+    <string name="label_signup_complete_title">축하합니다!\n책갈피 회원이 되었어요.</string>
 </resources>

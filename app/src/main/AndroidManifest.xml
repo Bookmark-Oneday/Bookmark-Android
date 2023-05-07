@@ -29,6 +29,7 @@
         <activity android:name=".presentation.screens.timer.TimerActivity"/>
         <activity android:name=".presentation.screens.book_confirmation.BookConfirmationActivity"/>
         <activity android:name=".presentation.screens.intro.IntroActivity"/>
+        <activity android:name=".presentation.screens.signup.SignupBaseActivity"/>
     </application>
 
 </manifest>

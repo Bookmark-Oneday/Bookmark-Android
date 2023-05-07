@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/signup_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.signup.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_signupNicknameFragment"
+            app:destination="@id/signupNicknameFragment" >
+            <argument
+                android:name="prevProgress"
+                app:argType="integer"
+                android:defaultValue="0"/>
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/signupNicknameFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.signup.signup_nickname.SignupNicknameFragment"
+        android:label="SignupNicknameFragment" >
+        <action
+            android:id="@+id/action_signupNicknameFragment_to_signupProfileFragment"
+            app:destination="@id/signupProfileFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/signupProfileFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.signup.signup_profile.SignupProfileFragment"
+        android:label="SignupProfileFragment" >
+        <action
+            android:id="@+id/action_signupProfileFragment_to_signupReadingTimeFragment"
+            app:destination="@id/signupReadingTimeFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/signupReadingTimeFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.signup.signup_reading_time.SignupReadingTimeFragment"
+        android:label="SignupReadingTimeFragment" >
+        <action
+            android:id="@+id/action_signupReadingTimeFragment_to_signupCompleteFragment"
+            app:destination="@id/signupCompleteFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/signupCompleteFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.signup.signup_complete.SignupCompleteFragment"
+        android:label="SignupCompleteFragment" >
+    </fragment>
+</navigation>

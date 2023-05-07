@@ -1,11 +1,13 @@
 package com.bookmark.bookmark_oneday.presentation.screens.intro
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.bookmark.bookmark_oneday.databinding.ActivityIntroBinding
 import com.bookmark.bookmark_oneday.presentation.adapter.intro.IntroContentAdapter
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
+import com.bookmark.bookmark_oneday.presentation.screens.signup.SignupBaseActivity
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,8 +25,8 @@ class IntroActivity : ViewBindingActivity<ActivityIntroBinding>(ActivityIntroBin
 
     private fun setButton() {
         binding.btnIntroStart.setOnClickListener {
-            // todo 로그인 화면 구현 후 화면이동 로직 추가
             viewModel.setExecuted()
+            startActivity(Intent(this, SignupBaseActivity::class.java))
             finish()
         }
     }
