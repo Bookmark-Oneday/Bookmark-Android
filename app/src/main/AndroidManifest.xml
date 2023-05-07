@@ -28,6 +28,7 @@
         <activity android:name=".presentation.screens.book_recognition.BookRecognitionActivity"/>
         <activity android:name=".presentation.screens.timer.TimerActivity"/>
         <activity android:name=".presentation.screens.book_confirmation.BookConfirmationActivity"/>
+        <activity android:name=".presentation.screens.intro.IntroActivity"/>
     </application>
 
 </manifest>

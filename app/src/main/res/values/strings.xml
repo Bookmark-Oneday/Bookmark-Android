@@ -66,4 +66,14 @@
     <string name="caption_error_title">인터넷 연결이 불안정하여\n데이터를 불러올 수 없습니다.</string>
     <string name="label_error_retry">재시도</string>
 
+    <string name="label_intro_start">시작하기</string>
+    <string name="label_intro_mylibrary">나의 서재</string>
+    <string name="caption_intro_mylibrary">실제 나의 책장을 한 페이지에\n책을 정리하고 기록하세요.</string>
+    <string name="label_intro_reading_graph">나의 독서 그래프</string>
+    <string name="caption_intro_reading_graph">날짜별로 나의 독서량을 확인하고 기록하세요.</string>
+    <string name="label_intro_book_group">책모임을 통한 소통</string>
+    <string name="caption_intro_book_group">비슷한 취향의 사람들과 소통해보세요.</string>
+    <string name="label_intro_today_one_line">한 줄의 독서, 오늘 한줄</string>
+    <string name="caption_intro_today_one_line">책을 읽고 기억에 남았던 문장을 공유해보세요.</string>
+
 </resources>
