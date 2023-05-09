@@ -2,6 +2,8 @@ package com.bookmark.bookmark_oneday.presentation.screens.signup.signup_profile
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
@@ -14,6 +16,9 @@ import com.bumptech.glide.Glide
 
 class SignupProfileFragment : ViewBindingFragment<FragmentSignupProfileBinding>(FragmentSignupProfileBinding::bind, R.layout.fragment_signup_profile) {
     private val viewModel : SignupViewModel by activityViewModels()
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        uri?.let { viewModel.setProfileImageUrl(uri.toString()) }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -32,12 +37,16 @@ class SignupProfileFragment : ViewBindingFragment<FragmentSignupProfileBinding>(
         }
 
         binding.btnSignupProfileNext.setOnClickListener {
-            // viewModel 에 데이터 저장 후 이동
             moveToNext()
         }
 
         binding.btnSignupProfileLater.setOnClickListener {
+            viewModel.clearCommentAndProfile()
             moveToNext()
+        }
+
+        binding.cvSignupProfile.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
 

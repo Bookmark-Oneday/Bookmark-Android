@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_all_default_profile"
+            android:scaleType="centerCrop"
             />
 
     </com.google.android.material.card.MaterialCardView>

@@ -40,4 +40,9 @@ class SignupViewModel : ViewModel() {
     fun setProfileImageUrl(url : String) {
         _profileImageUrl.value = url
     }
+
+    fun clearCommentAndProfile() {
+        _profileImageUrl.value = null
+        _comment.value = ""
+    }
 }
