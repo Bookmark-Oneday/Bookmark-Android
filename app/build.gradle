@@ -24,6 +24,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "KAKAO_KEY", properties['kakao_api_key']
+        buildConfigField "String", "GOOGLE_CLIENT_ID", properties['google_client_id']
+        buildConfigField "String", "GOOGLE_CLIENT_SECRENT", properties['google_client_secret']
     }
 
     buildTypes {
@@ -93,6 +95,9 @@ dependencies {
 
     // leakCanary
     // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+
+    // google login
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
 }
 
 kapt {
