@@ -44,4 +44,7 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindApplicationRepository(impl : ApplicationRepositoryImpl) : ApplicationRepository
 
+    @Singleton
+    @Binds
+    abstract fun bindGoogleLoginRepository(impl : GoogleLoginRepositoryImpl) : GoogleLoginRepository
 }

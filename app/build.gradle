@@ -26,6 +26,7 @@ android {
         buildConfigField "String", "KAKAO_KEY", properties['kakao_api_key']
         buildConfigField "String", "GOOGLE_CLIENT_ID", properties['google_client_id']
         buildConfigField "String", "GOOGLE_CLIENT_SECRENT", properties['google_client_secret']
+        buildConfigField "String", "GOOGLE_REDIRECT_URI", properties['google_redirect_uri']
     }
 
     buildTypes {

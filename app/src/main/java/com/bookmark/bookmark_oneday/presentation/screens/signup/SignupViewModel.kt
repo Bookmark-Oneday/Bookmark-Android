@@ -2,6 +2,9 @@ package com.bookmark.bookmark_oneday.presentation.screens.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.model.TokenInfo
+import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetGoogleAccessToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-
+    private val useCaseGetGoogleAccessToken: UseCaseGetGoogleAccessToken
 ) : ViewModel() {
     private var prevProgress = 0
 
@@ -35,27 +38,22 @@ class SignupViewModel @Inject constructor(
     private val _loginSuccess = MutableSharedFlow<Boolean>()
     val loginSuccess = _loginSuccess.asSharedFlow()
 
-    fun setPrevProgress(progress : Int)  {
-        prevProgress = progress
-    }
+    private val _getGoogleAccessTokenSuccess = MutableSharedFlow<Boolean>()
+    val getGoogleAccessTokenSuccess = _getGoogleAccessTokenSuccess.asSharedFlow()
+
+    private var tempTokenInfo : TokenInfo ?= null
+
+    fun setPrevProgress(progress : Int)  { prevProgress = progress }
 
     fun getPrevProgress() = prevProgress
 
-    fun setGoalReadingTimeMinute(minute : Int) {
-        _goalReadingTimeMinute.value = minute
-    }
+    fun setGoalReadingTimeMinute(minute : Int) { _goalReadingTimeMinute.value = minute }
 
-    fun setNickname(nickname : String) {
-        _nickname.value = nickname
-    }
+    fun setNickname(nickname : String) { _nickname.value = nickname }
 
-    fun setComment(comment : String) {
-        _comment.value = comment
-    }
+    fun setComment(comment : String) { _comment.value = comment }
 
-    fun setProfileImageUrl(url : String) {
-        _profileImageUrl.value = url
-    }
+    fun setProfileImageUrl(url : String) { _profileImageUrl.value = url }
 
     fun clearCommentAndProfile() {
         _profileImageUrl.value = null
@@ -66,9 +64,24 @@ class SignupViewModel @Inject constructor(
         viewModelScope.launch {
             _showLoadingDialog.value = true
 
-            // todo api 적용 후 변경 필요
+            // todo 회원가입 api 적용 후 변경 필요
             delay(1000L)
             _loginSuccess.emit(true)
+            _showLoadingDialog.value = false
+        }
+    }
+
+    fun tryGetGoogleAccessToken(authCode : String) {
+        viewModelScope.launch {
+            _showLoadingDialog.value = true
+
+            val response = useCaseGetGoogleAccessToken(authCode)
+            if (response is BaseResponse.Success) {
+                tempTokenInfo = response.data
+            }
+
+            _getGoogleAccessTokenSuccess.emit(response is BaseResponse.Success)
+            _showLoadingDialog.value = false
         }
     }
 }
