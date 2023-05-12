@@ -2,6 +2,7 @@ package com.bookmark.bookmark_oneday.app.di
 
 import com.bookmark.bookmark_oneday.app.retrofit.KakaoRetrofitInstance
 import com.bookmark.bookmark_oneday.app.retrofit.BookMarkOneDayRetrofit
+import com.bookmark.bookmark_oneday.app.retrofit.GoogleLoginRetrofitInstance
 import com.bookmark.bookmark_oneday.data.datasource.token_datasource.TokenDataSource
 import dagger.Module
 import dagger.Provides
@@ -23,6 +24,11 @@ object RetrofitModule {
     @Retention(AnnotationRetention.BINARY)
     annotation class BookmarkOneDayClient
 
+    @Qualifier
+    @Retention(AnnotationRetention.BINARY)
+    annotation class GoogleClient
+
+
     @KakaoHttpClient
     @Singleton
     @Provides
@@ -38,5 +44,13 @@ object RetrofitModule {
         val retrofit = BookMarkOneDayRetrofit(tokenDataSource)
         retrofit.init()
         return retrofit.getRetrofit()
+    }
+
+    @GoogleClient
+    @Singleton
+    @Provides
+    fun provideGoogleRetrofit() : Retrofit {
+        GoogleLoginRetrofitInstance.init()
+        return GoogleLoginRetrofitInstance.getInstance()
     }
 }

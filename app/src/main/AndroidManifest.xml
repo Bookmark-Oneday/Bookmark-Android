@@ -16,18 +16,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BookmarkOneday"
         tools:targetApi="31">
-        <activity
-            android:name=".presentation.screens.home.HomeActivity"
-            android:exported="true">
+
+        <activity android:name=".presentation.screens.intro.IntroActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.screens.home.HomeActivity" android:exported="true"/>
         <activity android:name=".presentation.screens.book_recognition.BookRecognitionActivity"/>
         <activity android:name=".presentation.screens.timer.TimerActivity"/>
         <activity android:name=".presentation.screens.book_confirmation.BookConfirmationActivity"/>
+        <activity android:name=".presentation.screens.signup.SignupBaseActivity"/>
     </application>
 
 </manifest>

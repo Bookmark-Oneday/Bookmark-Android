@@ -40,4 +40,11 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindEditPageRepository(impl : EditPageRepositoryImpl) : EditPageRepository
 
+    @Singleton
+    @Binds
+    abstract fun bindApplicationRepository(impl : ApplicationRepositoryImpl) : ApplicationRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindGoogleLoginRepository(impl : GoogleLoginRepositoryImpl) : GoogleLoginRepository
 }

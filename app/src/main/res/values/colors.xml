@@ -23,4 +23,5 @@
     <color name="default_text">#FF000000</color>
     <color name="default_icon_tint">#FF000000</color>
     <color name="default_separator">#E3E3E3</color>
+    <color name="default_caption_text">#BDBDBD</color>
 </resources>

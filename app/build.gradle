@@ -24,6 +24,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "KAKAO_KEY", properties['kakao_api_key']
+        buildConfigField "String", "GOOGLE_CLIENT_ID", properties['google_client_id']
+        buildConfigField "String", "GOOGLE_CLIENT_SECRENT", properties['google_client_secret']
+        buildConfigField "String", "GOOGLE_REDIRECT_URI", properties['google_redirect_uri']
     }
 
     buildTypes {
@@ -47,7 +50,8 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation "androidx.activity:activity-ktx:1.7.1"
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -89,6 +93,12 @@ dependencies {
     // hilt
     implementation "com.google.dagger:hilt-android:2.44.2"
     kapt "com.google.dagger:hilt-compiler:2.44.2"
+
+    // leakCanary
+    // debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+
+    // google login
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
 }
 
 kapt {
