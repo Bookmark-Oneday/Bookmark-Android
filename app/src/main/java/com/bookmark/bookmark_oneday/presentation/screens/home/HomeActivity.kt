@@ -26,15 +26,21 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>(ActivityHomeBindin
             when (destination.id) {
                 R.id.homeNav_todayOnelineFragment -> {
                     binding.navHomeBottom.background = ContextCompat.getDrawable(this, R.color.transparent)
+                    binding.navHomeBottom.itemBackground = ContextCompat.getDrawable(this, R.color.transparent)
                     binding.navHomeBottom.itemTextColor = ContextCompat.getColorStateList(this, R.color.selector_menu_on_transparent)
                     binding.navHomeBottom.itemIconTintList = ContextCompat.getColorStateList(this, R.color.selector_menu_on_transparent)
+
                     window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
+                    binding.lineHomeBottom.visibility = View.INVISIBLE
                 }
                 else -> {
                     binding.navHomeBottom.background = ContextCompat.getDrawable(this, R.color.default_background)
+                    binding.navHomeBottom.itemBackground = ContextCompat.getDrawable(this, R.color.default_background)
                     binding.navHomeBottom.itemTextColor = ContextCompat.getColorStateList(this, R.color.selector_menu_tint)
                     binding.navHomeBottom.itemIconTintList = ContextCompat.getColorStateList(this, R.color.selector_menu_tint)
+
                     window.statusBarColor = ContextCompat.getColor(this, R.color.default_background)
+                    binding.lineHomeBottom.visibility = View.VISIBLE
 
                     if (destination.id == R.id.bookDetailFragment){
                         binding.navHomeBottom.menu.findItem(R.id.homeNav_mylibraryFragment).isChecked = true
