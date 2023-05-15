@@ -2,31 +2,31 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_mylibrary"
+        android:id="@+id/homeNav_mylibraryFragment"
         android:icon="@drawable/ic_menu_mylibrary_negative"
         android:title="@string/menu_homebottom_mylibrary"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_bookclub"
+        android:id="@+id/homeNav_bookclubFragment"
         android:icon="@drawable/ic_menu_bookclub_negative"
         android:title="@string/menu_homebottom_bookclub"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_todayoneline"
+        android:id="@+id/homeNav_todayOnelineFragment"
         android:icon="@drawable/ic_menu_todayonline_negative"
         android:title="@string/menu_homebottom_todayoneline"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_scrapbook"
+        android:id="@+id/homeNav_scrapbookFragment"
         android:icon="@drawable/ic_menu_scrapbook_negative"
         android:title="@string/menu_homebottom_scrapbook"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_mypage"
+        android:id="@+id/homeNav_mypageFragment"
         android:icon="@drawable/ic_menu_mypage_negative"
         android:title="@string/menu_homebottom_mypage"
         app:showAsAction="ifRoom"/>
