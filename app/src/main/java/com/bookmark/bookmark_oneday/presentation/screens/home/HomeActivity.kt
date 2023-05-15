@@ -3,6 +3,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.home
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.bookmark.bookmark_oneday.R
@@ -25,26 +26,13 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>(ActivityHomeBindin
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.homeNav_todayOnelineFragment -> {
-                    binding.navHomeBottom.background = ContextCompat.getDrawable(this, R.color.transparent)
-                    binding.navHomeBottom.itemBackground = ContextCompat.getDrawable(this, R.color.transparent)
-                    binding.navHomeBottom.itemTextColor = ContextCompat.getColorStateList(this, R.color.selector_menu_on_transparent)
-                    binding.navHomeBottom.itemIconTintList = ContextCompat.getColorStateList(this, R.color.selector_menu_on_transparent)
-
-                    window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
-                    binding.lineHomeBottom.visibility = View.INVISIBLE
+                    applyTransparentStatusBar()
                 }
                 else -> {
-                    binding.navHomeBottom.background = ContextCompat.getDrawable(this, R.color.default_background)
-                    binding.navHomeBottom.itemBackground = ContextCompat.getDrawable(this, R.color.default_background)
-                    binding.navHomeBottom.itemTextColor = ContextCompat.getColorStateList(this, R.color.selector_menu_tint)
-                    binding.navHomeBottom.itemIconTintList = ContextCompat.getColorStateList(this, R.color.selector_menu_tint)
-
-                    window.statusBarColor = ContextCompat.getColor(this, R.color.default_background)
-                    binding.lineHomeBottom.visibility = View.VISIBLE
-
                     if (destination.id == R.id.bookDetailFragment){
                         binding.navHomeBottom.menu.findItem(R.id.homeNav_mylibraryFragment).isChecked = true
                     }
+                    restoreFromTransparentStatusBar()
                 }
             }
         }
@@ -52,7 +40,30 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>(ActivityHomeBindin
         binding.navHomeBottom.setupWithNavController(navController)
     }
 
+    private fun applyTransparentStatusBar() {
+        binding.navHomeBottom.background = ContextCompat.getDrawable(this, R.color.transparent)
+        binding.navHomeBottom.itemBackground = ContextCompat.getDrawable(this, R.color.transparent)
+        binding.navHomeBottom.itemTextColor = ContextCompat.getColorStateList(this, R.color.selector_menu_on_transparent)
+        binding.navHomeBottom.itemIconTintList = ContextCompat.getColorStateList(this, R.color.selector_menu_on_transparent)
 
+        window.statusBarColor = ContextCompat.getColor(this, R.color.transparent)
+        binding.lineHomeBottom.visibility = View.INVISIBLE
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+    }
+
+    private fun restoreFromTransparentStatusBar() {
+        binding.navHomeBottom.background = ContextCompat.getDrawable(this, R.color.default_background)
+        binding.navHomeBottom.itemBackground = ContextCompat.getDrawable(this, R.color.default_background)
+        binding.navHomeBottom.itemTextColor = ContextCompat.getColorStateList(this, R.color.selector_menu_tint)
+        binding.navHomeBottom.itemIconTintList = ContextCompat.getColorStateList(this, R.color.selector_menu_tint)
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.default_background)
+        binding.lineHomeBottom.visibility = View.VISIBLE
+
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        binding.navHomeBottom.setPadding(0, 0, 0, 0)
+    }
 
 
     /**
