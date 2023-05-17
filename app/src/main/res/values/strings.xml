@@ -92,4 +92,6 @@
     <string name="html_caption_signup_set_reading_time_more"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>많아요]]></string>
     <string name="html_caption_signup_set_reading_time_less"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>적어요]]></string>
     <string name="label_signup_complete_title">축하합니다!\n책갈피 회원이 되었어요.</string>
+
+    <string name="label_today_oneline_title">책갈피 : 오늘한줄</string>
 </resources>
