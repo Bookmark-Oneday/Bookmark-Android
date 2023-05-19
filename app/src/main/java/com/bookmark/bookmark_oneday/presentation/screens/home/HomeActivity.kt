@@ -82,6 +82,14 @@ class HomeActivity : ViewBindingActivity<ActivityHomeBinding>(ActivityHomeBindin
         }
     }
 
+    /**
+     * 오늘 한줄 Fragment 에서
+     * Content 영역을 정할 때 사용합니다.
+     */
+    fun getBottomNavigationTop() : Int {
+        return binding.navHomeBottom.top
+    }
+
     private fun hideErrorView() {
         binding.partialHomeNetworkError.root.visibility = View.GONE
         binding.partialHomeNetworkError.btnErrorRetry.setOnClickListener(null)
