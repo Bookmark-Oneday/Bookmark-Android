@@ -26,7 +26,7 @@ class TodayOnelineViewModel @Inject constructor(
     val event = Channel<TodayOnelineEvent>()
     val state : StateFlow<TodayOnelineState> = event.receiveAsFlow()
         .runningFold(TodayOnelineState(), ::reduce)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(0), TodayOnelineState())
+        .stateIn(viewModelScope, SharingStarted.Eagerly, TodayOnelineState())
 
     init {
         tryGetFirstPagingData()
@@ -80,7 +80,7 @@ class TodayOnelineViewModel @Inject constructor(
     private fun reduce(state : TodayOnelineState, event: TodayOnelineEvent) : TodayOnelineState {
         return when (event) {
             is TodayOnelineEvent.ChangePagerPosition -> {
-                val userProfile = state.onelineList[event.position].userProfile
+                val userProfile = if(state.onelineList.isEmpty()) null else state.onelineList[event.position].userProfile
                 state.copy(currentPosition = event.position, userProfile = userProfile)
             }
             TodayOnelineEvent.DataLoading -> {
