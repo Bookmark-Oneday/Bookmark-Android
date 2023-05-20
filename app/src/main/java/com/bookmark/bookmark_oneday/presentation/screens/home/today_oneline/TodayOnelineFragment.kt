@@ -11,7 +11,6 @@ import com.bookmark.bookmark_oneday.databinding.FragmentTodayOnelineBinding
 import com.bookmark.bookmark_oneday.presentation.adapter.today_oneline.TodayOnelineAdapter
 import com.bookmark.bookmark_oneday.presentation.base.DataBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.home.HomeActivity
-import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineState
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.WriteTodayOnelineActivity
 import com.bookmark.bookmark_oneday.presentation.util.applyStatusBarPadding
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
@@ -19,6 +18,7 @@ import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.layout.fragment_today_oneline) {
 
     private val viewModel : TodayOnelineViewModel by activityViewModels()
+    private var isInit = true
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -27,7 +27,6 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
         setButton()
         setPager()
         observeViewTree()
-        setObserver()
     }
 
     private fun setButton() {
@@ -73,8 +72,13 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
                 val contentAreaBottom = (requireActivity() as HomeActivity).getBottomNavigationTop()
 
                 (binding.pagerTodayOneline.adapter as TodayOnelineAdapter).setContentArea(
-                    top = contentAreaTop, bottom = contentAreaBottom, left = 0, right = contentAreaRight
+                    top = contentAreaTop,
+                    bottom = contentAreaBottom,
+                    left = 0,
+                    right = contentAreaRight
                 )
+
+                setObserver()
 
                 binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
@@ -82,22 +86,25 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
         })
     }
 
+    // RecyclerView 내부의 moveViewInContentArea 가 onGlobalLayout 보다 먼저 호출될 경우,
+    // 오늘 한줄 글자 위치가 부적절하게 적용되는 문제가 발생하여 순서를 맞추고자 observe 위치를 조정
     private fun setObserver() {
         viewModel.state.collectLatestInLifecycle(viewLifecycleOwner) { state ->
-            applyState(state)
+            (binding.pagerTodayOneline.adapter as TodayOnelineAdapter).submitList(state.onelineList)
+            binding.progressTodayOnelineLoading.visibility = if (state.showLoading) View.VISIBLE else View.INVISIBLE
+            state.userProfile?.let { binding.partialTodayOnlineToolbar.setWriterProfile(it) }
+            changeViewPagerPosition(state.currentPosition)
+            binding.pagerTodayOneline.isUserInputEnabled = !state.showLoading
         }
     }
 
-    private fun applyState(state : TodayOnelineState) {
-        (binding.pagerTodayOneline.adapter as TodayOnelineAdapter).submitList(state.onelineList)
-        binding.progressTodayOnelineLoading.visibility = if (state.showLoading) View.VISIBLE else View.INVISIBLE
-        state.userProfile?.let { binding.partialTodayOnlineToolbar.setWriterProfile(it) }
-        if (binding.pagerTodayOneline.currentItem - 1 != state.currentPosition && state.currentPosition != null) {
+    private fun changeViewPagerPosition(position : Int?) {
+        if (position != null &&
+            binding.pagerTodayOneline.currentItem - 1 != position) {
             binding.pagerTodayOneline.post {
-                binding.pagerTodayOneline.setCurrentItem(state.currentPosition, true)
+                binding.pagerTodayOneline.setCurrentItem(position, !isInit)
+                isInit = false
             }
         }
-        binding.pagerTodayOneline.isUserInputEnabled = !state.showLoading
-
     }
 }

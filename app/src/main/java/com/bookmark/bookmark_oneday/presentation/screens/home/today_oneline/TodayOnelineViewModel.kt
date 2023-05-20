@@ -23,7 +23,7 @@ class TodayOnelineViewModel @Inject constructor(
 ) : ViewModel() {
     private val pagingCheckData = PagingCheckData()
 
-    val event = Channel<TodayOnelineEvent>()
+    private val event = Channel<TodayOnelineEvent>()
     val state : StateFlow<TodayOnelineState> = event.receiveAsFlow()
         .runningFold(TodayOnelineState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, TodayOnelineState())
@@ -107,6 +107,7 @@ class TodayOnelineViewModel @Inject constructor(
                 } else {
                     null
                 }
+
                 state.copy(
                     currentPosition = position,
                     onelineList = dataList,
