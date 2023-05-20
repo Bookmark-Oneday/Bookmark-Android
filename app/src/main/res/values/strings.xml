@@ -94,4 +94,8 @@
     <string name="label_signup_complete_title">축하합니다!\n책갈피 회원이 되었어요.</string>
 
     <string name="label_today_oneline_title">책갈피 : 오늘한줄</string>
+
+    <string name="label_write_today_oneline_book_select">선택</string>
+    <string name="label_write_today_oneline_book_register_book">책 등록하기</string>
+    <string name="label_write_today_oneline_book_select_book">책 선택</string>
 </resources>

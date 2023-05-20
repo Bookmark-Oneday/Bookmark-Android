@@ -1,5 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
@@ -11,6 +12,7 @@ import com.bookmark.bookmark_oneday.presentation.adapter.today_oneline.TodayOnel
 import com.bookmark.bookmark_oneday.presentation.base.DataBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.home.HomeActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineState
+import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.WriteTodayOnelineActivity
 import com.bookmark.bookmark_oneday.presentation.util.applyStatusBarPadding
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 
@@ -34,7 +36,8 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
         }
 
         binding.partialTodayOnlineToolbar.setWriteButtonEvent {
-            // 화면 이동
+            val intent = Intent(requireContext(), WriteTodayOnelineActivity::class.java)
+            requireActivity().startActivity(intent)
         }
     }
     private fun setPager() {
