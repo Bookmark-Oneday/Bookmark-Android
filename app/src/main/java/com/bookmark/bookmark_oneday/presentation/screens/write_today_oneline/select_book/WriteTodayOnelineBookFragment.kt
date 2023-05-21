@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.R
@@ -57,7 +58,11 @@ class WriteTodayOnelineBookFragment : ViewBindingFragment<FragmentWriteTodayOnel
         }
 
         binding.btnWriteTodayOnelineBookSelect.setOnClickListener {
-
+            val selectedBook = viewModel.state.value.selectedBook
+            selectedBook?.let { book ->
+                val direction = WriteTodayOnelineBookFragmentDirections.actionWriteTodayOnelineBookFragmentToWriteTodayOnelineWriteFragment(book)
+                findNavController().navigate(direction)
+            }
         }
     }
 

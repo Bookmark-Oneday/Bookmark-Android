@@ -98,4 +98,9 @@
     <string name="label_write_today_oneline_book_select">선택</string>
     <string name="label_write_today_oneline_book_register_book">책 등록하기</string>
     <string name="label_write_today_oneline_book_select_book">책 선택</string>
+    
+    <string name="label_write_today_oneline_write_title">한줄 작성</string>
+    <string name="label_write_today_oneline_write_upload">게시</string>
+    <string name="label_write_today_oneline_set_background">배경 설정</string>
+    <string name="label_write_today_oneline_place_holder">텍스트를 입력하세요.</string>
 </resources>

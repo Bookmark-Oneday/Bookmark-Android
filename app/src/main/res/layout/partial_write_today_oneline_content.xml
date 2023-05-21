@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:background="@color/orange">
+
+    <View
+        android:id="@+id/view_write_today_oneline_horizontal_center"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/red"
+        android:visibility="invisible"/>
+
+    <View
+        android:id="@+id/view_write_today_oneline_vertical_center"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/red"
+        android:visibility="invisible"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_write_today_oneline_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:id="@+id/ll_write_today_oneline_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical"
+            android:background="@drawable/oneline_content_background"
+            android:padding="20dp"
+            android:gravity="center">
+
+            <EditText
+                android:id="@+id/edittext_write_today_oneline_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/label_write_today_oneline_place_holder"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:padding="0dp"
+                android:textCursorDrawable="@drawable/all_edittext_cursor"
+                android:textSize="17sp"
+                android:gravity="center"
+                tools:text="사랑에는 늘 약간의 망상이 있다." />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_write_today_oneline_book_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textSize="13sp"
+                tools:text="차라투스트라는 이렇게 말했다, 프리드리히 니체"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_write_today_oneline_move"
+            app:layout_constraintTop_toBottomOf="@id/ll_write_today_oneline_content"
+            app:layout_constraintBottom_toBottomOf="@id/ll_write_today_oneline_content"
+            app:layout_constraintStart_toEndOf="@id/ll_write_today_oneline_content"
+            app:layout_constraintEnd_toEndOf="@id/ll_write_today_oneline_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/oneline_move_background"
+            android:src="@drawable/ic_oneline_move"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

@@ -7,5 +7,18 @@
     <fragment
         android:id="@+id/writeTodayOnelineBookFragment"
         android:name="com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.select_book.WriteTodayOnelineBookFragment"
-        android:label="WriteTodayOnelineBookFragment" />
+        android:label="WriteTodayOnelineBookFragment" >
+
+        <action
+            android:id="@+id/action_writeTodayOnelineBookFragment_to_writeTodayOnelineWriteFragment"
+            app:destination="@id/writeTodayOnelineWriteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeTodayOnelineWriteFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.WriteTodayOnelineWriteFragment"
+        android:label="WriteTodayOnelineWriteFragment" >
+        <argument
+            android:name="book"
+            app:argType="com.bookmark.bookmark_oneday.domain.model.BookItem" />
+    </fragment>
 </navigation>
