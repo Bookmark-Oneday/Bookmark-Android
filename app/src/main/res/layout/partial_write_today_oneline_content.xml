@@ -37,7 +37,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:orientation="vertical"
-            android:background="@drawable/oneline_content_background"
             android:padding="20dp"
             android:gravity="center">
 
@@ -74,6 +73,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@drawable/oneline_move_background"
+            android:visibility="invisible"
             android:src="@drawable/ic_oneline_move"/>
 
 

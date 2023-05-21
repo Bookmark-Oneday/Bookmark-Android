@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
+import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.PartialWriteTodayOnelineContentBinding
 import com.bookmark.bookmark_oneday.presentation.util.dpToPx
 import kotlin.math.max
@@ -27,6 +28,8 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
     private var yCursorDown = NOT_INIT_FLOAT
 
     private val centerInterval = dpToPx(context, 10)
+
+    private var longClick = false
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -48,6 +51,16 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
 
     @SuppressLint("ClickableViewAccessibility")
     fun setOnPositionChanged(callback : (Float, Float) -> Unit) {
+        binding.clWriteTodayOnelineContent.setOnLongClickListener {
+            setMoveUiVisibility(show = true)
+            longClick = true
+            return@setOnLongClickListener true
+        }
+
+        binding.clWriteTodayOnelineContent.setOnClickListener {
+
+        }
+
         binding.clWriteTodayOnelineContent.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
@@ -57,16 +70,20 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
                     // textView, EditTextView 는 Text 를 입력할 때마다 너비가 바뀔 수 있습니다.
                     contentViewWidth = binding.clWriteTodayOnelineContent.measuredWidth
                     contentViewHeight = binding.clWriteTodayOnelineContent.measuredHeight
+
+                    if (!longClick) return@setOnTouchListener false
                 }
                 MotionEvent.ACTION_MOVE -> {
+                    if (!longClick) return@setOnTouchListener false
+
                     val newX = event.rawX + xCursorDown
                     if (checkInLayoutWidth(newX)) {
-                        binding.clWriteTodayOnelineContent.x = event.rawX + xCursorDown
+                        binding.clWriteTodayOnelineContent.x = newX
                     }
 
                     val newY = event.rawY + yCursorDown
                     if (checkInLayoutHeight(newY)) {
-                        binding.clWriteTodayOnelineContent.y = event.rawY + yCursorDown
+                        binding.clWriteTodayOnelineContent.y = newY
                     }
 
                     binding.viewWriteTodayOnelineHorizontalCenter.visibility =
@@ -89,13 +106,27 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
                         (binding.clWriteTodayOnelineContent.y + contentViewHeight / 2)  / layoutHeight
                     )
 
-                    binding.viewWriteTodayOnelineVerticalCenter.visibility = View.INVISIBLE
-                    binding.viewWriteTodayOnelineHorizontalCenter.visibility = View.INVISIBLE
-
-                    view.performClick()
+                    if (longClick) {
+                        longClick = false
+                        setMoveUiVisibility(show = false)
+                    }
+                    return@setOnTouchListener false
                 }
             }
             true
+        }
+    }
+
+    // text 위치를 변경할 때 사용되는 UI 들의 표시 여부를 변경합니다.
+    private fun setMoveUiVisibility(show : Boolean) {
+        if (show) {
+            binding.llWriteTodayOnelineContent.setBackgroundResource(R.drawable.oneline_content_background)
+            binding.imgWriteTodayOnelineMove.visibility = View.VISIBLE
+        } else {
+            binding.llWriteTodayOnelineContent.setBackgroundResource(0)
+            binding.imgWriteTodayOnelineMove.visibility = View.INVISIBLE
+            binding.viewWriteTodayOnelineVerticalCenter.visibility = View.INVISIBLE
+            binding.viewWriteTodayOnelineHorizontalCenter.visibility = View.INVISIBLE
         }
     }
 
