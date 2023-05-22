@@ -28,6 +28,7 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
     private val centerInterval = dpToPx(context, 10)
 
     private var longClick = false
+    private var moveAvailable = true
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -55,21 +56,25 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
 
     fun setToMoveMode() {
         binding.edittextWriteTodayOnelineContent.setReadOnly(readOnly = true)
+        moveAvailable = true
     }
 
     fun setToEditMode() {
         binding.edittextWriteTodayOnelineContent.setReadOnly(readOnly = false)
+        moveAvailable = false
     }
 
     @SuppressLint("ClickableViewAccessibility")
     fun initOnPositionChanged(callback : (Float, Float) -> Unit) {
         binding.clWriteTodayOnelineContent.setOnLongClickListener {
+            if (!moveAvailable) return@setOnLongClickListener false
             setMoveUiVisibility(show = true)
             longClick = true
             return@setOnLongClickListener true
         }
 
         binding.clWriteTodayOnelineContent.setOnTouchListener { view, event ->
+            if (!moveAvailable) return@setOnTouchListener false
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     xCursorDown = view.x - event.rawX
