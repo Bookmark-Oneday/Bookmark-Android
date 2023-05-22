@@ -101,6 +101,7 @@
     
     <string name="label_write_today_oneline_write_title">한줄 작성</string>
     <string name="label_write_today_oneline_write_upload">게시</string>
+    <string name="label_write_today_oneline_write_complete">완료</string>
     <string name="label_write_today_oneline_set_background">배경 설정</string>
     <string name="label_write_today_oneline_place_holder">텍스트를 입력하세요.</string>
 </resources>

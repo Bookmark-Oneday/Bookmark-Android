@@ -40,19 +40,12 @@
             android:padding="20dp"
             android:gravity="center">
 
-            <EditText
+            <com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.component.OnelineEditText
                 android:id="@+id/edittext_write_today_oneline_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="@string/label_write_today_oneline_place_holder"
-                android:importantForAutofill="no"
-                android:inputType="textMultiLine"
                 android:padding="0dp"
-                android:textCursorDrawable="@drawable/all_edittext_cursor"
-                android:textSize="17sp"
-                android:gravity="center"
-                tools:text="사랑에는 늘 약간의 망상이 있다." />
+                android:gravity="center"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/label_write_today_oneline_book_info"

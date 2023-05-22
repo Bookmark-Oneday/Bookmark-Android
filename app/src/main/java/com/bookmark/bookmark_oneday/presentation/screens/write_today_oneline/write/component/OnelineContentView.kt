@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.widget.addTextChangedListener
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.PartialWriteTodayOnelineContentBinding
 import com.bookmark.bookmark_oneday.presentation.util.dpToPx
@@ -45,20 +43,30 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
         contentViewWidth = binding.clWriteTodayOnelineContent.measuredWidth
         contentViewHeight = binding.clWriteTodayOnelineContent.measuredHeight
 
-        binding.edittextWriteTodayOnelineContent.maxWidth = measuredWidth
+        binding.edittextWriteTodayOnelineContent.setMaxWidth(measuredWidth)
         binding.clWriteTodayOnelineContent.maxWidth = layoutWidth
     }
 
+    fun initModeSwitchEvent(callback : () -> Unit) {
+        binding.clWriteTodayOnelineContent.setOnClickListener {
+            callback()
+        }
+    }
+
+    fun setToMoveMode() {
+        binding.edittextWriteTodayOnelineContent.setReadOnly(readOnly = true)
+    }
+
+    fun setToEditMode() {
+        binding.edittextWriteTodayOnelineContent.setReadOnly(readOnly = false)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
-    fun setOnPositionChanged(callback : (Float, Float) -> Unit) {
+    fun initOnPositionChanged(callback : (Float, Float) -> Unit) {
         binding.clWriteTodayOnelineContent.setOnLongClickListener {
             setMoveUiVisibility(show = true)
             longClick = true
             return@setOnLongClickListener true
-        }
-
-        binding.clWriteTodayOnelineContent.setOnClickListener {
-
         }
 
         binding.clWriteTodayOnelineContent.setOnTouchListener { view, event ->
@@ -174,25 +182,21 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
     }
 
     fun setOnTextChanged(callback : (String) -> Unit) {
-        binding.edittextWriteTodayOnelineContent.addTextChangedListener { editable ->
-            val text = editable?.toString() ?: return@addTextChangedListener
-            callback(text)
-        }
+        binding.edittextWriteTodayOnelineContent.setOnTextChanged(callback)
     }
 
     fun setTextColor(colorString : String) {
         binding.labelWriteTodayOnelineBookInfo.setTextColor(Color.parseColor(colorString))
-        binding.edittextWriteTodayOnelineContent.setTextColor(Color.parseColor(colorString))
+        binding.edittextWriteTodayOnelineContent.setTextColor(colorString)
     }
 
     fun setTextSize(sp : Int) {
         val captionTextSize = sp * 70 / 100
         binding.labelWriteTodayOnelineBookInfo.textSize = captionTextSize.toFloat()
-        binding.edittextWriteTodayOnelineContent.textSize = sp.toFloat()
+        binding.edittextWriteTodayOnelineContent.setTextSize(sp)
     }
 
     fun setText(text : String) {
-        if (text == binding.edittextWriteTodayOnelineContent.text.toString()) return
         binding.edittextWriteTodayOnelineContent.setText(text)
     }
 
@@ -209,19 +213,12 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
         val positionX = layoutWidth * xRatio - contentViewWidth / 2
         val positionY = layoutHeight * yRatio - contentViewHeight / 2
 
-        println("position ->> $positionX $positionY")
         binding.clWriteTodayOnelineContent.x = positionX
         binding.clWriteTodayOnelineContent.y = positionY
     }
 
-    fun setReadOnly(readOnly : Boolean) {
-        binding.edittextWriteTodayOnelineContent.isFocusable = !readOnly
-        binding.edittextWriteTodayOnelineContent.isFocusableInTouchMode = !readOnly
-    }
-
     fun setFont(fontResourceId : Int) {
-        binding.edittextWriteTodayOnelineContent.typeface = ResourcesCompat.getFont(context, fontResourceId)
-        binding.labelWriteTodayOnelineBookInfo.typeface = ResourcesCompat.getFont(context, fontResourceId)
+        binding.edittextWriteTodayOnelineContent.setFont(fontResourceId)
     }
 
     companion object {
