@@ -48,11 +48,11 @@ class TodayOnelineAdapter : ListAdapter<OneLine, TodayOnelineAdapter.TodayOnelin
             }
             binding.labelTodayOnelineBookInfo.text = oneline.bookInfo
             binding.labelTodayOnelineContent.text = oneline.oneliner
-            binding.labelTodayOnelineBookInfo.textSize = oneline.fontSize.toFloat()
+            binding.labelTodayOnelineBookInfo.textSize = oneline.fontSize * 0.7f
+            binding.labelTodayOnelineContent.textSize = oneline.fontSize.toFloat()
             binding.labelTodayOnelineBookInfo.setTextColor(Color.parseColor(oneline.textColor))
             binding.labelTodayOnelineContent.setTextColor(Color.parseColor(oneline.textColor))
             moveViewInContentArea(binding.llTodayOnelineContent, oneline.topPosition, oneline.leftPosition)
-
 
         }
 
