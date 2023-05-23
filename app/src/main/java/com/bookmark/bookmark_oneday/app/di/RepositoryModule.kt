@@ -47,4 +47,12 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindGoogleLoginRepository(impl : GoogleLoginRepositoryImpl) : GoogleLoginRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindOnelineRepository(impl : OnelineRepositoryImpl) : OnelineRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindBookRepository(impl : BookRepositoryImpl) : BookRepository
 }

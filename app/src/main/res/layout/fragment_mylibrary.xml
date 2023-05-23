@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingBottom="56dp">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/abl_mylibrary"
@@ -34,14 +35,14 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar_mylibrary"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 app:contentInsetStart="0dp"
                 android:elevation="0dp"
                 app:layout_collapseMode="pin">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="56dp"
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatTextView

@@ -1,5 +1,6 @@
 package com.bookmark.bookmark_oneday.data.models.dto
 
+import com.bookmark.bookmark_oneday.domain.model.BookItem
 import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
 
 data class BookItemDto(
@@ -15,6 +16,17 @@ data class BookItemDto(
     companion object {
         fun toMyLibraryBookItem(bookItemDto: BookItemDto) : MyLibraryItem.Book {
             return MyLibraryItem.Book(
+                id = bookItemDto.book_id,
+                thumbnail = bookItemDto.titleImage,
+                title = bookItemDto.title,
+                author = bookItemDto.authors.joinToString(","),
+                reading = bookItemDto.reading,
+                favorite = bookItemDto.favorite
+            )
+        }
+
+        fun toBookItem(bookItemDto: BookItemDto) : BookItem {
+            return BookItem(
                 id = bookItemDto.book_id,
                 thumbnail = bookItemDto.titleImage,
                 title = bookItemDto.title,

@@ -2,10 +2,10 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@id/myLibraryFragment">
+    app:startDestination="@id/homeNav_mylibraryFragment">
 
     <fragment
-        android:id="@+id/myLibraryFragment"
+        android:id="@+id/homeNav_mylibraryFragment"
         android:name="com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.MyLibraryFragment"
         android:label="MyLibraryFragment"
         >
@@ -18,6 +18,7 @@
                 android:defaultValue="0"/>
         </action>
     </fragment>
+
     <fragment
         android:id="@+id/bookDetailFragment"
         android:name="com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.BookDetailFragment"
@@ -27,4 +28,9 @@
             android:name="bookId"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/homeNav_todayOnelineFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.TodayOnelineFragment"
+        android:label="TodayOnelineFragment" />
 </navigation>
