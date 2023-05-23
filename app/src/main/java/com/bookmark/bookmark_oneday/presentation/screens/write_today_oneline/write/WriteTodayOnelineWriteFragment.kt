@@ -134,6 +134,7 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
                 TodayOnelineWriteScreenState.TextEdit -> {
                     setEnableButtons(enable = true)
                     setToEditMode()
+                    showSoftKeyboard()
                 }
                 TodayOnelineWriteScreenState.TextMove -> {
                     setEnableButtons(enable = true)
@@ -243,7 +244,6 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
         }
     }
     private fun showSoftKeyboard() {
-        binding.partialWriteTodayOnelineContent.setEditTextFocus(true)
         val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(requireActivity().currentFocus, 0)
     }
@@ -251,7 +251,6 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
     private fun closeSoftKeyboard() {
         val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(binding.partialWriteTodayOnelineContent.getFocusViewWindowToken(), 0)
-        binding.partialWriteTodayOnelineContent.setEditTextFocus(focus = false)
     }
 
     private fun moveSettingViewY(translationY : Float) {

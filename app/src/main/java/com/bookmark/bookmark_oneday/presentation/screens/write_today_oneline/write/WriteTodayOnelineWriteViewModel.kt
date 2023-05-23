@@ -103,6 +103,7 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
         when (_currentState.value) {
             TodayOnelineWriteScreenState.TextEdit -> {
                 _currentState.value = TodayOnelineWriteScreenState.TextMove
+                _editTextDetailState.value = EditTextDetailState.Normal
             }
             TodayOnelineWriteScreenState.TextMove -> {
                 // api

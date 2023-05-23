@@ -210,14 +210,6 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
         binding.labelWriteTodayOnelineBookInfo.text = text
     }
 
-    fun setEditTextFocus(focus : Boolean) {
-        if (focus) {
-            binding.edittextWriteTodayOnelineContent.requestFocus()
-        } else {
-            binding.edittextWriteTodayOnelineContent.clearFocus()
-        }
-    }
-
     /** content view 의 위치를 비율값을 사용해 조정합니다.
      *
      * xRatio : 전체 view 에서 x 좌표의 비율값 ( = xPosition / layoutWitdh ),

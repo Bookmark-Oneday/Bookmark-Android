@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
+import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.PartialWriteTodayOnelineEdittextBinding
 
 class OnelineEditText(context : Context, attrs : AttributeSet) : FrameLayout(context, attrs) {
@@ -19,7 +20,7 @@ class OnelineEditText(context : Context, attrs : AttributeSet) : FrameLayout(con
 
     fun setMaxWidth(maxWidth : Int) {
         binding.edittextWriteTodayOnelineEdit.maxWidth = maxWidth
-        binding.edittextWriteTodayOnelineText.maxWidth = maxWidth
+        binding.labelWriteTodayOnelineText.maxWidth = maxWidth
     }
 
 
@@ -32,7 +33,7 @@ class OnelineEditText(context : Context, attrs : AttributeSet) : FrameLayout(con
 
     fun setReadOnly(readOnly : Boolean) {
         binding.edittextWriteTodayOnelineEdit.visibility = if (readOnly) View.INVISIBLE else View.VISIBLE
-        binding.edittextWriteTodayOnelineText.visibility = if (readOnly) View.VISIBLE else View.INVISIBLE
+        binding.labelWriteTodayOnelineText.visibility = if (readOnly) View.VISIBLE else View.INVISIBLE
 
         if (readOnly) {
             binding.edittextWriteTodayOnelineEdit.clearFocus()
@@ -43,22 +44,25 @@ class OnelineEditText(context : Context, attrs : AttributeSet) : FrameLayout(con
 
     fun setTextSize(sp : Int) {
         binding.edittextWriteTodayOnelineEdit.textSize = sp.toFloat()
-        binding.edittextWriteTodayOnelineText.textSize = sp.toFloat()
+        binding.labelWriteTodayOnelineText.textSize = sp.toFloat()
     }
 
     fun setText(text : String) {
-        binding.edittextWriteTodayOnelineText.text = text
+        binding.labelWriteTodayOnelineText.text = text.ifEmpty {
+            context.getString(R.string.label_write_today_oneline_place_holder)
+        }
+
         if (text == binding.edittextWriteTodayOnelineEdit.text.toString()) return
         binding.edittextWriteTodayOnelineEdit.setText(text)
     }
 
     fun setTextColor(colorString: String) {
         binding.edittextWriteTodayOnelineEdit.setTextColor(Color.parseColor(colorString))
-        binding.edittextWriteTodayOnelineText.setTextColor(Color.parseColor(colorString))
+        binding.labelWriteTodayOnelineText.setTextColor(Color.parseColor(colorString))
     }
 
     fun setFont(fontResourceId : Int) {
         binding.edittextWriteTodayOnelineEdit.typeface = ResourcesCompat.getFont(context, fontResourceId)
-        binding.edittextWriteTodayOnelineText.typeface = ResourcesCompat.getFont(context, fontResourceId)
+        binding.labelWriteTodayOnelineText.typeface = ResourcesCompat.getFont(context, fontResourceId)
     }
 }
