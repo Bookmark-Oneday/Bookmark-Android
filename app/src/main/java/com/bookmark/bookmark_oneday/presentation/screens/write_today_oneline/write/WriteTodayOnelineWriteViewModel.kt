@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BookItem
+import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.EditTextDetailState
+import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.Font
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.Position
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.TodayOnelineWriteScreenState
 import dagger.assisted.Assisted
@@ -28,6 +30,9 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
     private val _currentState = MutableStateFlow<TodayOnelineWriteScreenState>(TodayOnelineWriteScreenState.TextMove)
     val currentState = _currentState.asStateFlow()
 
+    private val _editTextDetailState = MutableStateFlow<EditTextDetailState>(EditTextDetailState.Normal)
+    val editTextDetailState = _editTextDetailState.asStateFlow()
+
     private val _textColor = MutableStateFlow("#000000")
     val textColor = _textColor.asStateFlow()
 
@@ -39,6 +44,11 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
 
     private val _position = MutableStateFlow(Position(0.5f, 0.5f))
     val position = _position.asStateFlow()
+
+    private val _font = MutableStateFlow(Font.defaultList[0])
+    val font = _font.asStateFlow()
+
+    var imeHeight = 0
 
     fun setTextColor(colorString: String) {
         _textColor.value = colorString
@@ -64,8 +74,13 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
         _backgroundUri.value = uri
     }
 
+    fun setFont(font : Font) {
+        _font.value = font
+    }
+
     fun changeToTextEditMode() {
         _currentState.value = TodayOnelineWriteScreenState.TextEdit
+        _editTextDetailState.value = EditTextDetailState.Normal
     }
 
     fun handleBackPress() {
@@ -80,20 +95,37 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
                     _finishCall.emit(true)
                 }
             }
-            else -> { }
+            else -> {}
         }
     }
 
     fun handleNextPress() {
-        println("state->> ${_currentState.value}")
         when (_currentState.value) {
             TodayOnelineWriteScreenState.TextEdit -> {
                 _currentState.value = TodayOnelineWriteScreenState.TextMove
             }
             TodayOnelineWriteScreenState.TextMove -> {
-
+                // api
             }
-            else -> { }
+            else -> {}
+        }
+    }
+
+    fun setEditTextDetailState(state : EditTextDetailState) {
+        if (_currentState.value !is TodayOnelineWriteScreenState.TextEdit) return
+
+        if (_editTextDetailState.value is EditTextDetailState.Font && state is EditTextDetailState.Font) {
+            _editTextDetailState.value = EditTextDetailState.IME
+        } else {
+            _editTextDetailState.value = state
+        }
+    }
+
+    fun hideSoftKeyboard() {
+        if (_currentState.value !is TodayOnelineWriteScreenState.TextEdit) return
+
+        if (_editTextDetailState.value is EditTextDetailState.IME) {
+            _editTextDetailState.value = EditTextDetailState.Normal
         }
     }
 

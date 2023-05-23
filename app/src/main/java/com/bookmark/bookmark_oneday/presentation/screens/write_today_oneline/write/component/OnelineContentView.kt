@@ -3,6 +3,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.wr
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.IBinder
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -209,6 +210,14 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
         binding.labelWriteTodayOnelineBookInfo.text = text
     }
 
+    fun setEditTextFocus(focus : Boolean) {
+        if (focus) {
+            binding.edittextWriteTodayOnelineContent.requestFocus()
+        } else {
+            binding.edittextWriteTodayOnelineContent.clearFocus()
+        }
+    }
+
     /** content view 의 위치를 비율값을 사용해 조정합니다.
      *
      * xRatio : 전체 view 에서 x 좌표의 비율값 ( = xPosition / layoutWitdh ),
@@ -225,6 +234,8 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
     fun setFont(fontResourceId : Int) {
         binding.edittextWriteTodayOnelineContent.setFont(fontResourceId)
     }
+
+    fun getFocusViewWindowToken(): IBinder = binding.edittextWriteTodayOnelineContent.windowToken
 
     companion object {
         const val NOT_INIT = -1

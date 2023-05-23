@@ -1,18 +1,27 @@
 package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentWriteTodayOnelineWriteBinding
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
+import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.EditTextDetailState
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.TodayOnelineWriteScreenState
+import com.bookmark.bookmark_oneday.presentation.util.applyBottomNavigationPadding
+import com.bookmark.bookmark_oneday.presentation.util.applyStatusBarPadding
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
+import com.bookmark.bookmark_oneday.presentation.util.getBottomNavigationHeight
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -47,7 +56,7 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
                 viewModel.handleBackPress()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
+        requireActivity().onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,6 +64,7 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
 
         setButton()
         setContentView()
+        setFontSettingView()
         setFontSizeSeekbar()
         setStateObserver()
 
@@ -64,6 +74,11 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
                 binding.partialWriteTodayOnelineContent.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
+
+        setImeListener()
+
+        requireContext().applyStatusBarPadding(binding.clWriteTodayOnelineWriteToolbar)
+        requireContext().applyBottomNavigationPadding(binding.clWriteTodayOnelineWriteBottom)
     }
 
     override fun onDestroy() {
@@ -95,6 +110,18 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
         }
     }
 
+    private fun setFontSettingView() {
+        binding.partialWriteTodayOnelineTextAttrSetting.apply {
+            setColorChangeCallback(viewModel::setTextColor)
+
+            setFontChangeCallback(viewModel::setFont)
+
+            setFontButtonClick {
+                viewModel.setEditTextDetailState(EditTextDetailState.Font)
+            }
+        }
+    }
+
     private fun setFontSizeSeekbar() {
         binding.partialWriteTodayOnelineSeekbar.apply {
             setProgressChangeCallback(viewModel::setTextSize)
@@ -105,25 +132,16 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
         viewModel.currentState.collectLatestInLifecycle(viewLifecycleOwner) { state ->
             when (state) {
                 TodayOnelineWriteScreenState.TextEdit -> {
-                    binding.btnWriteTodayOnelineWriteNext.isEnabled = true
-                    binding.btnWriteTodayOnelineWriteBack.isEnabled = true
-                    binding.btnWriteTodayOnelineWriteNext.setText(R.string.label_write_today_oneline_write_complete)
-                    binding.partialWriteTodayOnelineContent.setToEditMode()
-                    binding.partialWriteTodayOnelineSeekbar.visibility = View.VISIBLE
+                    setEnableButtons(enable = true)
+                    setToEditMode()
                 }
                 TodayOnelineWriteScreenState.TextMove -> {
-                    binding.btnWriteTodayOnelineWriteNext.isEnabled = true
-                    binding.btnWriteTodayOnelineWriteBack.isEnabled = true
-                    binding.btnWriteTodayOnelineWriteNext.setText(R.string.label_write_today_oneline_write_upload)
-                    binding.partialWriteTodayOnelineContent.setToMoveMode()
-                    binding.partialWriteTodayOnelineSeekbar.visibility = View.INVISIBLE
+                    setEnableButtons(enable = true)
+                    setToMoveMode()
                 }
                 else -> {
-                    binding.btnWriteTodayOnelineWriteNext.isEnabled = false
-                    binding.btnWriteTodayOnelineWriteBack.isEnabled = false
-                    binding.btnWriteTodayOnelineWriteNext.setText(R.string.label_write_today_oneline_write_upload)
-                    binding.partialWriteTodayOnelineContent.setToMoveMode()
-                    binding.partialWriteTodayOnelineSeekbar.visibility = View.INVISIBLE
+                    setEnableButtons(enable = false)
+                    setToMoveMode()
                 }
             }
         }
@@ -133,6 +151,68 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
                 requireActivity().finish()
             }
         }
+
+        viewModel.editTextDetailState.collectLatestInLifecycle(viewLifecycleOwner) { editTextDetailState ->
+            binding.partialWriteTodayOnelineTextAttrSetting.hideColorSelectView()
+            when (editTextDetailState) {
+                EditTextDetailState.Normal -> {
+                    closeSoftKeyboard()
+                    moveSettingViewY(-requireContext().getBottomNavigationHeight().toFloat())
+                    binding.partialWriteTodayOnelineTextAttrSetting.toHideMode()
+                }
+                EditTextDetailState.Font -> {
+                    closeSoftKeyboard()
+                    val translationY =
+                        -(requireContext().getBottomNavigationHeight()+binding.partialWriteTodayOnelineTextAttrSetting.getFontViewHeight()).toFloat()
+                    moveSettingViewY(translationY)
+                    binding.partialWriteTodayOnelineTextAttrSetting.toFontSettingMode()
+                }
+                EditTextDetailState.IME -> {
+                    showSoftKeyboard()
+                    moveSettingViewY(-viewModel.imeHeight.toFloat())
+                    binding.partialWriteTodayOnelineTextAttrSetting.toSoftKeyboardMode()
+                }
+
+            }
+        }
+    }
+
+    private fun setImeListener() {
+        WindowCompat.setDecorFitsSystemWindows(requireActivity().window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.clWriteTodayOnelineWriteBottom) { _, insets ->
+            val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+            val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+
+            if (imeVisible) {
+                viewModel.imeHeight = imeHeight
+                viewModel.setEditTextDetailState(EditTextDetailState.IME)
+            } else {
+                viewModel.hideSoftKeyboard()
+            }
+
+            insets
+        }
+    }
+
+    private fun setEnableButtons(enable : Boolean) {
+        binding.btnWriteTodayOnelineWriteNext.isEnabled = enable
+        binding.btnWriteTodayOnelineWriteBack.isEnabled = enable
+    }
+
+    private fun setToEditMode() {
+        binding.btnWriteTodayOnelineWriteNext.setText(R.string.label_write_today_oneline_write_complete)
+        binding.partialWriteTodayOnelineContent.setToEditMode()
+        binding.partialWriteTodayOnelineSeekbar.visibility = View.VISIBLE
+        binding.clWriteTodayOnelineWriteBottom.visibility = View.INVISIBLE
+        binding.partialWriteTodayOnelineTextAttrSetting.visibility = View.VISIBLE
+    }
+
+    private fun setToMoveMode() {
+        binding.btnWriteTodayOnelineWriteNext.setText(R.string.label_write_today_oneline_write_upload)
+        binding.partialWriteTodayOnelineContent.setToMoveMode()
+        binding.partialWriteTodayOnelineSeekbar.visibility = View.INVISIBLE
+        binding.clWriteTodayOnelineWriteBottom.visibility = View.VISIBLE
+        binding.partialWriteTodayOnelineTextAttrSetting.visibility = View.INVISIBLE
     }
 
     private fun setContentObserver() {
@@ -150,6 +230,7 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
 
         viewModel.textColor.collectLatestInLifecycle(viewLifecycleOwner) { colorString ->
             binding.partialWriteTodayOnelineContent.setTextColor(colorString)
+            binding.partialWriteTodayOnelineTextAttrSetting.setSelectedColor(colorString)
         }
 
         viewModel.textSize.collectLatestInLifecycle(viewLifecycleOwner) { sp ->
@@ -157,5 +238,24 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             binding.partialWriteTodayOnelineSeekbar.setProgressValue(sp)
         }
 
+        viewModel.font.collectLatestInLifecycle(viewLifecycleOwner) { font ->
+            binding.partialWriteTodayOnelineTextAttrSetting.setFont(font)
+        }
     }
+    private fun showSoftKeyboard() {
+        binding.partialWriteTodayOnelineContent.setEditTextFocus(true)
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(requireActivity().currentFocus, 0)
+    }
+
+    private fun closeSoftKeyboard() {
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(binding.partialWriteTodayOnelineContent.getFocusViewWindowToken(), 0)
+        binding.partialWriteTodayOnelineContent.setEditTextFocus(focus = false)
+    }
+
+    private fun moveSettingViewY(translationY : Float) {
+        binding.partialWriteTodayOnelineTextAttrSetting.translationY = translationY
+    }
+
 }

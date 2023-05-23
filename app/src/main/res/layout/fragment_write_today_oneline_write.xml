@@ -18,13 +18,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_write_today_oneline_write_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_write_today_oneline_write_back"
             android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_height="56dp"
             android:padding="10dp"
             android:layout_marginStart="10dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_write_today_oneline_write_bottom"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <View
@@ -114,6 +114,13 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_write_today_oneline_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="56dp"/>
+
     <com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.component.OnelineVerticalSeekbar
         android:id="@+id/partial_write_today_oneline_seekbar"
         android:layout_width="wrap_content"
@@ -122,5 +129,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="16dp"/>
+
+    <com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.component.OnelineTextAttrSettingView
+        android:id="@+id/partial_write_today_oneline_text_attr_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintTop_toTopOf="@id/guideline_write_today_oneline_bottom"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
