@@ -4,6 +4,7 @@ import com.bookmark.bookmark_oneday.data.datasource.oneline_datasource.OnelineDa
 import com.bookmark.bookmark_oneday.data.models.dto.OneLineDto
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.OneLine
+import com.bookmark.bookmark_oneday.domain.model.OneLineContent
 import com.bookmark.bookmark_oneday.domain.model.PagingData
 import com.bookmark.bookmark_oneday.domain.repository.OnelineRepository
 import javax.inject.Inject
@@ -33,5 +34,9 @@ class OnelineRepositoryImpl @Inject constructor(
         }
 
         throw IllegalAccessException("response must be BaseResponse.Failure or BaseResponse.Success")
+    }
+
+    override suspend fun registerOneLine(oneLineContent: OneLineContent): BaseResponse<Nothing> {
+        return dataSource.registerOneline(oneLineContent)
     }
 }

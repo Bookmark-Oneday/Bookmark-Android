@@ -1,5 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -79,6 +80,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
 
         requireContext().applyStatusBarPadding(binding.clWriteTodayOnelineWriteToolbar)
         requireContext().applyBottomNavigationPadding(binding.clWriteTodayOnelineWriteBottom)
+
+        binding.imgWriteTodayOnelineThumbnail.setOnClickListener {
+            closeSoftKeyboard()
+        }
     }
 
     override fun onDestroy() {
@@ -133,23 +138,27 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             when (state) {
                 TodayOnelineWriteScreenState.TextEdit -> {
                     setEnableButtons(enable = true)
+                    setEnableEditView(enable = true)
                     setToEditMode()
+                    showSoftKeyboard()
                 }
                 TodayOnelineWriteScreenState.TextMove -> {
                     setEnableButtons(enable = true)
+                    setEnableEditView(enable = true)
                     setToMoveMode()
                 }
-                else -> {
+                TodayOnelineWriteScreenState.Uploading -> {
                     setEnableButtons(enable = false)
-                    setToMoveMode()
+                    setEnableEditView(enable = false)
                 }
             }
         }
 
-        viewModel.finishCall.collectLatestInLifecycle(viewLifecycleOwner) { finish ->
-            if (finish) {
-                requireActivity().finish()
+        viewModel.finishWithSuccess.collectLatestInLifecycle(viewLifecycleOwner) { registerSuccess ->
+            if (registerSuccess) {
+                requireActivity().setResult(RESULT_OK)
             }
+            requireActivity().finish()
         }
 
         viewModel.editTextDetailState.collectLatestInLifecycle(viewLifecycleOwner) { editTextDetailState ->
@@ -199,6 +208,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
         binding.btnWriteTodayOnelineWriteBack.isEnabled = enable
     }
 
+    private fun setEnableEditView(enable: Boolean) {
+        binding.partialWriteTodayOnelineContent.setEnable(enable)
+    }
+
     private fun setToEditMode() {
         binding.btnWriteTodayOnelineWriteNext.setText(R.string.label_write_today_oneline_write_complete)
         binding.partialWriteTodayOnelineContent.setToEditMode()
@@ -243,7 +256,6 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
         }
     }
     private fun showSoftKeyboard() {
-        binding.partialWriteTodayOnelineContent.setEditTextFocus(true)
         val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(requireActivity().currentFocus, 0)
     }
@@ -251,7 +263,6 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
     private fun closeSoftKeyboard() {
         val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(binding.partialWriteTodayOnelineContent.getFocusViewWindowToken(), 0)
-        binding.partialWriteTodayOnelineContent.setEditTextFocus(focus = false)
     }
 
     private fun moveSettingViewY(translationY : Float) {

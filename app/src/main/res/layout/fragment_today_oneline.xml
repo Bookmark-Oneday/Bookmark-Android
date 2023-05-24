@@ -4,18 +4,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/deep_orange">
+        android:background="@color/gray">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager_today_oneline"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/black_transparent_15"/>
 
         <com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.component.TodayOnelineToolbar
             android:id="@+id/partial_today_online_toolbar"

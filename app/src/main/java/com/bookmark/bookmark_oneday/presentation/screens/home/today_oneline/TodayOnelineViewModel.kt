@@ -32,7 +32,7 @@ class TodayOnelineViewModel @Inject constructor(
         tryGetFirstPagingData()
     }
 
-    private fun tryGetFirstPagingData() {
+    fun tryGetFirstPagingData() {
         viewModelScope.launch {
             pagingCheckData.setRefresh()
             event.send(TodayOnelineEvent.DataLoading)

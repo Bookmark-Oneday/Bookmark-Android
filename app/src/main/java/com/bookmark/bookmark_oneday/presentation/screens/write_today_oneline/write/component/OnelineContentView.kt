@@ -65,6 +65,11 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
         moveAvailable = false
     }
 
+    // 업로드 중 수정이 불가능 하도록 구현
+    fun setEnable(enable : Boolean) {
+        binding.clWriteTodayOnelineContent.isEnabled = enable
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     fun initOnPositionChanged(callback : (Float, Float) -> Unit) {
         binding.clWriteTodayOnelineContent.setOnLongClickListener {
@@ -208,14 +213,6 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
 
     fun setBookText(text : String) {
         binding.labelWriteTodayOnelineBookInfo.text = text
-    }
-
-    fun setEditTextFocus(focus : Boolean) {
-        if (focus) {
-            binding.edittextWriteTodayOnelineContent.requestFocus()
-        } else {
-            binding.edittextWriteTodayOnelineContent.clearFocus()
-        }
     }
 
     /** content view 의 위치를 비율값을 사용해 조정합니다.

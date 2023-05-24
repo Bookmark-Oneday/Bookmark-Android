@@ -7,8 +7,8 @@ data class OneLine(
     val bookInfo : String,
     val oneliner : String,
     val textColor : String,
-    val topPosition : Float,
-    val leftPosition : Float,
+    val centerYPosition : Float,
+    val centerXPosition : Float,
     val fontSize : Int,
     val backgroundImageUrl : String ?= null,
     val createdAt : TimeString

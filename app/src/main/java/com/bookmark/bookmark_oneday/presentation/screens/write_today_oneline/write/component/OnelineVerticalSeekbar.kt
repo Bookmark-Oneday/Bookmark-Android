@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.widget.FrameLayout
+import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.PartialWriteTodayOnelinetVerticalSeekbarBinding
 import kotlin.math.roundToInt
 
@@ -17,15 +18,23 @@ class OnelineVerticalSeekbar(context : Context, attrs : AttributeSet) : FrameLay
     private var thumbSize = NOT_INIT
     private val maxYPosition : Int get() { return layoutHeight - thumbSize }
 
-    // todo attr 로 받아오도록 변경
-    private val min = 3
-    private val max = 150
+    private val min : Int
+    private val max : Int
 
     init {
         val inflater = LayoutInflater.from(context)
         binding = PartialWriteTodayOnelinetVerticalSeekbarBinding.inflate(inflater, this, true)
 
         initDragEvent()
+
+        context.theme.obtainStyledAttributes(attrs, R.styleable.OnelineVerticalSeekbar, 0, 0).run {
+            try {
+                min = getInteger(R.styleable.OnelineVerticalSeekbar_minValue, 11)
+                max = getInteger(R.styleable.OnelineVerticalSeekbar_maxValue, 40)
+            } finally {
+                recycle()
+            }
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

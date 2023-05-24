@@ -1,9 +1,11 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.bookmark.bookmark_oneday.R
@@ -19,6 +21,11 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
 
     private val viewModel : TodayOnelineViewModel by activityViewModels()
     private var isInit = true
+    private val writeTodayOneLineScreenLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            viewModel.tryGetFirstPagingData()
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -36,7 +43,7 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
 
         binding.partialTodayOnlineToolbar.setWriteButtonEvent {
             val intent = Intent(requireContext(), WriteTodayOnelineActivity::class.java)
-            requireActivity().startActivity(intent)
+            writeTodayOneLineScreenLauncher.launch(intent)
         }
     }
     private fun setPager() {
@@ -100,7 +107,7 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
 
     private fun changeViewPagerPosition(position : Int?) {
         if (position != null &&
-            binding.pagerTodayOneline.currentItem - 1 != position) {
+            binding.pagerTodayOneline.currentItem != position) {
             binding.pagerTodayOneline.post {
                 binding.pagerTodayOneline.setCurrentItem(position, !isInit)
                 isInit = false
