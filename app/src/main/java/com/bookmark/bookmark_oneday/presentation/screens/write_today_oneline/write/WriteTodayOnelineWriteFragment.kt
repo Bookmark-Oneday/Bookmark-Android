@@ -134,15 +134,18 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             when (state) {
                 TodayOnelineWriteScreenState.TextEdit -> {
                     setEnableButtons(enable = true)
+                    setEnableEditView(enable = true)
                     setToEditMode()
                     showSoftKeyboard()
                 }
                 TodayOnelineWriteScreenState.TextMove -> {
                     setEnableButtons(enable = true)
+                    setEnableEditView(enable = true)
                     setToMoveMode()
                 }
                 TodayOnelineWriteScreenState.Uploading -> {
                     setEnableButtons(enable = false)
+                    setEnableEditView(enable = false)
                 }
             }
         }
@@ -199,6 +202,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
     private fun setEnableButtons(enable : Boolean) {
         binding.btnWriteTodayOnelineWriteNext.isEnabled = enable
         binding.btnWriteTodayOnelineWriteBack.isEnabled = enable
+    }
+
+    private fun setEnableEditView(enable: Boolean) {
+        binding.partialWriteTodayOnelineContent.setEnable(enable)
     }
 
     private fun setToEditMode() {

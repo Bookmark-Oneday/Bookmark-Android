@@ -65,6 +65,11 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
         moveAvailable = false
     }
 
+    // 업로드 중 수정이 불가능 하도록 구현
+    fun setEnable(enable : Boolean) {
+        binding.clWriteTodayOnelineContent.isEnabled = enable
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     fun initOnPositionChanged(callback : (Float, Float) -> Unit) {
         binding.clWriteTodayOnelineContent.setOnLongClickListener {
