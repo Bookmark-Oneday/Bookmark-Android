@@ -3,7 +3,10 @@ package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.wr
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.BookItem
+import com.bookmark.bookmark_oneday.domain.model.OneLineContent
+import com.bookmark.bookmark_oneday.domain.usecase.UseCaseRegisterOneLine
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.EditTextDetailState
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.Font
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.Position
@@ -18,11 +21,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
+    private val useCaseRegisterOneLine: UseCaseRegisterOneLine,
     @Assisted val book : BookItem
 ) : ViewModel() {
 
-    private val _finishCall = MutableSharedFlow<Boolean>()
-    val finishCall = _finishCall.asSharedFlow()
+    private val _finishWithSuccess = MutableSharedFlow<Boolean>()
+    val finishWithSuccess = _finishWithSuccess.asSharedFlow()
 
     private val _content = MutableStateFlow("")
     val content = _content.asStateFlow()
@@ -87,15 +91,17 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
         when (_currentState.value) {
             TodayOnelineWriteScreenState.TextEdit -> {
                 viewModelScope.launch {
-                    _finishCall.emit(true)
+                    _finishWithSuccess.emit(false)
                 }
             }
             TodayOnelineWriteScreenState.TextMove -> {
                 viewModelScope.launch {
-                    _finishCall.emit(true)
+                    _finishWithSuccess.emit(false)
                 }
             }
-            else -> {}
+            else -> {
+                // 업로드중인 경우, 뒤로가기 버튼을 눌러도 아무것도 하지 않습니다.
+            }
         }
     }
 
@@ -106,7 +112,28 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
                 _editTextDetailState.value = EditTextDetailState.Normal
             }
             TodayOnelineWriteScreenState.TextMove -> {
-                // api
+                val oneLineContent = OneLineContent(
+                    id = book.id,
+                    bookTitle = book.title,
+                    authors = book.author.split(","),
+                    oneliner = _content.value,
+                    textColor = _textColor.value,
+                    textSize = _textSize.toString(),
+                    centerX = _position.value.x.toString(),
+                    centerY = _position.value.y.toString(),
+                    font = _font.value.title,
+                    backgroundImageUri = _backgroundUri.value
+                )
+                viewModelScope.launch {
+                    _currentState.value = TodayOnelineWriteScreenState.Uploading
+                    val response = useCaseRegisterOneLine(oneLineContent)
+
+                    if (response is BaseResponse.EmptySuccess) {
+                        _finishWithSuccess.emit(true)
+                    } else {
+                        _currentState.value = TodayOnelineWriteScreenState.TextMove
+                    }
+                }
             }
             else -> {}
         }

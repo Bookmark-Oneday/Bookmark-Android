@@ -1,5 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -140,17 +141,17 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
                     setEnableButtons(enable = true)
                     setToMoveMode()
                 }
-                else -> {
+                TodayOnelineWriteScreenState.Uploading -> {
                     setEnableButtons(enable = false)
-                    setToMoveMode()
                 }
             }
         }
 
-        viewModel.finishCall.collectLatestInLifecycle(viewLifecycleOwner) { finish ->
-            if (finish) {
-                requireActivity().finish()
+        viewModel.finishWithSuccess.collectLatestInLifecycle(viewLifecycleOwner) { registerSuccess ->
+            if (registerSuccess) {
+                requireActivity().setResult(RESULT_OK)
             }
+            requireActivity().finish()
         }
 
         viewModel.editTextDetailState.collectLatestInLifecycle(viewLifecycleOwner) { editTextDetailState ->
