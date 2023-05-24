@@ -80,6 +80,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
 
         requireContext().applyStatusBarPadding(binding.clWriteTodayOnelineWriteToolbar)
         requireContext().applyBottomNavigationPadding(binding.clWriteTodayOnelineWriteBottom)
+
+        binding.imgWriteTodayOnelineThumbnail.setOnClickListener {
+            closeSoftKeyboard()
+        }
     }
 
     override fun onDestroy() {
