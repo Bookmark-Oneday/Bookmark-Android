@@ -52,27 +52,32 @@ class TodayOnelineAdapter : ListAdapter<OneLine, TodayOnelineAdapter.TodayOnelin
             binding.labelTodayOnelineContent.textSize = oneline.fontSize.toFloat()
             binding.labelTodayOnelineBookInfo.setTextColor(Color.parseColor(oneline.textColor))
             binding.labelTodayOnelineContent.setTextColor(Color.parseColor(oneline.textColor))
-            moveViewInContentArea(binding.llTodayOnelineContent, oneline.topPosition, oneline.leftPosition)
+            moveViewInContentArea(binding.llTodayOnelineContent, oneline.centerYPosition, oneline.centerXPosition)
 
         }
 
-        private fun moveViewInContentArea(view : View, topPositionRatio : Float, leftPositionRatio : Float) {
+        private fun moveViewInContentArea(view : View, centerYPositionRatio : Float, centerXPositionRatio : Float) {
             view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
             val viewWidth = view.measuredWidth
             val viewHeight = view.measuredHeight
-            val leftPositionPixel = ((right - left) * leftPositionRatio).toInt() + left
-            val topPositionPixel = ((bottom - top) * topPositionRatio).toInt() + top
+
+            val leftPositionPixel = centerXPositionRatio * (right + left) - viewWidth / 2
+            val topPositionPixel = centerYPositionRatio * (bottom + top) - viewHeight / 2
 
             if (leftPositionPixel + viewWidth > right) {
                 view.x = (right - viewWidth).toFloat()
+            } else if (leftPositionPixel < left) {
+                view.x = left.toFloat()
             } else {
-                view.x = leftPositionPixel.toFloat()
+                view.x = leftPositionPixel
             }
 
             if (topPositionPixel + viewHeight > bottom) {
                 view.y = (bottom - viewHeight).toFloat()
+            } else if (topPositionPixel < top) {
+                view.y = top.toFloat()
             } else {
-                view.y = topPositionPixel.toFloat()
+                view.y = topPositionPixel
             }
         }
     }
