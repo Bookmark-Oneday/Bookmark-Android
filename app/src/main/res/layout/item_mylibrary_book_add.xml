@@ -19,6 +19,16 @@
             android:background="@color/gray"/>
     </com.google.android.material.card.MaterialCardView>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_all_add"
+        android:tint="@color/default_background"
+        app:layout_constraintStart_toStartOf="@id/cv_item_mylibrary_book"
+        app:layout_constraintEnd_toEndOf="@id/cv_item_mylibrary_book"
+        app:layout_constraintTop_toTopOf="@id/cv_item_mylibrary_book"
+        app:layout_constraintBottom_toBottomOf="@id/cv_item_mylibrary_book"/>
+
     <!-- item_mylibrary_book_normal과 높이를 맞추기 위해 빈 textView 를 넣었습니다. -->
     <TextView
         android:id="@+id/label_item_mylibrary_book_title"
