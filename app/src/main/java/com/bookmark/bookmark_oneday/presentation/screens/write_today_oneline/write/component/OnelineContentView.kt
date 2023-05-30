@@ -31,8 +31,8 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
     private var longClick = false
     private var moveAvailable = true
 
-    private var currentPositionX = NOT_INIT_FLOAT
-    private var currentPositionY = NOT_INIT_FLOAT
+    private var originalPositionX = NOT_INIT_FLOAT
+    private var originalPositionY = NOT_INIT_FLOAT
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -132,8 +132,8 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
                         (binding.clWriteTodayOnelineContent.y + contentViewHeight / 2)  / layoutHeight
                     )
 
-                    currentPositionX = binding.clWriteTodayOnelineContent.x
-                    currentPositionY = binding.clWriteTodayOnelineContent.y
+                    originalPositionX = binding.clWriteTodayOnelineContent.x
+                    originalPositionY = binding.clWriteTodayOnelineContent.y
 
                     if (longClick) {
                         longClick = false
@@ -236,6 +236,19 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
 
         binding.clWriteTodayOnelineContent.x = positionX
         binding.clWriteTodayOnelineContent.y = positionY
+
+        originalPositionX = positionX
+        originalPositionY = positionY
+    }
+
+    fun applyBottomViewTranslation(translationY : Float) {
+        if (originalPositionY == NOT_INIT_FLOAT) return
+
+        if (layoutHeight - originalPositionY <= translationY) {
+            binding.clWriteTodayOnelineContent.y = layoutHeight - translationY - contentViewHeight
+        } else {
+            binding.clWriteTodayOnelineContent.y = originalPositionY
+        }
     }
 
     fun setFont(fontResourceId : Int) {

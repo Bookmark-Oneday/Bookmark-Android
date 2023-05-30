@@ -22,6 +22,7 @@ import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.wri
 import com.bookmark.bookmark_oneday.presentation.util.applyBottomNavigationPadding
 import com.bookmark.bookmark_oneday.presentation.util.applyStatusBarPadding
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
+import com.bookmark.bookmark_oneday.presentation.util.dpToPx
 import com.bookmark.bookmark_oneday.presentation.util.getBottomNavigationHeight
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
@@ -270,7 +271,9 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
     }
 
     private fun moveSettingViewY(translationY : Float) {
+        val bottomSettingViewHeight = dpToPx(requireContext(), 56)
         binding.partialWriteTodayOnelineTextAttrSetting.translationY = translationY
+        binding.partialWriteTodayOnelineContent.applyBottomViewTranslation(-translationY + bottomSettingViewHeight.toFloat())
     }
 
 }
