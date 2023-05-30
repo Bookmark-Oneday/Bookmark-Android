@@ -2,6 +2,6 @@ package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.wr
 
 sealed class TodayOnelineWriteScreenState {
     object TextMove : TodayOnelineWriteScreenState()
-    object TextEdit : TodayOnelineWriteScreenState()
+    class TextEdit(val editTextDetailState: EditTextDetailState) : TodayOnelineWriteScreenState()
     object Uploading : TodayOnelineWriteScreenState()
 }

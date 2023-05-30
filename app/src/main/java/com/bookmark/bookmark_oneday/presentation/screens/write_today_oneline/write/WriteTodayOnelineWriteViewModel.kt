@@ -34,9 +34,6 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
     private val _currentState = MutableStateFlow<TodayOnelineWriteScreenState>(TodayOnelineWriteScreenState.TextMove)
     val currentState = _currentState.asStateFlow()
 
-    private val _editTextDetailState = MutableStateFlow<EditTextDetailState>(EditTextDetailState.Normal)
-    val editTextDetailState = _editTextDetailState.asStateFlow()
-
     private val _textColor = MutableStateFlow("#000000")
     val textColor = _textColor.asStateFlow()
 
@@ -51,6 +48,9 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
 
     private val _font = MutableStateFlow(Font.defaultList[0])
     val font = _font.asStateFlow()
+
+    private val _bottomViewTranslationY = MutableStateFlow(0f)
+    val bottomViewTranslationY = _bottomViewTranslationY.asStateFlow()
 
     var imeHeight = 0
 
@@ -83,13 +83,12 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
     }
 
     fun changeToTextEditMode() {
-        _currentState.value = TodayOnelineWriteScreenState.TextEdit
-        _editTextDetailState.value = EditTextDetailState.Normal
+        _currentState.value = TodayOnelineWriteScreenState.TextEdit(EditTextDetailState.IME)
     }
 
     fun handleBackPress() {
         when (_currentState.value) {
-            TodayOnelineWriteScreenState.TextEdit -> {
+            is TodayOnelineWriteScreenState.TextEdit -> {
                 viewModelScope.launch {
                     _finishWithSuccess.emit(false)
                 }
@@ -107,9 +106,8 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
 
     fun handleNextPress() {
         when (_currentState.value) {
-            TodayOnelineWriteScreenState.TextEdit -> {
+            is TodayOnelineWriteScreenState.TextEdit -> {
                 _currentState.value = TodayOnelineWriteScreenState.TextMove
-                _editTextDetailState.value = EditTextDetailState.Normal
             }
             TodayOnelineWriteScreenState.TextMove -> {
                 val oneLineContent = OneLineContent(
@@ -140,20 +138,27 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
     }
 
     fun setEditTextDetailState(state : EditTextDetailState) {
-        if (_currentState.value !is TodayOnelineWriteScreenState.TextEdit) return
+        val currentState = _currentState.value
+        if (currentState !is TodayOnelineWriteScreenState.TextEdit) return
 
-        if (_editTextDetailState.value is EditTextDetailState.Font && state is EditTextDetailState.Font) {
-            _editTextDetailState.value = EditTextDetailState.IME
+        val detailState = currentState.editTextDetailState
+        if (detailState is EditTextDetailState.Font && state is EditTextDetailState.Font) {
+            _currentState.value = TodayOnelineWriteScreenState.TextEdit(EditTextDetailState.IME)
         } else {
-            _editTextDetailState.value = state
+            _currentState.value = TodayOnelineWriteScreenState.TextEdit(state)
         }
     }
 
-    fun hideSoftKeyboard() {
-        if (_currentState.value !is TodayOnelineWriteScreenState.TextEdit) return
+    fun setBottomViewTranslationY(y : Float) {
+        _bottomViewTranslationY.value = y
+    }
 
-        if (_editTextDetailState.value is EditTextDetailState.IME) {
-            _editTextDetailState.value = EditTextDetailState.Normal
+    fun closeIme() {
+        val state = _currentState.value
+        if (state !is TodayOnelineWriteScreenState.TextEdit) return
+
+        if (state.editTextDetailState == EditTextDetailState.IME) {
+            _currentState.value = TodayOnelineWriteScreenState.TextEdit(EditTextDetailState.Normal)
         }
     }
 

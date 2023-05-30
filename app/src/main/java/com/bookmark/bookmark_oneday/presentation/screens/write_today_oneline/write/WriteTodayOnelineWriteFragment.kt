@@ -82,8 +82,9 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
         requireContext().applyBottomNavigationPadding(binding.clWriteTodayOnelineWriteBottom)
 
         binding.imgWriteTodayOnelineThumbnail.setOnClickListener {
-            closeSoftKeyboard()
+            viewModel.setEditTextDetailState(EditTextDetailState.Normal)
         }
+
     }
 
     override fun onDestroy() {
@@ -112,6 +113,7 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             setOnTextChanged(viewModel::setText)
             setBookText(viewModel.getBookText())
             initModeSwitchEvent(viewModel::changeToTextEditMode)
+            initEditTextOnClick{viewModel.setEditTextDetailState(EditTextDetailState.IME)}
         }
     }
 
@@ -136,11 +138,12 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
     private fun setStateObserver() {
         viewModel.currentState.collectLatestInLifecycle(viewLifecycleOwner) { state ->
             when (state) {
-                TodayOnelineWriteScreenState.TextEdit -> {
+                is TodayOnelineWriteScreenState.TextEdit -> {
                     setEnableButtons(enable = true)
                     setEnableEditView(enable = true)
                     setToEditMode()
-                    showSoftKeyboard()
+                    binding.partialWriteTodayOnelineTextAttrSetting.hideColorSelectView()
+                    applyEditTextDetailState(state.editTextDetailState)
                 }
                 TodayOnelineWriteScreenState.TextMove -> {
                     setEnableButtons(enable = true)
@@ -161,27 +164,25 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             requireActivity().finish()
         }
 
-        viewModel.editTextDetailState.collectLatestInLifecycle(viewLifecycleOwner) { editTextDetailState ->
-            binding.partialWriteTodayOnelineTextAttrSetting.hideColorSelectView()
-            when (editTextDetailState) {
-                EditTextDetailState.Normal -> {
-                    closeSoftKeyboard()
-                    moveSettingViewY(-requireContext().getBottomNavigationHeight().toFloat())
-                    binding.partialWriteTodayOnelineTextAttrSetting.toHideMode()
-                }
-                EditTextDetailState.Font -> {
-                    closeSoftKeyboard()
-                    val translationY =
-                        -(requireContext().getBottomNavigationHeight()+binding.partialWriteTodayOnelineTextAttrSetting.getFontViewHeight()).toFloat()
-                    moveSettingViewY(translationY)
-                    binding.partialWriteTodayOnelineTextAttrSetting.toFontSettingMode()
-                }
-                EditTextDetailState.IME -> {
-                    showSoftKeyboard()
-                    moveSettingViewY(-viewModel.imeHeight.toFloat())
-                    binding.partialWriteTodayOnelineTextAttrSetting.toSoftKeyboardMode()
-                }
+    }
 
+    private fun applyEditTextDetailState(editTextDetailState: EditTextDetailState) {
+        when (editTextDetailState) {
+            EditTextDetailState.Normal -> {
+                closeSoftKeyboard()
+                viewModel.setBottomViewTranslationY(-requireContext().getBottomNavigationHeight().toFloat())
+                binding.partialWriteTodayOnelineTextAttrSetting.toHideMode()
+            }
+            EditTextDetailState.Font -> {
+                closeSoftKeyboard()
+                val translationY =
+                    -(requireContext().getBottomNavigationHeight()+binding.partialWriteTodayOnelineTextAttrSetting.getFontViewHeight()).toFloat()
+                viewModel.setBottomViewTranslationY(translationY)
+                binding.partialWriteTodayOnelineTextAttrSetting.toFontSettingMode()
+            }
+            EditTextDetailState.IME -> {
+                showSoftKeyboard()
+                binding.partialWriteTodayOnelineTextAttrSetting.toSoftKeyboardMode()
             }
         }
     }
@@ -194,15 +195,14 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
 
             if (imeVisible) {
                 viewModel.imeHeight = imeHeight
-                viewModel.setEditTextDetailState(EditTextDetailState.IME)
+                viewModel.setBottomViewTranslationY(-imeHeight.toFloat())
             } else {
-                viewModel.hideSoftKeyboard()
+                viewModel.closeIme()
             }
 
             insets
         }
     }
-
     private fun setEnableButtons(enable : Boolean) {
         binding.btnWriteTodayOnelineWriteNext.isEnabled = enable
         binding.btnWriteTodayOnelineWriteBack.isEnabled = enable
@@ -253,6 +253,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
 
         viewModel.font.collectLatestInLifecycle(viewLifecycleOwner) { font ->
             binding.partialWriteTodayOnelineTextAttrSetting.setFont(font)
+        }
+
+        viewModel.bottomViewTranslationY.collectLatestInLifecycle(viewLifecycleOwner) { y ->
+            moveSettingViewY(y)
         }
     }
     private fun showSoftKeyboard() {

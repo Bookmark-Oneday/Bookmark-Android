@@ -31,6 +31,9 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
     private var longClick = false
     private var moveAvailable = true
 
+    private var currentPositionX = NOT_INIT_FLOAT
+    private var currentPositionY = NOT_INIT_FLOAT
+
     init {
         val inflater = LayoutInflater.from(context)
         binding = PartialWriteTodayOnelineContentBinding.inflate(inflater, this, true)
@@ -63,6 +66,10 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
     fun setToEditMode() {
         binding.edittextWriteTodayOnelineContent.setReadOnly(readOnly = false)
         moveAvailable = false
+    }
+
+    fun initEditTextOnClick(callback : () -> Unit) {
+        binding.edittextWriteTodayOnelineContent.initEditTextOnClick(callback)
     }
 
     // 업로드 중 수정이 불가능 하도록 구현
@@ -124,6 +131,9 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
                         (binding.clWriteTodayOnelineContent.x + contentViewWidth / 2) / layoutWidth,
                         (binding.clWriteTodayOnelineContent.y + contentViewHeight / 2)  / layoutHeight
                     )
+
+                    currentPositionX = binding.clWriteTodayOnelineContent.x
+                    currentPositionY = binding.clWriteTodayOnelineContent.y
 
                     if (longClick) {
                         longClick = false
