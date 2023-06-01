@@ -1,8 +1,8 @@
 package com.bookmark.bookmark_oneday.data.datasource.oneline_datasource
 
 import com.bookmark.bookmark_oneday.data.models.dto.OneLineDto
+import com.bookmark.bookmark_oneday.data.models.request_body.RegisterOneLineRequestBody
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.OneLineContent
 import com.bookmark.bookmark_oneday.domain.model.PagingData
 import kotlinx.coroutines.delay
 import javax.inject.Inject
@@ -112,7 +112,7 @@ class TestOnelineDataSource @Inject constructor() : OnelineDataSource {
         ),
     )
 
-    override suspend fun registerOneline(oneLineContent: OneLineContent): BaseResponse<Nothing> {
+    override suspend fun registerOneline(oneLineContent: RegisterOneLineRequestBody): BaseResponse<Nothing> {
         delay(1500L)
         return BaseResponse.EmptySuccess
     }

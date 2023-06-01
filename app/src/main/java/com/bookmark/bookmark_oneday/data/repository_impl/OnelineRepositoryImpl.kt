@@ -2,6 +2,7 @@ package com.bookmark.bookmark_oneday.data.repository_impl
 
 import com.bookmark.bookmark_oneday.data.datasource.oneline_datasource.OnelineDataSource
 import com.bookmark.bookmark_oneday.data.models.dto.OneLineDto
+import com.bookmark.bookmark_oneday.data.models.request_body.RegisterOneLineRequestBody
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.OneLine
 import com.bookmark.bookmark_oneday.domain.model.OneLineContent
@@ -37,6 +38,7 @@ class OnelineRepositoryImpl @Inject constructor(
     }
 
     override suspend fun registerOneLine(oneLineContent: OneLineContent): BaseResponse<Nothing> {
-        return dataSource.registerOneline(oneLineContent)
+        val requestBody = RegisterOneLineRequestBody.fromOnelineContent(oneLineContent = oneLineContent)
+        return dataSource.registerOneline(requestBody)
     }
 }

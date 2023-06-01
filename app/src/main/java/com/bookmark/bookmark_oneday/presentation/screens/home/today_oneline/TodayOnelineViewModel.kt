@@ -7,6 +7,7 @@ import com.bookmark.bookmark_oneday.domain.model.PagingCheckData
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetOneline
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineEvent
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineState
+import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.ViewPagerPosition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
@@ -70,7 +71,7 @@ class TodayOnelineViewModel @Inject constructor(
     }
 
     fun setCurrentPage(pageIdx : Int) {
-        if (state.value.currentPosition == pageIdx) return
+        if (state.value.viewPagerPosition?.position == pageIdx) return
 
         viewModelScope.launch {
             event.send(TodayOnelineEvent.ChangePagerPosition(pageIdx))
@@ -81,7 +82,7 @@ class TodayOnelineViewModel @Inject constructor(
         return when (event) {
             is TodayOnelineEvent.ChangePagerPosition -> {
                 val userProfile = if(state.onelineList.isEmpty()) null else state.onelineList[event.position].userProfile
-                state.copy(currentPosition = event.position, userProfile = userProfile)
+                state.copy(viewPagerPosition = ViewPagerPosition(position = event.position), userProfile = userProfile)
             }
             TodayOnelineEvent.DataLoading -> {
                 state.copy(
@@ -97,31 +98,30 @@ class TodayOnelineViewModel @Inject constructor(
             }
             is TodayOnelineEvent.DataLoadingSuccess -> {
                 val dataList = state.onelineList + event.pagingData.dataList
-                val position = if (event.pagingData.dataList.isEmpty()) {
-                    state.currentPosition
+
+                val viewPagerPosition = if (event.pagingData.dataList.isEmpty()) {
+                    state.viewPagerPosition
                 } else {
-                    state.onelineList.size
+                    ViewPagerPosition(position = state.onelineList.size)
                 }
-                val userProfile = if (position != null) {
-                    dataList[position].userProfile
-                } else {
-                    null
+
+                val userProfile = viewPagerPosition?.let {
+                    dataList[viewPagerPosition.position].userProfile
                 }
 
                 state.copy(
-                    currentPosition = position,
+                    viewPagerPosition = viewPagerPosition,
                     onelineList = dataList,
                     showLoading = false,
                     showLoadingFail = false,
                     userProfile = userProfile
-
                 )
             }
             is TodayOnelineEvent.FirstPageDataLoadingSuccess -> {
                 val dataList = event.pagingData.dataList
                 val userProfile = dataList[0].userProfile
                 state.copy(
-                    currentPosition = 0,
+                    viewPagerPosition = ViewPagerPosition(0, false),
                     onelineList = dataList,
                     showLoading = false,
                     showLoadingFail = false,
@@ -130,4 +130,5 @@ class TodayOnelineViewModel @Inject constructor(
             }
         }
     }
+
 }

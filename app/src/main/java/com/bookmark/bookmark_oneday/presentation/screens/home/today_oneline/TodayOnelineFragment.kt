@@ -13,6 +13,7 @@ import com.bookmark.bookmark_oneday.databinding.FragmentTodayOnelineBinding
 import com.bookmark.bookmark_oneday.presentation.adapter.today_oneline.TodayOnelineAdapter
 import com.bookmark.bookmark_oneday.presentation.base.DataBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.home.HomeActivity
+import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.ViewPagerPosition
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.WriteTodayOnelineActivity
 import com.bookmark.bookmark_oneday.presentation.util.applyStatusBarPadding
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
@@ -20,7 +21,6 @@ import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.layout.fragment_today_oneline) {
 
     private val viewModel : TodayOnelineViewModel by activityViewModels()
-    private var isInit = true
     private val writeTodayOneLineScreenLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             viewModel.tryGetFirstPagingData()
@@ -61,7 +61,7 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
 
                 if (state == ViewPager2.SCROLL_STATE_IDLE &&
                     previousState == ViewPager2.SCROLL_STATE_DRAGGING &&
-                    viewModel.state.value.currentPosition != 0
+                    viewModel.state.value.viewPagerPosition?.position != 0
                 ) {
                     viewModel.tryGetNextPagingData()
                 }
@@ -100,17 +100,16 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
             (binding.pagerTodayOneline.adapter as TodayOnelineAdapter).submitList(state.onelineList)
             binding.progressTodayOnelineLoading.visibility = if (state.showLoading) View.VISIBLE else View.INVISIBLE
             state.userProfile?.let { binding.partialTodayOnlineToolbar.setWriterProfile(it) }
-            changeViewPagerPosition(state.currentPosition)
+            changeViewPagerPosition(state.viewPagerPosition)
             binding.pagerTodayOneline.isUserInputEnabled = !state.showLoading
         }
     }
 
-    private fun changeViewPagerPosition(position : Int?) {
-        if (position != null &&
-            binding.pagerTodayOneline.currentItem != position) {
+    private fun changeViewPagerPosition(viewPagerPosition: ViewPagerPosition?) {
+        if (viewPagerPosition != null &&
+            binding.pagerTodayOneline.currentItem != viewPagerPosition.position) {
             binding.pagerTodayOneline.post {
-                binding.pagerTodayOneline.setCurrentItem(position, !isInit)
-                isInit = false
+                binding.pagerTodayOneline.setCurrentItem(viewPagerPosition.position, viewPagerPosition.useAnimation)
             }
         }
     }

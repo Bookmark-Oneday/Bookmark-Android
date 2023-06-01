@@ -65,4 +65,10 @@ class OnelineEditText(context : Context, attrs : AttributeSet) : FrameLayout(con
         binding.edittextWriteTodayOnelineEdit.typeface = ResourcesCompat.getFont(context, fontResourceId)
         binding.labelWriteTodayOnelineText.typeface = ResourcesCompat.getFont(context, fontResourceId)
     }
+
+    fun initEditTextOnClick(callback : () -> Unit) {
+        binding.edittextWriteTodayOnelineEdit.setOnClickListener {
+            callback()
+        }
+    }
 }

@@ -31,6 +31,9 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
     private var longClick = false
     private var moveAvailable = true
 
+    private var originalPositionX = NOT_INIT_FLOAT
+    private var originalPositionY = NOT_INIT_FLOAT
+
     init {
         val inflater = LayoutInflater.from(context)
         binding = PartialWriteTodayOnelineContentBinding.inflate(inflater, this, true)
@@ -63,6 +66,10 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
     fun setToEditMode() {
         binding.edittextWriteTodayOnelineContent.setReadOnly(readOnly = false)
         moveAvailable = false
+    }
+
+    fun initEditTextOnClick(callback : () -> Unit) {
+        binding.edittextWriteTodayOnelineContent.initEditTextOnClick(callback)
     }
 
     // 업로드 중 수정이 불가능 하도록 구현
@@ -124,6 +131,9 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
                         (binding.clWriteTodayOnelineContent.x + contentViewWidth / 2) / layoutWidth,
                         (binding.clWriteTodayOnelineContent.y + contentViewHeight / 2)  / layoutHeight
                     )
+
+                    originalPositionX = binding.clWriteTodayOnelineContent.x
+                    originalPositionY = binding.clWriteTodayOnelineContent.y
 
                     if (longClick) {
                         longClick = false
@@ -226,6 +236,19 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
 
         binding.clWriteTodayOnelineContent.x = positionX
         binding.clWriteTodayOnelineContent.y = positionY
+
+        originalPositionX = positionX
+        originalPositionY = positionY
+    }
+
+    fun applyBottomViewTranslation(translationY : Float) {
+        if (originalPositionY == NOT_INIT_FLOAT) return
+
+        if (layoutHeight - originalPositionY <= translationY) {
+            binding.clWriteTodayOnelineContent.y = layoutHeight - translationY - contentViewHeight
+        } else {
+            binding.clWriteTodayOnelineContent.y = originalPositionY
+        }
     }
 
     fun setFont(fontResourceId : Int) {
