@@ -2,6 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.wr
 
 import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -244,7 +246,14 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
         }
 
         viewModel.backgroundUri.collectLatestInLifecycle(viewLifecycleOwner) { uri ->
-            uri?.let { Glide.with(this@WriteTodayOnelineWriteFragment).load(it).into(binding.imgWriteTodayOnelineThumbnail) }
+            if (uri == null) {
+                binding.imgWriteTodayOnelineWriteIcBackground.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.default_icon_tint))
+                binding.labelWriteTodayOnelineWriteSetBackground.setTextColor(ContextCompat.getColor(requireContext(), R.color.default_text))
+            } else {
+                Glide.with(this@WriteTodayOnelineWriteFragment).load(uri).into(binding.imgWriteTodayOnelineThumbnail)
+                binding.imgWriteTodayOnelineWriteIcBackground.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.labelWriteTodayOnelineWriteSetBackground.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
         }
 
         viewModel.textColor.collectLatestInLifecycle(viewLifecycleOwner) { colorString ->
