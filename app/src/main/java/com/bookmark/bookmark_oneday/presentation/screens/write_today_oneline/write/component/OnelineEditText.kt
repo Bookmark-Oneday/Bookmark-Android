@@ -1,9 +1,11 @@
 package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.component
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.res.ResourcesCompat
@@ -66,9 +68,17 @@ class OnelineEditText(context : Context, attrs : AttributeSet) : FrameLayout(con
         binding.labelWriteTodayOnelineText.typeface = ResourcesCompat.getFont(context, fontResourceId)
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     fun initEditTextOnClick(callback : () -> Unit) {
-        binding.edittextWriteTodayOnelineEdit.setOnClickListener {
-            callback()
+        binding.edittextWriteTodayOnelineEdit.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_UP -> {
+                    if (v.hasFocus()) return@setOnTouchListener true
+
+                    callback()
+                }
+            }
+            return@setOnTouchListener true
         }
     }
 

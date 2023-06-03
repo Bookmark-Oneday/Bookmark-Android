@@ -29,6 +29,7 @@ import com.bookmark.bookmark_oneday.presentation.util.getBottomNavigationHeight
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.math.min
 
 @AndroidEntryPoint
 class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOnelineWriteBinding>(
@@ -157,6 +158,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
                     setEnableButtons(enable = true)
                     setEnableEditView(enable = true)
                     setToMoveMode()
+
+                    // TextEdit 에서 돌아온 경우를 대비 위치 복원
+                    closeSoftKeyboard()
+                    viewModel.setBottomViewTranslationY(-requireContext().getBottomNavigationHeight().toFloat())
                 }
                 TodayOnelineWriteScreenState.Uploading -> {
                     setEnableButtons(enable = false)
@@ -201,9 +206,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
             val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
 
+            // onStop 후 다시 화면에 돌아왔을 때 간헐적으로 imeVisible 이 true 임에도 불구하고 height 가 0으로 표기된다.
             if (imeVisible) {
                 viewModel.imeHeight = imeHeight
-                viewModel.setBottomViewTranslationY(-imeHeight.toFloat())
+                viewModel.setBottomViewTranslationY(min( -imeHeight.toFloat(), -requireContext().getBottomNavigationHeight().toFloat()))
             } else {
                 viewModel.closeIme()
             }
