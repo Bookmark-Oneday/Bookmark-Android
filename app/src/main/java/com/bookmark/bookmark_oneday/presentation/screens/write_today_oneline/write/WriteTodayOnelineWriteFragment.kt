@@ -88,6 +88,11 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
 
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.setEditTextDetailState(EditTextDetailState.Normal)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         backPressedCallback.remove()
@@ -268,6 +273,7 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
     private fun closeSoftKeyboard() {
         val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(binding.partialWriteTodayOnelineContent.getFocusViewWindowToken(), 0)
+        binding.partialWriteTodayOnelineContent.clearEditTextFocus()
     }
 
     private fun moveSettingViewY(translationY : Float) {

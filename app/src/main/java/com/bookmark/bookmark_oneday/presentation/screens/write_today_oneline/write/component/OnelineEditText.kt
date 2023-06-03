@@ -71,4 +71,8 @@ class OnelineEditText(context : Context, attrs : AttributeSet) : FrameLayout(con
             callback()
         }
     }
+
+    fun clearEditTextFocus() {
+        binding.edittextWriteTodayOnelineEdit.clearFocus()
+    }
 }
