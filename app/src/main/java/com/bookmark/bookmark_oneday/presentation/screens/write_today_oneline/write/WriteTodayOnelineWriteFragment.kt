@@ -2,6 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.wr
 
 import android.app.Activity.RESULT_OK
 import android.content.Context
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,6 +29,7 @@ import com.bookmark.bookmark_oneday.presentation.util.getBottomNavigationHeight
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.math.min
 
 @AndroidEntryPoint
 class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOnelineWriteBinding>(
@@ -86,6 +89,11 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             viewModel.setEditTextDetailState(EditTextDetailState.Normal)
         }
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.setEditTextDetailState(EditTextDetailState.Normal)
     }
 
     override fun onDestroy() {
@@ -150,6 +158,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
                     setEnableButtons(enable = true)
                     setEnableEditView(enable = true)
                     setToMoveMode()
+
+                    // TextEdit 에서 돌아온 경우를 대비 위치 복원
+                    closeSoftKeyboard()
+                    viewModel.setBottomViewTranslationY(-requireContext().getBottomNavigationHeight().toFloat())
                 }
                 TodayOnelineWriteScreenState.Uploading -> {
                     setEnableButtons(enable = false)
@@ -194,9 +206,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
             val imeHeight = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
 
+            // onStop 후 다시 화면에 돌아왔을 때 간헐적으로 imeVisible 이 true 임에도 불구하고 height 가 0으로 표기된다.
             if (imeVisible) {
                 viewModel.imeHeight = imeHeight
-                viewModel.setBottomViewTranslationY(-imeHeight.toFloat())
+                viewModel.setBottomViewTranslationY(min( -imeHeight.toFloat(), -requireContext().getBottomNavigationHeight().toFloat()))
             } else {
                 viewModel.closeIme()
             }
@@ -239,7 +252,14 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
         }
 
         viewModel.backgroundUri.collectLatestInLifecycle(viewLifecycleOwner) { uri ->
-            uri?.let { Glide.with(this@WriteTodayOnelineWriteFragment).load(it).into(binding.imgWriteTodayOnelineThumbnail) }
+            if (uri == null) {
+                binding.imgWriteTodayOnelineWriteIcBackground.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.default_icon_tint))
+                binding.labelWriteTodayOnelineWriteSetBackground.setTextColor(ContextCompat.getColor(requireContext(), R.color.default_text))
+            } else {
+                Glide.with(this@WriteTodayOnelineWriteFragment).load(uri).into(binding.imgWriteTodayOnelineThumbnail)
+                binding.imgWriteTodayOnelineWriteIcBackground.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
+                binding.labelWriteTodayOnelineWriteSetBackground.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            }
         }
 
         viewModel.textColor.collectLatestInLifecycle(viewLifecycleOwner) { colorString ->
@@ -268,6 +288,7 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
     private fun closeSoftKeyboard() {
         val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(binding.partialWriteTodayOnelineContent.getFocusViewWindowToken(), 0)
+        binding.partialWriteTodayOnelineContent.clearEditTextFocus()
     }
 
     private fun moveSettingViewY(translationY : Float) {

@@ -11,6 +11,7 @@ import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.wri
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.Font
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.Position
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.TodayOnelineWriteScreenState
+import com.bookmark.bookmark_oneday.presentation.util.DarkModeChecker
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 
 class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
     private val useCaseRegisterOneLine: UseCaseRegisterOneLine,
+    darkModeChecker: DarkModeChecker,
     @Assisted val book : BookItem
 ) : ViewModel() {
 
@@ -34,7 +36,7 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
     private val _currentState = MutableStateFlow<TodayOnelineWriteScreenState>(TodayOnelineWriteScreenState.TextMove)
     val currentState = _currentState.asStateFlow()
 
-    private val _textColor = MutableStateFlow("#000000")
+    private val _textColor = MutableStateFlow(if (darkModeChecker.isDarkMode()) "#FFFFFF" else "#000000")
     val textColor = _textColor.asStateFlow()
 
     private val _backgroundUri = MutableStateFlow<String?>(null)

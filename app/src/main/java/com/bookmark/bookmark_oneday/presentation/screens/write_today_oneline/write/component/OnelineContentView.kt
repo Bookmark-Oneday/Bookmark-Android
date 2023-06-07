@@ -257,6 +257,10 @@ class OnelineContentView(context : Context, attrs : AttributeSet) : FrameLayout(
 
     fun getFocusViewWindowToken(): IBinder = binding.edittextWriteTodayOnelineContent.windowToken
 
+    fun clearEditTextFocus() {
+        binding.edittextWriteTodayOnelineContent.clearEditTextFocus()
+    }
+
     companion object {
         const val NOT_INIT = -1
         const val NOT_INIT_FLOAT = -1f

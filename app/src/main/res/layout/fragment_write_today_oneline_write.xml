@@ -103,7 +103,7 @@
                 android:src="@drawable/ic_today_oneline_background"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_write_today_oneline_write_set_background"
+                android:id="@+id/label_write_today_oneline_write_set_background"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
