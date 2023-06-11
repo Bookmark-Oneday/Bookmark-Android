@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:textSize="13sp"
+                android:gravity="center"
                 tools:text="차라투스트라는 이렇게 말했다, 프리드리히 니체"/>
 
         </LinearLayout>

@@ -8,7 +8,7 @@
         android:id="@+id/img_write_today_oneline_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitCenter"/>
+        android:scaleType="centerCrop"/>
 
     <View
         android:layout_width="match_parent"
