@@ -98,10 +98,20 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
     private fun setObserver() {
         viewModel.state.collectLatestInLifecycle(viewLifecycleOwner) { state ->
             (binding.pagerTodayOneline.adapter as TodayOnelineAdapter).submitList(state.onelineList)
-            binding.progressTodayOnelineLoading.visibility = if (state.showLoading) View.VISIBLE else View.INVISIBLE
+            setLoadingDialogVisibility(state.showLoading)
             state.userProfile?.let { binding.partialTodayOnlineToolbar.setWriterProfile(it) }
             changeViewPagerPosition(state.viewPagerPosition)
             binding.pagerTodayOneline.isUserInputEnabled = !state.showLoading
+        }
+    }
+
+    private fun setLoadingDialogVisibility(show : Boolean) {
+        if (show) {
+            binding.progressTodayOnelineLoading.visibility = View.VISIBLE
+            binding.progressTodayOnelineLoading.playAnimation()
+        } else {
+            binding.progressTodayOnelineLoading.visibility = View.INVISIBLE
+            binding.progressTodayOnelineLoading.pauseAnimation()
         }
     }
 
