@@ -99,6 +99,9 @@ dependencies {
 
     // google login
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
+
+    // lottie
+    implementation 'com.airbnb.android:lottie:6.0.1'
 }
 
 kapt {

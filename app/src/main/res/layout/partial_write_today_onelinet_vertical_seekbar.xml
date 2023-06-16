@@ -6,6 +6,7 @@
     tools:background="@color/orange">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_write_today_oneline_seekbar_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"

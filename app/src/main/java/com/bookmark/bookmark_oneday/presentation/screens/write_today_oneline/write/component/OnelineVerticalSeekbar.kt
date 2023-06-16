@@ -8,6 +8,8 @@ import android.view.MotionEvent
 import android.widget.FrameLayout
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.PartialWriteTodayOnelinetVerticalSeekbarBinding
+import com.bookmark.bookmark_oneday.presentation.util.VerticalDragChecker
+import com.bookmark.bookmark_oneday.presentation.util.dpToPx
 import kotlin.math.roundToInt
 
 class OnelineVerticalSeekbar(context : Context, attrs : AttributeSet) : FrameLayout(context, attrs) {
@@ -21,11 +23,14 @@ class OnelineVerticalSeekbar(context : Context, attrs : AttributeSet) : FrameLay
     private val min : Int
     private val max : Int
 
+    private val verticalDragChecker = VerticalDragChecker(threshold = dpToPx(context, 3))
+
     init {
         val inflater = LayoutInflater.from(context)
         binding = PartialWriteTodayOnelinetVerticalSeekbarBinding.inflate(inflater, this, true)
 
-        initDragEvent()
+        initThumbDragEvent()
+        initBackgroundClickEvent()
 
         context.theme.obtainStyledAttributes(attrs, R.styleable.OnelineVerticalSeekbar, 0, 0).run {
             try {
@@ -46,21 +51,24 @@ class OnelineVerticalSeekbar(context : Context, attrs : AttributeSet) : FrameLay
 
     // 터치 이벤트가 없어서, 굳이 performClick 을 호출하지 않음
     @SuppressLint("ClickableViewAccessibility")
-    private fun initDragEvent() {
+    private fun initThumbDragEvent() {
         binding.flWriteTodayOnelineSeekbarThumb.setOnTouchListener { view, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     yCursorDown = view.y - event.rawY
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    val newY = event.rawY + yCursorDown
-                    if (checkInHeight(newY)) {
-                        val value = positionToProgressValue(newY)
-                        progressValueChangeCallback(value)
-                    }
+                    changeProgressIfPositionAvailable(event.rawY + yCursorDown)
                 }
             }
             true
+        }
+    }
+
+    private fun changeProgressIfPositionAvailable(positionY : Float) {
+        if (checkInHeight(positionY)) {
+            val progress = positionToProgressValue(positionY)
+            progressValueChangeCallback(progress)
         }
     }
 
@@ -73,9 +81,22 @@ class OnelineVerticalSeekbar(context : Context, attrs : AttributeSet) : FrameLay
         return min + ((max - min) * ratio).roundToInt()
     }
 
-    private fun progressValueToPosition(progressValue : Int) : Float {
-        val ratio = (progressValue - min) / (max - min).toFloat()
-        return (1 - ratio) * maxYPosition
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initBackgroundClickEvent() {
+        binding.imgWriteTodayOnelineSeekbarBackground.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    verticalDragChecker.saveActionDownPosition(y = event.y)
+                }
+                MotionEvent.ACTION_UP -> {
+                    if (!verticalDragChecker.checkIsDragged(y = event.y)) {
+                        changeProgressIfPositionAvailable(event.y)
+                    }
+                }
+            }
+
+            true
+        }
     }
 
     fun setProgressChangeCallback(callback : (Int) -> Unit) {
@@ -85,6 +106,11 @@ class OnelineVerticalSeekbar(context : Context, attrs : AttributeSet) : FrameLay
     fun setProgressValue(value : Int) {
         val yPosition = progressValueToPosition(value)
         binding.flWriteTodayOnelineSeekbarThumb.y = yPosition
+    }
+
+    private fun progressValueToPosition(progressValue : Int) : Float {
+        val ratio = (progressValue - min) / (max - min).toFloat()
+        return (1 - ratio) * maxYPosition
     }
 
     companion object {
