@@ -104,4 +104,9 @@
     <string name="label_write_today_oneline_write_complete">완료</string>
     <string name="label_write_today_oneline_set_background">배경 설정</string>
     <string name="label_write_today_oneline_place_holder">텍스트를 입력하세요.</string>
+
+    <string name="label_mypage_title">마이페이지</string>
+    <string name="label_mypage_profile_setting">프로필 설정</string>
+    <string name="label_mypage_alarm_setting">알림 설정</string>
+    <string name="label_mypage_data_clear">데이터 초기화</string>
 </resources>
