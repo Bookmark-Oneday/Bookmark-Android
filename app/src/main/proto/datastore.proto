@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_package = "com.bookmark.bookmark_oneday";
+option java_multiple_files = true;
+
+message User {
+  string nickname = 1;
+  string profileUri = 2;
+  string bio = 3;
+  int32 targetReadTime = 4;
+}

@@ -12,6 +12,8 @@ import com.bookmark.bookmark_oneday.data.datasource.oneline_datasource.OnelineDa
 import com.bookmark.bookmark_oneday.data.datasource.oneline_datasource.TestOnelineDataSource
 import com.bookmark.bookmark_oneday.data.datasource.token_datasource.TokenDataSource
 import com.bookmark.bookmark_oneday.data.datasource.token_datasource.TokenDataSourceImpl
+import com.bookmark.bookmark_oneday.data.datasource.user_datasource.UserDataSource
+import com.bookmark.bookmark_oneday.data.datasource.user_datasource.UserDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -45,4 +47,8 @@ abstract class DataSourceModule {
     @Singleton
     @Binds
     abstract fun bindOnelineDataSource(impl : TestOnelineDataSource) : OnelineDataSource
+
+    @Singleton
+    @Binds
+    abstract fun bindUserDataSource(impl : UserDataSourceImpl) : UserDataSource
 }
