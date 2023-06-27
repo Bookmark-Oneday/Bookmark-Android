@@ -37,6 +37,7 @@
         <activity android:name=".presentation.screens.book_confirmation.BookConfirmationActivity"/>
         <activity android:name=".presentation.screens.signup.SignupBaseActivity"/>
         <activity android:name=".presentation.screens.write_today_oneline.WriteTodayOnelineActivity"/>
+        <activity android:name=".presentation.screens.modify_profile.ModifyProfileActivity"/>
     </application>
 
 </manifest>
