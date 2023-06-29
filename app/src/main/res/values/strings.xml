@@ -117,4 +117,12 @@
     <string name="label_clear_data">모든 데이터를 삭제하시겠습니까?</string>
     <string name="caption_clear_data">삭제된 데이터는 복구할 수 없습니다.</string>
     <string name="label_clear_data_clear">삭제</string>
+
+    <string name="label_modify_reading_time">목표 독서시간 설정</string>
+    <string name="label_modify_reading_time_format">%d시간 %d분</string>
+    <string name="label_modify_reading_time_format_exclude_hour">%d분</string>
+    <string name="label_modify_reading_time_format_exclude_minute">%d시간</string>
+    <string name="html_caption_modify_reading_time_more"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>많아요]]></string>
+    <string name="html_caption_modify_reading_time_less"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>적어요]]></string>
+    <string name="label_modify_reading_time_complete">완료</string>
 </resources>

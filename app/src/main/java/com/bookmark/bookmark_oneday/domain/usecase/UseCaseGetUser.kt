@@ -7,4 +7,5 @@ class UseCaseGetUser @Inject constructor(
     private val userRepository: UserRepository
 ) {
     fun getProfile() = userRepository.getUserProfile()
+    fun getGoalReadingTime() = userRepository.getGoalReadingTime()
 }

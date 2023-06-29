@@ -38,6 +38,7 @@
         <activity android:name=".presentation.screens.signup.SignupBaseActivity"/>
         <activity android:name=".presentation.screens.write_today_oneline.WriteTodayOnelineActivity"/>
         <activity android:name=".presentation.screens.modify_profile.ModifyProfileActivity"/>
+        <activity android:name=".presentation.screens.modify_reading_time.ModifyReadingTimeActivity"/>
     </application>
 
 </manifest>
