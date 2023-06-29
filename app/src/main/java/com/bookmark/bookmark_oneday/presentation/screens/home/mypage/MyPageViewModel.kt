@@ -18,4 +18,8 @@ class MyPageViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(),
         scope = viewModelScope
     )
+
+    fun clearData() {
+        // todo 데이터 초기화 구현
+    }
 }

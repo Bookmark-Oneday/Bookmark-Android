@@ -113,4 +113,8 @@
 
     <string name="label_modify_profile">프로필 수정</string>
     <string name="label_modfiy_profile_complete">수정 완료</string>
+
+    <string name="label_clear_data">모든 데이터를 삭제하시겠습니까?</string>
+    <string name="caption_clear_data">삭제된 데이터는 복구할 수 없습니다.</string>
+    <string name="label_clear_data_clear">삭제</string>
 </resources>

@@ -8,6 +8,7 @@ import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentMypageBinding
 import com.bookmark.bookmark_oneday.domain.model.UserInfo
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
+import com.bookmark.bookmark_oneday.presentation.screens.home.mypage.component.ConfirmClearDataDialog
 import com.bookmark.bookmark_oneday.presentation.screens.modify_profile.ModifyProfileActivity
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import com.bumptech.glide.Glide
@@ -36,8 +37,12 @@ class MyPageFragment : ViewBindingFragment<FragmentMypageBinding>(
         }
 
         binding.llbtnMypageDataClear.setOnClickListener {
-
+            showConfirmClearDialog()
         }
+    }
+
+    private fun showConfirmClearDialog() {
+        ConfirmClearDataDialog(viewModel::clearData).show(childFragmentManager, "ConfirmClearDataDialog")
     }
 
     private fun setObserver() {
