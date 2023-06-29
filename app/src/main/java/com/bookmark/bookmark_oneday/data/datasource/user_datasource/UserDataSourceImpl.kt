@@ -34,5 +34,11 @@ class UserDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun clearUser() {
+        userDataStore.updateData {
+            it.toBuilder().clear().build()
+        }
+    }
+
 
 }

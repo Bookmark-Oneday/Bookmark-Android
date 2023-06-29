@@ -7,4 +7,5 @@ interface UserRepository {
     fun getUserProfile() : Flow<UserInfo>
     suspend fun setUserProfile(nickname : String, profileImage : String?, bio : String)
     suspend fun setReadingTime(readingTime : Int)
+    suspend fun clearUser()
 }

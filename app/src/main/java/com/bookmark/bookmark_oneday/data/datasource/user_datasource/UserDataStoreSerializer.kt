@@ -9,7 +9,7 @@ import java.io.OutputStream
 
 object UserDataStoreSerializer : Serializer<User> {
     override val defaultValue: User
-        get() = User.newBuilder().setNickname("닉네임").setProfileUri("").setBio("loading...").build()
+        get() = User.newBuilder().setNickname("").setProfileUri("").setBio("").build()
 
     override suspend fun readFrom(input: InputStream): User {
         try {

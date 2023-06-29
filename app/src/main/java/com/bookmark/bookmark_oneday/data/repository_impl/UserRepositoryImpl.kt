@@ -22,4 +22,8 @@ class UserRepositoryImpl @Inject constructor(
         userDataSource.setReadTime(readingTime)
     }
 
+    override suspend fun clearUser() {
+        userDataSource.clearUser()
+    }
+
 }
