@@ -3,9 +3,10 @@ package com.bookmark.bookmark_oneday.domain.usecase
 import com.bookmark.bookmark_oneday.domain.repository.UserRepository
 import javax.inject.Inject
 
-class UseCaseGetUser @Inject constructor(
+class UseCaseClearUser @Inject constructor(
     private val userRepository: UserRepository
 ) {
-    fun getProfile() = userRepository.getUserProfile()
-    fun getGoalReadingTime() = userRepository.getGoalReadingTime()
+    suspend operator fun invoke() {
+        userRepository.clearUser()
+    }
 }

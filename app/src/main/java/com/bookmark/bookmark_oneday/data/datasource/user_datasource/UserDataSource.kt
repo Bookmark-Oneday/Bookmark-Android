@@ -7,4 +7,5 @@ interface UserDataSource {
     fun getUser() : Flow<UserEntity>
     suspend fun setUser(nickname : String, profileUri : String?, bio : String)
     suspend fun setReadTime(readTime : Int)
+    suspend fun clearUser()
 }

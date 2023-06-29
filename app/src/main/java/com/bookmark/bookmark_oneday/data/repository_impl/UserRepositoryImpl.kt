@@ -10,6 +10,10 @@ import javax.inject.Inject
 class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource
 ) : UserRepository {
+    override fun getGoalReadingTime(): Flow<Int> = userDataSource.getUser().map { userEntity ->
+        userEntity.targetReadTime
+    }
+
     override fun getUserProfile(): Flow<UserInfo> = userDataSource.getUser().map { userEntity ->
         UserInfo(nickname = userEntity.nickname, profileImage = userEntity.profileUri, bio = userEntity.bio)
     }
@@ -20,6 +24,10 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun setReadingTime(readingTime: Int) {
         userDataSource.setReadTime(readingTime)
+    }
+
+    override suspend fun clearUser() {
+        userDataSource.clearUser()
     }
 
 }
