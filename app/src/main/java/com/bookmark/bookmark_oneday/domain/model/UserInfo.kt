@@ -7,5 +7,6 @@ data class UserInfo(
 ) {
     companion object {
         val defaultUserInfo = UserInfo(nickname = "loading...", profileImage = null, bio = "로딩중입니다.")
+        val emptyUserInfo = UserInfo(nickname = "", profileImage = null, bio = "")
     }
 }
