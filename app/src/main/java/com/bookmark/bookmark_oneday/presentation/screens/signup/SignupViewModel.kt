@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.TokenInfo
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetGoogleAccessToken
+import com.bookmark.bookmark_oneday.domain.usecase.UseCaseSetUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val useCaseGetGoogleAccessToken: UseCaseGetGoogleAccessToken
+    private val useCaseGetGoogleAccessToken: UseCaseGetGoogleAccessToken,
+    private val useCaseSetUser: UseCaseSetUser
 ) : ViewModel() {
     private var prevProgress = 0
 
@@ -64,7 +66,9 @@ class SignupViewModel @Inject constructor(
         viewModelScope.launch {
             _showLoadingDialog.value = true
 
-            // todo 회원가입 api 적용 후 변경 필요
+            useCaseSetUser.setUserProfile(nickname = nickname.value, profileUri = profileImageUrl.value, bio = comment.value)
+            useCaseSetUser.setReadingTime(readingTime = goalReadingTimeMinute.value)
+
             delay(1000L)
             _loginSuccess.emit(true)
             _showLoadingDialog.value = false
