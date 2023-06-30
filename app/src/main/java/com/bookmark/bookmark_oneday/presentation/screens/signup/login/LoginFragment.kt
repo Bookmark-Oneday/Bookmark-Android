@@ -80,6 +80,10 @@ class LoginFragment : ViewBindingFragment<FragmentLoginBinding>(FragmentLoginBin
         binding.btnLoginGoogle.setOnClickListener {
             signInGoogle()
         }
+
+        binding.btnLoginLocal.setOnClickListener {
+            binding.root.findNavController().navigate(R.id.action_loginFragment_to_signupNicknameFragment)
+        }
     }
 
     private fun setObserver() {
