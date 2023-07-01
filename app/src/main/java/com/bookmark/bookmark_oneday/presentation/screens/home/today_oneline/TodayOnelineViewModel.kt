@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.PagingCheckData
+import com.bookmark.bookmark_oneday.domain.model.UserProfile
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetOneline
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineEvent
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineState
@@ -119,7 +120,13 @@ class TodayOnelineViewModel @Inject constructor(
             }
             is TodayOnelineEvent.FirstPageDataLoadingSuccess -> {
                 val dataList = event.pagingData.dataList
-                val userProfile = dataList[0].userProfile
+
+                val userProfile = if (dataList.isEmpty()) {
+                    UserProfile(id = "none", nickname = "", profileImageUrl = null)
+                } else {
+                    dataList[0].userProfile
+                }
+
                 state.copy(
                     viewPagerPosition = ViewPagerPosition(0, false),
                     onelineList = dataList,
