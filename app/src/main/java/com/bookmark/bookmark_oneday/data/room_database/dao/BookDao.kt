@@ -56,4 +56,7 @@ interface BookDao {
 
     @Query("SELECT COALESCE(SUM(timeSec), 0) FROM readingHistory WHERE date LIKE :dateQuery || '%' ")
     suspend fun getDailyTotalReadingTime(dateQuery : String) : Int
+
+    @Query("SELECT isbn FROM registeredBook WHERE id = :bookId")
+    suspend fun getIsbnByRegisteredBookId(bookId : Int) : String
 }

@@ -16,14 +16,15 @@ import androidx.room.PrimaryKey
     ]
 )
 data class OneLine(
-    @PrimaryKey(autoGenerate = true) val id : Int,
     val userId : Int,
     val isbn : String,
     val color : String,
     val centerX : String,
     val centerY : String,
+    val content : String,
     val font : String,
     val fontSize : String,
     val backgroundUri : String ?= null,
-    val createdAt : String
+    val createdAt : String,
+    @PrimaryKey(autoGenerate = true) val id : Int = 0
 )
