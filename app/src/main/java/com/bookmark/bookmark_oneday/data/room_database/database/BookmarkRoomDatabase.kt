@@ -13,7 +13,10 @@ import com.bookmark.bookmark_oneday.data.room_database.entity.OneLine
 import com.bookmark.bookmark_oneday.data.room_database.entity.ReadingHistory
 import com.bookmark.bookmark_oneday.data.room_database.entity.RegisteredBook
 
-@Database(entities = [Book::class, RegisteredBook::class, OneLine::class, ReadingHistory::class], version = 1)
+@Database(
+    entities = [Book::class, RegisteredBook::class, OneLine::class, ReadingHistory::class],
+    version = 2
+)
 @TypeConverters(Converters::class)
 abstract class BookmarkRoomDatabase : RoomDatabase() {
     abstract fun bookDao() : BookDao
