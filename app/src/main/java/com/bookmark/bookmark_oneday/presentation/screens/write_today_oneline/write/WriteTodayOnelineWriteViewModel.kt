@@ -118,7 +118,7 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
                     authors = book.author.split(","),
                     oneliner = _content.value,
                     textColor = _textColor.value,
-                    textSize = _textSize.toString(),
+                    textSize = _textSize.value.toString(),
                     centerX = _position.value.x.toString(),
                     centerY = _position.value.y.toString(),
                     font = _font.value.title,
