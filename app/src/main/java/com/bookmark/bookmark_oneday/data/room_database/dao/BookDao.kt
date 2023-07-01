@@ -7,6 +7,7 @@ import androidx.room.Query
 import com.bookmark.bookmark_oneday.data.models.dto.BookItemDto
 import com.bookmark.bookmark_oneday.data.models.dto.HistoryDto
 import com.bookmark.bookmark_oneday.data.room_database.entity.Book
+import com.bookmark.bookmark_oneday.data.room_database.entity.ReadingHistory
 import com.bookmark.bookmark_oneday.data.room_database.entity.RegisteredBook
 
 @Dao
@@ -38,6 +39,9 @@ interface BookDao {
     @Query("SELECT COUNT(*) FROM book WHERE isbn = :isbn")
     suspend fun getBookCount(isbn : String) : Int
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertReadingHistory(readingHistory: ReadingHistory)
+
     @Query("SELECT id, timeSec AS time, date FROM ReadingHistory WHERE bookId = :bookId")
     suspend fun getReadingHistoryList(bookId : Int) : List<HistoryDto>
 
@@ -49,4 +53,7 @@ interface BookDao {
 
     @Query("UPDATE registeredBook SET currentPage = :currentPage, totalPage = :totalPage WHERE id = :bookId")
     suspend fun updatePageInfo(bookId : Int, currentPage : Int, totalPage : Int) : Int
+
+    @Query("SELECT COALESCE(SUM(timeSec), 0) FROM readingHistory WHERE date LIKE :dateQuery || '%' ")
+    suspend fun getDailyTotalReadingTime(dateQuery : String) : Int
 }

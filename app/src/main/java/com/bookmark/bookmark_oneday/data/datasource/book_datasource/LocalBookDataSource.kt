@@ -6,6 +6,7 @@ import com.bookmark.bookmark_oneday.data.models.dto.BookItemDto
 import com.bookmark.bookmark_oneday.data.models.dto.BookTimerDto
 import com.bookmark.bookmark_oneday.data.room_database.dao.BookDao
 import com.bookmark.bookmark_oneday.data.room_database.entity.Book
+import com.bookmark.bookmark_oneday.data.room_database.entity.ReadingHistory
 import com.bookmark.bookmark_oneday.data.room_database.entity.RegisteredBook
 import com.bookmark.bookmark_oneday.domain.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.PagingData
@@ -15,6 +16,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
@@ -22,8 +24,12 @@ class LocalBookDataSource @Inject constructor(
     private val bookDao: BookDao,
 ) : BookDataSource {
     private val defaultDispatcher: CoroutineContext = Dispatchers.IO + SupervisorJob()
+
     @SuppressLint("SimpleDateFormat")
     private val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+    @SuppressLint("SimpleDateFormat")
+    private val dateOnlyFormatter = SimpleDateFormat("yyyy-MM-dd")
 
     // todo 중복 여부 무시 인자 필요
     override suspend fun registerBook(recognizedBook: RecognizedBook): BaseResponse<Nothing> =
@@ -31,7 +37,10 @@ class LocalBookDataSource @Inject constructor(
             try {
                 val bookExist = bookDao.getBookCount(recognizedBook.isbn) > 0
                 if (bookExist) {
-                    return@withContext BaseResponse.Failure(errorMessage = "이미 등록된 책입니다.", errorCode = 409)
+                    return@withContext BaseResponse.Failure(
+                        errorMessage = "이미 등록된 책입니다.",
+                        errorCode = 409
+                    )
                 } else {
                     val bookEntity = Book(
                         isbn = recognizedBook.isbn,
@@ -103,7 +112,7 @@ class LocalBookDataSource @Inject constructor(
                     totalItemCount = 0
                 )
             )
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             return@withContext BaseResponse.Failure(
                 errorCode = -1,
                 errorMessage = "${e.message}"
@@ -111,14 +120,18 @@ class LocalBookDataSource @Inject constructor(
         }
     }
 
-    override suspend fun deleteBook(bookId: String): BaseResponse<Nothing> = withContext(defaultDispatcher) {
-        try {
-            bookDao.deleteRegisteredBook(bookId = bookId.toInt())
-            return@withContext BaseResponse.EmptySuccess
-        } catch (e : Exception) {
-            return@withContext BaseResponse.Failure(errorCode = -1, errorMessage = "${e.message}")
+    override suspend fun deleteBook(bookId: String): BaseResponse<Nothing> =
+        withContext(defaultDispatcher) {
+            try {
+                bookDao.deleteRegisteredBook(bookId = bookId.toInt())
+                return@withContext BaseResponse.EmptySuccess
+            } catch (e: Exception) {
+                return@withContext BaseResponse.Failure(
+                    errorCode = -1,
+                    errorMessage = "${e.message}"
+                )
+            }
         }
-    }
 
     override suspend fun updateReadingPage(
         bookId: String,
@@ -128,7 +141,7 @@ class LocalBookDataSource @Inject constructor(
         try {
             bookDao.updatePageInfo(bookId.toInt(), currentPage, totalPage)
             return@withContext BaseResponse.EmptySuccess
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             return@withContext BaseResponse.Failure(errorCode = -1, errorMessage = "${e.message}")
         }
     }
@@ -147,29 +160,45 @@ class LocalBookDataSource @Inject constructor(
                     )
                 )
                 return@withContext BaseResponse.Success(data = timeDto)
-            } catch (e : Exception) {
-                return@withContext BaseResponse.Failure(errorCode = -1, errorMessage = "${e.message}")
+            } catch (e: Exception) {
+                return@withContext BaseResponse.Failure(
+                    errorCode = -1,
+                    errorMessage = "${e.message}"
+                )
             }
         }
 
-    // todo 독서 시간 반영 로직 구현 필요
+    // todo 목표 시간 반영 필요
     override suspend fun updateReadingHistory(
         bookId: String,
         readingTime: Int
-    ): BaseResponse<BookTimerDto> = withContext(defaultDispatcher)  {
+    ): BaseResponse<BookTimerDto> = withContext(defaultDispatcher) {
         try {
+            val currentTime = Calendar.getInstance().time
+
+            bookDao.insertReadingHistory(
+                ReadingHistory(
+                    bookId = bookId.toInt(),
+                    userId = 0,
+                    date = formatter.format(currentTime),
+                    timeSec = readingTime
+                )
+            )
+
+            val dailyTotalTime = getDailyTotalTime(currentTime)
+
             val historyList = bookDao.getReadingHistoryList(bookId.toInt())
             val timeDto = BookTimerDto(
                 user_id = "",
                 target_time = 0,
-                daily = 0,
+                daily = dailyTotalTime,
                 book = BookTimerDto.BookTimerBookDto(
                     book_id = bookId,
                     history = historyList
                 )
             )
             return@withContext BaseResponse.Success(data = timeDto)
-        } catch (e : Exception) {
+        } catch (e: Exception) {
             return@withContext BaseResponse.Failure(errorCode = -1, errorMessage = "${e.message}")
         }
     }
@@ -186,9 +215,26 @@ class LocalBookDataSource @Inject constructor(
             } else {
                 bookDao.deleteReadingHistory(historyId = historyId!!.toInt())
             }
-            return@withContext BaseResponse.EmptySuccess
-        } catch (e : Exception) {
+
+            val dailyTotalTime = getDailyTotalTime(Calendar.getInstance().time)
+
+            val historyList = bookDao.getReadingHistoryList(bookId.toInt())
+            val timeDto = BookTimerDto(
+                user_id = "",
+                target_time = 0,
+                daily = dailyTotalTime,
+                book = BookTimerDto.BookTimerBookDto(
+                    book_id = bookId,
+                    history = historyList
+                )
+            )
+            return@withContext BaseResponse.Success(data = timeDto)
+        } catch (e: Exception) {
             return@withContext BaseResponse.Failure(errorCode = -1, errorMessage = "${e.message}")
         }
+    }
+
+    private suspend fun getDailyTotalTime(currentTime: Date): Int {
+        return bookDao.getDailyTotalReadingTime(dateQuery = dateOnlyFormatter.format(currentTime))
     }
 }

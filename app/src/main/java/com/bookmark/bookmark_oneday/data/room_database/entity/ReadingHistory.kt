@@ -17,9 +17,9 @@ import androidx.room.PrimaryKey
     ]
 )
 data class ReadingHistory(
-    @PrimaryKey(autoGenerate = true) val id : Int,
     val bookId : Int,
     val userId : Int,
     val date : String,
-    val timeSec : Int
+    val timeSec : Int,
+    @PrimaryKey(autoGenerate = true) val id : Int = 0
 )
