@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
 data class OneLine(
     @PrimaryKey(autoGenerate = true) val id : Int,
     val userId : Int,
-    val isbn : Int,
+    val isbn : String,
     val color : String,
     val centerX : String,
     val centerY : String,
