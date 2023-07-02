@@ -149,11 +149,14 @@ class LocalBookDataSource @Inject constructor(
     override suspend fun getBookTimer(bookId: String): BaseResponse<BookTimerDto> =
         withContext(defaultDispatcher) {
             try {
+                val currentTime = Calendar.getInstance().time
+                val dailyTotalTime = getDailyTotalTime(currentTime)
+
                 val historyList = bookDao.getReadingHistoryList(bookId.toInt())
                 val timeDto = BookTimerDto(
                     user_id = "",
                     target_time = 0,
-                    daily = 0,
+                    daily = dailyTotalTime,
                     book = BookTimerDto.BookTimerBookDto(
                         book_id = bookId,
                         history = historyList
