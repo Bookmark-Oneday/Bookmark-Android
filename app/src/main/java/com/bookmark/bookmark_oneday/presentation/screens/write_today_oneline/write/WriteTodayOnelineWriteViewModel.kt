@@ -30,6 +30,9 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
     private val _finishWithSuccess = MutableSharedFlow<Boolean>()
     val finishWithSuccess = _finishWithSuccess.asSharedFlow()
 
+    private val _toastMessage = MutableSharedFlow<String>()
+    val toastMessage = _toastMessage.asSharedFlow()
+
     private val _content = MutableStateFlow("")
     val content = _content.asStateFlow()
 
@@ -112,6 +115,11 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
                 _currentState.value = TodayOnelineWriteScreenState.TextMove
             }
             TodayOnelineWriteScreenState.TextMove -> {
+                if (content.value == "") {
+                    viewModelScope.launch { _toastMessage.emit(EMPTY_CONTENT) }
+                    return
+                }
+
                 val oneLineContent = OneLineContent(
                     id = book.id,
                     bookTitle = book.title,
@@ -170,6 +178,7 @@ class WriteTodayOnelineWriteViewModel @AssistedInject constructor(
     }
 
     companion object {
+        const val EMPTY_CONTENT = "empty_content"
         fun providerViewModelFactory(
             assistedFactory: ViewModelAssistedFactory,
             book : BookItem

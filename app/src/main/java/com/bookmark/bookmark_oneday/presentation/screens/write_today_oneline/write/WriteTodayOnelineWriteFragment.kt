@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -177,6 +178,16 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             requireActivity().finish()
         }
 
+        viewModel.toastMessage.collectLatestInLifecycle(viewLifecycleOwner) { case ->
+            if (case == WriteTodayOnelineWriteViewModel.EMPTY_CONTENT) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.label_write_today_oneline_place_holder),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
     }
 
     private fun applyEditTextDetailState(editTextDetailState: EditTextDetailState) {
@@ -209,7 +220,12 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             // onStop 후 다시 화면에 돌아왔을 때 간헐적으로 imeVisible 이 true 임에도 불구하고 height 가 0으로 표기된다.
             if (imeVisible) {
                 viewModel.imeHeight = imeHeight
-                viewModel.setBottomViewTranslationY(min( -imeHeight.toFloat(), -requireContext().getBottomNavigationHeight().toFloat()))
+                viewModel.setBottomViewTranslationY(
+                    min(
+                        -imeHeight.toFloat(),
+                        -requireContext().getBottomNavigationHeight().toFloat()
+                    )
+                )
             } else {
                 viewModel.closeIme()
             }
@@ -217,7 +233,8 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             insets
         }
     }
-    private fun setEnableButtons(enable : Boolean) {
+
+    private fun setEnableButtons(enable: Boolean) {
         binding.btnWriteTodayOnelineWriteNext.isEnabled = enable
         binding.btnWriteTodayOnelineWriteBack.isEnabled = enable
     }
@@ -280,6 +297,7 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             moveSettingViewY(y)
         }
     }
+
     private fun showSoftKeyboard() {
         val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(requireActivity().currentFocus, 0)
