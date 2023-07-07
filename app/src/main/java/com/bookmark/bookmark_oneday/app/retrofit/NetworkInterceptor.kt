@@ -31,7 +31,7 @@ class NetworkInterceptor(
                 }
                 else -> {
                     msg = "${e.message}"
-                    errorCode = -1
+                    errorCode = NOT_INIT_CODE
                 }
             }
 
@@ -44,5 +44,9 @@ class NetworkInterceptor(
                 .build()
         }
 
+    }
+
+    companion object {
+        const val NOT_INIT_CODE = 0
     }
 }

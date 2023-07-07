@@ -3,7 +3,7 @@ package com.bookmark.bookmark_oneday.app.di
 import com.bookmark.bookmark_oneday.data.datasource.application_datasource.ApplicationDataSource
 import com.bookmark.bookmark_oneday.data.datasource.application_datasource.ApplicationDataSourceImpl
 import com.bookmark.bookmark_oneday.data.datasource.book_datasource.BookDataSource
-import com.bookmark.bookmark_oneday.data.datasource.book_datasource.RemoteBookDataSource
+import com.bookmark.bookmark_oneday.data.datasource.book_datasource.LocalBookDataSource
 import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.BookInfoDataSource
 import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.KakaoBookInfoDataSource
 import com.bookmark.bookmark_oneday.data.datasource.google_login_datasource.GoogleLoginDataSource
@@ -34,7 +34,7 @@ abstract class DataSourceModule {
 
     @Singleton
     @Binds
-    abstract fun bindBookDataSource(impl : RemoteBookDataSource) : BookDataSource
+    abstract fun bindBookDataSource(impl : LocalBookDataSource) : BookDataSource
 
     @Singleton
     @Binds
