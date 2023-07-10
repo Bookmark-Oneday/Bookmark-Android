@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.domain.usecase
 
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.repository.RegisterBookRepository
 import javax.inject.Inject
@@ -8,7 +8,7 @@ import javax.inject.Inject
 class UseCaseRegisterBook @Inject constructor(
     private val repository: RegisterBookRepository
 ) {
-    suspend operator fun invoke(book: RecognizedBook) : BaseResponse<Nothing>{
+    suspend operator fun invoke(book: RecognizedBook) : BaseResponse<Nothing> {
         return repository.registerBook(book)
     }
 

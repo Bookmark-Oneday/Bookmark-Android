@@ -3,8 +3,8 @@ package com.bookmark.bookmark_oneday.data.datasource.book_datasource
 import com.bookmark.bookmark_oneday.data.models.dto.BookDetailDto
 import com.bookmark.bookmark_oneday.data.models.dto.BookItemDto
 import com.bookmark.bookmark_oneday.data.models.dto.BookTimerDto
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 
 interface BookDataSource {

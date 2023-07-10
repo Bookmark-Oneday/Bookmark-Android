@@ -10,8 +10,8 @@ import com.bookmark.bookmark_oneday.data.models.request_body.UpdateReadingTimeRe
 import com.bookmark.bookmark_oneday.data.models.response_body.DefaultResponseBody
 import com.bookmark.bookmark_oneday.data.models.response_meta.DefaultResponseMeta
 import com.bookmark.bookmark_oneday.data.models.response_meta.PagingResponseMeta
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import okhttp3.ResponseBody
 import retrofit2.Response

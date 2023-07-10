@@ -5,8 +5,8 @@ import com.bookmark.bookmark_oneday.data.models.dto.OneLineDto
 import com.bookmark.bookmark_oneday.data.models.request_body.RegisterOneLineRequestBody
 import com.bookmark.bookmark_oneday.data.models.response_body.DefaultResponseBody
 import com.bookmark.bookmark_oneday.data.models.response_meta.PagingResponseMeta
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.PagingData
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit

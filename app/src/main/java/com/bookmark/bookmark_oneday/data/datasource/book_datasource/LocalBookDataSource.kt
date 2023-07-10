@@ -8,8 +8,8 @@ import com.bookmark.bookmark_oneday.data.room_database.dao.BookDao
 import com.bookmark.bookmark_oneday.data.room_database.entity.Book
 import com.bookmark.bookmark_oneday.data.room_database.entity.ReadingHistory
 import com.bookmark.bookmark_oneday.data.room_database.entity.RegisteredBook
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

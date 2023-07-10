@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.domain.model
+package com.bookmark.bookmark_oneday.core.model
 
 sealed class BaseResponse<out T> {
     data class Success<T>(

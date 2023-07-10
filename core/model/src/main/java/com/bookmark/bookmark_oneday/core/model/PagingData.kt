@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.domain.model
+package com.bookmark.bookmark_oneday.core.model
 
 data class PagingData<out T>(
     val dataList : List<T>,

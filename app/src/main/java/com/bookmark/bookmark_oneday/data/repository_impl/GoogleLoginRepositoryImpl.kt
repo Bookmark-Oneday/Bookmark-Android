@@ -4,7 +4,7 @@ import com.bookmark.bookmark_oneday.data.datasource.google_login_datasource.Goog
 import com.bookmark.bookmark_oneday.data.models.response_body.GoogleAccessTokenResponse
 import com.bookmark.bookmark_oneday.data.models.response_body.GoogleReIssueAccessTokenResponse
 import com.bookmark.bookmark_oneday.data.utils.mapBaseResponse
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.TokenInfo
 import com.bookmark.bookmark_oneday.domain.repository.GoogleLoginRepository
 import javax.inject.Inject

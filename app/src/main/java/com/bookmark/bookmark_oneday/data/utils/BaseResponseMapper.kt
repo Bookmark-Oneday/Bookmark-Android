@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.data.utils
 
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
 
 fun <T, K> mapBaseResponse(response : BaseResponse<T>, mapper : (T) -> K) : BaseResponse<K> {
     return when (response) {

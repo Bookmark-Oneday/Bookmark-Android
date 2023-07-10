@@ -3,7 +3,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.timer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
 import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetReadingHistory

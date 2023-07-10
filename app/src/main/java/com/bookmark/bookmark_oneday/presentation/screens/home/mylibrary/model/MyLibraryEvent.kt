@@ -2,7 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model
 
 import com.bookmark.bookmark_oneday.domain.model.BookState
 import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.domain.model.SortData
 
 sealed class MyLibraryEvent {

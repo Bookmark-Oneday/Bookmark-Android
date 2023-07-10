@@ -51,6 +51,8 @@ android {
 
 dependencies {
 
+    implementation project(":core:model")
+
     implementation libs.bundles.androidCore
     implementation libs.material
     testImplementation libs.junit

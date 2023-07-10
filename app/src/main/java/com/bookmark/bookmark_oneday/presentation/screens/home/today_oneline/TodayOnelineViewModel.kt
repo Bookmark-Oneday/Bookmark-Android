@@ -2,8 +2,8 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.PagingCheckData
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.PagingCheckData
 import com.bookmark.bookmark_oneday.domain.model.UserProfile
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetOneline
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineEvent

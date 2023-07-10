@@ -3,10 +3,10 @@ package com.bookmark.bookmark_oneday.data.repository_impl
 import com.bookmark.bookmark_oneday.data.datasource.oneline_datasource.OnelineDataSource
 import com.bookmark.bookmark_oneday.data.models.dto.OneLineDto
 import com.bookmark.bookmark_oneday.data.models.request_body.RegisterOneLineRequestBody
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.OneLine
 import com.bookmark.bookmark_oneday.domain.model.OneLineContent
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.domain.repository.OnelineRepository
 import javax.inject.Inject
 

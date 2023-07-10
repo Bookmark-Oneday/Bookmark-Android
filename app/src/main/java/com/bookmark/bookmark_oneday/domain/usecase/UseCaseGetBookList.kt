@@ -1,9 +1,9 @@
 package com.bookmark.bookmark_oneday.domain.usecase
 
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.BookItem
 import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.domain.repository.BookRepository
 import com.bookmark.bookmark_oneday.domain.repository.MyLibraryRepository
 import javax.inject.Inject

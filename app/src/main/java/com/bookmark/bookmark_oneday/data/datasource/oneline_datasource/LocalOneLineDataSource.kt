@@ -6,8 +6,8 @@ import com.bookmark.bookmark_oneday.data.models.request_body.RegisterOneLineRequ
 import com.bookmark.bookmark_oneday.data.room_database.dao.BookDao
 import com.bookmark.bookmark_oneday.data.room_database.dao.OneLineDao
 import com.bookmark.bookmark_oneday.data.room_database.entity.OneLine
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.PagingData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.withContext

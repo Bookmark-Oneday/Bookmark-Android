@@ -2,9 +2,9 @@ package com.bookmark.bookmark_oneday.data.repository_impl
 
 import com.bookmark.bookmark_oneday.data.datasource.book_datasource.BookDataSource
 import com.bookmark.bookmark_oneday.data.models.dto.BookItemDto
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.domain.repository.MyLibraryRepository
 import javax.inject.Inject
 

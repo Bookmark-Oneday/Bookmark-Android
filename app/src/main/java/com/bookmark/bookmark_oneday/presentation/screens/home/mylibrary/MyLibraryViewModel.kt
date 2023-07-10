@@ -2,6 +2,8 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.PagingCheckData
 import com.bookmark.bookmark_oneday.domain.model.*
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookList
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryEvent

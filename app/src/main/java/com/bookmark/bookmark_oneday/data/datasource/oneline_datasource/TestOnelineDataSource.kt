@@ -2,8 +2,8 @@ package com.bookmark.bookmark_oneday.data.datasource.oneline_datasource
 
 import com.bookmark.bookmark_oneday.data.models.dto.OneLineDto
 import com.bookmark.bookmark_oneday.data.models.request_body.RegisterOneLineRequestBody
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.PagingData
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.PagingData
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 

@@ -6,7 +6,7 @@ import com.bookmark.bookmark_oneday.data.models.response_body.GoogleAccessTokenR
 import com.bookmark.bookmark_oneday.data.models.response_body.GoogleReIssueAccessTokenResponse
 import com.bookmark.bookmark_oneday.data.models.request_body.RequestIssueGoogleAccessToken
 import com.bookmark.bookmark_oneday.data.models.request_body.RequestReIssueGoogleAccessToken
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
