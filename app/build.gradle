@@ -51,7 +51,10 @@ android {
 
 dependencies {
 
+    implementation project(":domain:book")
+    implementation project(":data:book")
     implementation project(":core:model")
+    implementation project(":core:room")
 
     implementation libs.bundles.androidCore
     implementation libs.material

@@ -14,7 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Bookmark-Oneday"
 include ':app'
-// include ':domain:book'
+include ':domain:book'
 include ':core:model'
-// include ':core:room'
-// include ':data:book'
+include ':core:room'
+include ':data:book'
