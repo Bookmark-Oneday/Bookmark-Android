@@ -1,7 +1,7 @@
 package com.bookmark.bookmark_oneday.domain.repository
 
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingInfo
 
 interface ReadingHistoryRepository {
     suspend fun deleteHistoryItem(bookId : String, targetId : String) : BaseResponse<ReadingInfo>

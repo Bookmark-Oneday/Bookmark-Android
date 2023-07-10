@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model
 
-import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
+import com.bookmark.bookmark_oneday.domain.book.model.MyLibraryItem
 import com.bookmark.bookmark_oneday.domain.model.SortData
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.MyLibraryViewModel
 

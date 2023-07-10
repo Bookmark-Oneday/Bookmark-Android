@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.timer.model
 
-import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingInfo
 
 sealed class TimerViewEvent {
     object ApiResponseLoading : TimerViewEvent()

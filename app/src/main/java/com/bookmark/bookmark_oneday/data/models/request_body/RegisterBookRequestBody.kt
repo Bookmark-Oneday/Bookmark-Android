@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.data.models.request_body
 
-import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
+import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 
 data class RegisterBookRequestBody(
     val title : String,

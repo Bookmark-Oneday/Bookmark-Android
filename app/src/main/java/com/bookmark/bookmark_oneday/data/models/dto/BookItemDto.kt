@@ -1,7 +1,7 @@
 package com.bookmark.bookmark_oneday.data.models.dto
 
-import com.bookmark.bookmark_oneday.domain.model.BookItem
-import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
+import com.bookmark.bookmark_oneday.domain.book.model.BookItem
+import com.bookmark.bookmark_oneday.domain.book.model.MyLibraryItem
 
 data class BookItemDto(
     val book_id : String,

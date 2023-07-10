@@ -16,11 +16,12 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentBookdetailBinding
-import com.bookmark.bookmark_oneday.domain.model.BookDetail
-import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
+import com.bookmark.bookmark_oneday.domain.book.model.BookDetail
 import com.bookmark.bookmark_oneday.presentation.adapter.reading_history.BookDetailReadingHistoryAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.reading_history.BookDetailReadingHistoryDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
+import com.bookmark.bookmark_oneday.presentation.model.BookStateParcelable
+import com.bookmark.bookmark_oneday.presentation.model.ReadingHistoryParcelable
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_editpage.BookDetailEditPageDialog
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.bottomsheet_more.BookDetailMoreBottomSheetDialog
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_remove.BookDetailRemoveDialog
@@ -37,15 +38,14 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
     private val args : BookDetailFragmentArgs by navArgs()
 
     private val timerScreenLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        @Suppress("UNCHECKED_CAST")
         val response = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            result.data?.getParcelableArrayListExtra("reading_history", ReadingHistory::class.java)
+            result.data?.getParcelableArrayListExtra("reading_history", ReadingHistoryParcelable::class.java)
         } else {
             result.data?.getParcelableArrayListExtra("reading_history")
         }
 
         if (result.resultCode == Activity.RESULT_OK && response != null) {
-            viewModel.applyChangedReadingHistory(response.toList())
+            viewModel.applyChangedReadingHistory(response.toList().map { it.toReadingHistory() })
         }
     }
 
@@ -75,7 +75,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
         val bookState = viewModel.getBookState(removeState = false)
 
         if (bookState != null) {
-            navController.previousBackStackEntry?.savedStateHandle?.set("book_state", bookState)
+            navController.previousBackStackEntry?.savedStateHandle?.set("book_state", BookStateParcelable.fromBookState(bookState))
         }
         navController.popBackStack()
     }

@@ -2,7 +2,7 @@ package com.bookmark.bookmark_oneday.data.repository_impl
 
 import com.bookmark.bookmark_oneday.data.datasource.book_datasource.BookDataSource
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
+import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.repository.RegisterBookRepository
 import kotlinx.coroutines.delay
 import javax.inject.Inject

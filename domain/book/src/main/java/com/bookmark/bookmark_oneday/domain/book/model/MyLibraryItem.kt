@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.domain.model
+package com.bookmark.bookmark_oneday.domain.book.model
 
 sealed class MyLibraryItem(val viewType : Int) {
     object BookAdder : MyLibraryItem(BOOK_ADDER)

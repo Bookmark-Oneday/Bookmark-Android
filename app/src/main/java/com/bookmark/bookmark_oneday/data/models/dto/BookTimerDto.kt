@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.data.models.dto
 
-import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingInfo
 
 data class BookTimerDto(
     val user_id : String,

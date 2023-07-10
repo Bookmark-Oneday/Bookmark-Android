@@ -19,6 +19,6 @@
         android:label="WriteTodayOnelineWriteFragment" >
         <argument
             android:name="book"
-            app:argType="com.bookmark.bookmark_oneday.domain.model.BookItem" />
+            app:argType="com.bookmark.bookmark_oneday.presentation.model.BookInfoParcelable" />
     </fragment>
 </navigation>

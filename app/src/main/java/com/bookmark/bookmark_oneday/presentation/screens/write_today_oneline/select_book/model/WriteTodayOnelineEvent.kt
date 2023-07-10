@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.select_book.model
 
-import com.bookmark.bookmark_oneday.domain.model.BookItem
+import com.bookmark.bookmark_oneday.domain.book.model.BookItem
 import com.bookmark.bookmark_oneday.presentation.model.ListItem
 
 sealed class WriteTodayOnelineEvent {

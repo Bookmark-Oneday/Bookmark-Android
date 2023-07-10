@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.domain.model
+package com.bookmark.bookmark_oneday.domain.book.model
 
 data class BookDetail(
     val bookId: String,

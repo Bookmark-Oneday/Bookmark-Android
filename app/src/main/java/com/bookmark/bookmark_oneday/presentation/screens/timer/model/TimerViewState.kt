@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.timer.model
 
-import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
 
 data class TimerViewState (
     val totalButtonToggled : Boolean = false,

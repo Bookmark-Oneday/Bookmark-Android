@@ -1,9 +1,5 @@
-package com.bookmark.bookmark_oneday.domain.model
+package com.bookmark.bookmark_oneday.domain.book.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class BookItem(
     val id : String,
     val thumbnail : String,
@@ -11,4 +7,4 @@ data class BookItem(
     val author : String,
     val reading : Boolean = false,
     val favorite : Boolean = false
-) : Parcelable
+)

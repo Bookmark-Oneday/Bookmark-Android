@@ -4,7 +4,7 @@ import com.bookmark.bookmark_oneday.data.datasource.book_datasource.BookDataSour
 import com.bookmark.bookmark_oneday.data.models.dto.BookDetailDto
 import com.bookmark.bookmark_oneday.data.utils.mapBaseResponse
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.BookDetail
+import com.bookmark.bookmark_oneday.domain.book.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.repository.BookDetailRepository
 import javax.inject.Inject
 

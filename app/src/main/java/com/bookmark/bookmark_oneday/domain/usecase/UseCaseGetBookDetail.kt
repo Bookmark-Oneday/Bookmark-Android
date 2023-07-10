@@ -1,7 +1,7 @@
 package com.bookmark.bookmark_oneday.domain.usecase
 
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.BookDetail
+import com.bookmark.bookmark_oneday.domain.book.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.repository.BookDetailRepository
 import javax.inject.Inject
 

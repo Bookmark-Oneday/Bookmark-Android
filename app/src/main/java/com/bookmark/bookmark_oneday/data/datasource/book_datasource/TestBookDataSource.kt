@@ -6,7 +6,7 @@ import com.bookmark.bookmark_oneday.data.models.dto.BookDetailDto
 import com.bookmark.bookmark_oneday.data.models.dto.BookItemDto
 import com.bookmark.bookmark_oneday.data.models.dto.BookTimerDto
 import com.bookmark.bookmark_oneday.data.models.dto.HistoryDto
-import com.bookmark.bookmark_oneday.domain.model.*
+import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 import kotlinx.coroutines.delay
 import javax.inject.Inject
 

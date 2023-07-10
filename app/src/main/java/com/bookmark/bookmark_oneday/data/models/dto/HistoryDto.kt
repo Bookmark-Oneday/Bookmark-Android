@@ -1,7 +1,7 @@
 package com.bookmark.bookmark_oneday.data.models.dto
 
-import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
-import com.bookmark.bookmark_oneday.domain.model.toTimeString
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
+import com.bookmark.bookmark_oneday.core.model.toTimeString
 
 data class HistoryDto(
     val id : String,

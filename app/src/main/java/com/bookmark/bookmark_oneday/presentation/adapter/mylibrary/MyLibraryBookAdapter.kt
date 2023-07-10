@@ -12,7 +12,7 @@ import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ItemMylibraryBookAddBinding
 import com.bookmark.bookmark_oneday.databinding.ItemMylibraryBookLoadingBinding
 import com.bookmark.bookmark_oneday.databinding.ItemMylibraryBookNormalBinding
-import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
+import com.bookmark.bookmark_oneday.domain.book.model.MyLibraryItem
 import com.bumptech.glide.Glide
 
 class MyLibraryBookAdapter(

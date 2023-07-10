@@ -3,9 +3,9 @@ package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.se
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.BookItem
+import com.bookmark.bookmark_oneday.domain.book.model.BookItem
 import com.bookmark.bookmark_oneday.core.model.PagingCheckData
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookList
+import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetBookList
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.select_book.model.WriteTodayOnelineEvent
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.select_book.model.WriteTodayOnelineState
 import dagger.hilt.android.lifecycle.HiltViewModel

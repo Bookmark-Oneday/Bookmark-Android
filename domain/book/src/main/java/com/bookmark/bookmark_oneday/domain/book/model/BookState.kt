@@ -1,10 +1,6 @@
-package com.bookmark.bookmark_oneday.domain.model
+package com.bookmark.bookmark_oneday.domain.book.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-data class BookState(val bookId : String, val isLike : Boolean, val isReading : Boolean, val isRemoved : Boolean) : Parcelable {
+data class BookState(val bookId : String, val isLike : Boolean, val isReading : Boolean, val isRemoved : Boolean) {
     companion object {
         fun fromBookDetail(bookDetail: BookDetail, isRemoved : Boolean) : BookState {
             return BookState(

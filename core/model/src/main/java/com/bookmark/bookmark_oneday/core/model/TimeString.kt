@@ -1,12 +1,10 @@
-package com.bookmark.bookmark_oneday.domain.model
+package com.bookmark.bookmark_oneday.core.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 
 // "YYYY.MM.DD HH:MM:SS"
 @JvmInline
-@Parcelize
-value class TimeString(val timeString : String) : Parcelable {
+value class TimeString(val timeString : String) : Serializable {
     // "YYYY.MM.DD"
     fun getOnlyDate() : String = timeString.split(" ")[0]
     // "MM/DD"

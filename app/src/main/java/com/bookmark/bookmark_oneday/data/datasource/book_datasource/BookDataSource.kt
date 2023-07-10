@@ -5,7 +5,7 @@ import com.bookmark.bookmark_oneday.data.models.dto.BookItemDto
 import com.bookmark.bookmark_oneday.data.models.dto.BookTimerDto
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.core.model.PagingData
-import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
+import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 
 interface BookDataSource {
     suspend fun registerBook(recognizedBook: RecognizedBook) : BaseResponse<Nothing>

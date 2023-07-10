@@ -1,7 +1,7 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model
 
-import com.bookmark.bookmark_oneday.domain.model.BookState
-import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
+import com.bookmark.bookmark_oneday.domain.book.model.BookState
+import com.bookmark.bookmark_oneday.domain.book.model.MyLibraryItem
 import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.domain.model.SortData
 

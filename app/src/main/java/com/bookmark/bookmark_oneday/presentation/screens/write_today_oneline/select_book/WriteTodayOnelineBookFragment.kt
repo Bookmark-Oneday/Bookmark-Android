@@ -15,6 +15,7 @@ import com.bookmark.bookmark_oneday.databinding.FragmentWriteTodayOnelineBookBin
 import com.bookmark.bookmark_oneday.presentation.adapter.write_today_oneline.WriteTodayOnelineBookAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.write_today_oneline.WriteTodayOnelineBookDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
+import com.bookmark.bookmark_oneday.presentation.model.BookInfoParcelable
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.BookRecognitionActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.dialog_permission.MyLibraryPermissionDialog
 import com.bookmark.bookmark_oneday.presentation.util.CAMERA_REQUIRED_PERMISSIONS
@@ -60,7 +61,7 @@ class WriteTodayOnelineBookFragment : ViewBindingFragment<FragmentWriteTodayOnel
         binding.btnWriteTodayOnelineBookSelect.setOnClickListener {
             val selectedBook = viewModel.state.value.selectedBook
             selectedBook?.let { book ->
-                val direction = WriteTodayOnelineBookFragmentDirections.actionWriteTodayOnelineBookFragmentToWriteTodayOnelineWriteFragment(book)
+                val direction = WriteTodayOnelineBookFragmentDirections.actionWriteTodayOnelineBookFragmentToWriteTodayOnelineWriteFragment(BookInfoParcelable.fromBookItem(book))
                 findNavController().navigate(direction)
             }
         }

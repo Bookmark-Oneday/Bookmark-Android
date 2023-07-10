@@ -12,7 +12,7 @@ import com.bookmark.bookmark_oneday.data.models.response_meta.DefaultResponseMet
 import com.bookmark.bookmark_oneday.data.models.response_meta.PagingResponseMeta
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.core.model.PagingData
-import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
+import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit

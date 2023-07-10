@@ -1,5 +1,7 @@
 package com.bookmark.bookmark_oneday.domain.model
 
+import com.bookmark.bookmark_oneday.core.model.TimeString
+
 data class OneLine(
     val id : String,
     val userProfile: UserProfile,

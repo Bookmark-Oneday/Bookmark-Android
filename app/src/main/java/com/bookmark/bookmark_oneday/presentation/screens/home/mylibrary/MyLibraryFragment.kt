@@ -17,10 +17,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentMylibraryBinding
-import com.bookmark.bookmark_oneday.domain.model.BookState
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibraryBookDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
+import com.bookmark.bookmark_oneday.presentation.model.BookStateParcelable
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.BookRecognitionActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.HomeActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.bottomsheet_sort.MyLibrarySortBottomSheet
@@ -145,8 +145,8 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
             applyState(state)
         }
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BookState>("book_state")?.observe(viewLifecycleOwner){
-            viewModel.applyItemChange(it)
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BookStateParcelable>("book_state")?.observe(viewLifecycleOwner){
+            viewModel.applyItemChange(it.toBookState())
         }
     }
 

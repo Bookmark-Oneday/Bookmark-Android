@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.BookState
-import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetBookDetail
+import com.bookmark.bookmark_oneday.domain.book.model.BookState
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
+import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetBookDetail
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.model.BookDetailEvent
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.model.BookDetailState
 import kotlinx.coroutines.channels.Channel

@@ -1,7 +1,7 @@
 package com.bookmark.bookmark_oneday.domain.repository
 
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.MyLibraryItem
+import com.bookmark.bookmark_oneday.domain.book.model.MyLibraryItem
 import com.bookmark.bookmark_oneday.core.model.PagingData
 
 interface MyLibraryRepository {

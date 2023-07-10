@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.databinding.ItemReadinghistoryBinding
-import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
 import com.bookmark.bookmark_oneday.presentation.util.dpToPx
 import kotlin.math.max
 

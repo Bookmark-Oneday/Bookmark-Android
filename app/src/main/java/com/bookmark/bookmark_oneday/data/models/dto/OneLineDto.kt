@@ -2,7 +2,7 @@ package com.bookmark.bookmark_oneday.data.models.dto
 
 import com.bookmark.bookmark_oneday.domain.model.OneLine
 import com.bookmark.bookmark_oneday.domain.model.UserProfile
-import com.bookmark.bookmark_oneday.domain.model.toTimeString
+import com.bookmark.bookmark_oneday.core.model.toTimeString
 
 data class OneLineDto(
     val id : String,
