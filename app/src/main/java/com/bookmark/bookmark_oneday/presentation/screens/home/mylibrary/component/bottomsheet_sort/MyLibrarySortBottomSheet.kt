@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bookmark.bookmark_oneday.databinding.BottomsheetMylibrarySortBinding
-import com.bookmark.bookmark_oneday.domain.model.SortData
+import com.bookmark.bookmark_oneday.presentation.model.SortData
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibrarySortAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.mylibrary.MyLibrarySortDecoration
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment

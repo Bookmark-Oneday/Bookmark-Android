@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.databinding.ItemMylibrarySortBinding
-import com.bookmark.bookmark_oneday.domain.model.SortData
+import com.bookmark.bookmark_oneday.presentation.model.SortData
 import kotlin.math.max
 
 class MyLibrarySortAdapter (

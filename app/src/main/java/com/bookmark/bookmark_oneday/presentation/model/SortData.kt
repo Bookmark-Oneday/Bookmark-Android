@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.domain.model
+package com.bookmark.bookmark_oneday.presentation.model
 
 data class SortData(
     val presentText : String,
