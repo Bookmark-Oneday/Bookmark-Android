@@ -1,11 +1,11 @@
-package com.bookmark.bookmark_oneday.app.di
+package com.bookmark.bookmark_oneday.app.di.core
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStoreFile
-import com.bookmark.bookmark_oneday.User
-import com.bookmark.bookmark_oneday.data.datasource.user_datasource.UserDataStoreSerializer
+import com.bookmark.bookmark_oneday.core.datastore.User
+import com.bookmark.bookmark_oneday.core.datastore.UserDataStoreSerializer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

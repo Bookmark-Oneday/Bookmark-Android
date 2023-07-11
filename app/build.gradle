@@ -55,6 +55,7 @@ dependencies {
     implementation project(":data:book")
     implementation project(":core:model")
     implementation project(":core:room")
+    implementation project(":core:datastore")
 
     implementation libs.bundles.androidCore
     implementation libs.material
@@ -103,25 +104,6 @@ dependencies {
     annotationProcessor libs.roomCompiler
     kapt libs.roomCompiler
 
-}
-
-protobuf {
-    protoc {
-        artifact = "com.google.protobuf:protoc:3.18.0"
-    }
-
-    // Generates the java Protobuf-lite code for the Protobufs in this project. See
-    // https://github.com/google/protobuf-gradle-plugin#customizing-protobuf-compilation
-    // for more information.
-    generateProtoTasks {
-        all().each { task ->
-            task.builtins {
-                java {
-                    option 'lite'
-                }
-            }
-        }
-    }
 }
 
 kapt {

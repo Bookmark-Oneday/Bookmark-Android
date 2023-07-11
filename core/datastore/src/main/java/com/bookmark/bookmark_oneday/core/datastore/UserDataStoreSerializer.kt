@@ -1,8 +1,7 @@
-package com.bookmark.bookmark_oneday.data.datasource.user_datasource
+package com.bookmark.bookmark_oneday.core.datastore
 
 import androidx.datastore.core.CorruptionException
 import androidx.datastore.core.Serializer
-import com.bookmark.bookmark_oneday.User
 import com.google.protobuf.InvalidProtocolBufferException
 import java.io.InputStream
 import java.io.OutputStream

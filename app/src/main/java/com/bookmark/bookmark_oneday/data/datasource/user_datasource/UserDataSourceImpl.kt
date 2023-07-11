@@ -1,7 +1,7 @@
 package com.bookmark.bookmark_oneday.data.datasource.user_datasource
 
 import androidx.datastore.core.DataStore
-import com.bookmark.bookmark_oneday.User
+import com.bookmark.bookmark_oneday.core.datastore.User
 import com.bookmark.bookmark_oneday.data.models.entity.UserEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
