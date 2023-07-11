@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.app.retrofit
+package com.bookmark.bookmark_oneday.core.api.kakao
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -10,7 +10,7 @@ object KakaoRetrofitInstance {
     private lateinit var retrofit : Retrofit
 
     fun init(apiKey : String) {
-        if (!::retrofit.isInitialized) {
+        if (!KakaoRetrofitInstance::retrofit.isInitialized) {
             val okhttpClient = getOkHttpClient(apiKey)
 
             retrofit = Retrofit.Builder()

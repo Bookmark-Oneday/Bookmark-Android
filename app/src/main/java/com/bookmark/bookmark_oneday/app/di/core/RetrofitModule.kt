@@ -1,8 +1,8 @@
-package com.bookmark.bookmark_oneday.app.di
+package com.bookmark.bookmark_oneday.app.di.core
 
 import com.bookmark.bookmark_oneday.BuildConfig
-import com.bookmark.bookmark_oneday.app.retrofit.KakaoRetrofitInstance
-import com.bookmark.bookmark_oneday.app.retrofit.BookMarkOneDayRetrofit
+import com.bookmark.bookmark_oneday.core.api.kakao.KakaoRetrofitInstance
+import com.bookmark.bookmark_oneday.core.api.bookmark.BookMarkOneDayRetrofit
 import com.bookmark.bookmark_oneday.core.api.google.GoogleLoginRetrofitInstance
 import com.bookmark.bookmark_oneday.data.datasource.token_datasource.TokenDataSource
 import dagger.Module

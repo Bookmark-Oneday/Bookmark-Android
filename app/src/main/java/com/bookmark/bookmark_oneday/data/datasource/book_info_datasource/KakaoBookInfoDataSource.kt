@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.data.datasource.book_info_datasource
 
-import com.bookmark.bookmark_oneday.app.di.RetrofitModule
+import com.bookmark.bookmark_oneday.app.di.core.RetrofitModule
 import com.bookmark.bookmark_oneday.data.models.KakaoBookResponse
 import retrofit2.Response
 import retrofit2.Retrofit

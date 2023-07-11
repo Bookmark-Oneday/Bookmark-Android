@@ -1,6 +1,7 @@
-package com.bookmark.bookmark_oneday.app.retrofit
+package com.bookmark.bookmark_oneday.core.api.bookmark
 
 import android.annotation.SuppressLint
+import com.bookmark.bookmark_oneday.core.api.NetworkInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

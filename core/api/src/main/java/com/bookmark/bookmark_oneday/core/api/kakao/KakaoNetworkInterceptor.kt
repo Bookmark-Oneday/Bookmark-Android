@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.app.retrofit
+package com.bookmark.bookmark_oneday.core.api.kakao
 
 import okhttp3.Interceptor
 import okhttp3.Request

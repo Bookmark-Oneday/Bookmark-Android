@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.app.retrofit
+package com.bookmark.bookmark_oneday.core.api
 
 import okhttp3.Interceptor
 import okhttp3.Protocol
@@ -43,7 +43,6 @@ class NetworkInterceptor(
                 .body("{${e}}".toResponseBody(null))
                 .build()
         }
-
     }
 
     companion object {

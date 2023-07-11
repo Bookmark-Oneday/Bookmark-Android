@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.app.retrofit
+package com.bookmark.bookmark_oneday.core.api.google
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -10,7 +10,7 @@ object GoogleLoginRetrofitInstance {
     private lateinit var retrofit : Retrofit
 
     fun init() {
-        if (!::retrofit.isInitialized) {
+        if (!GoogleLoginRetrofitInstance::retrofit.isInitialized) {
             val okhttpClient = getOkHttpClient()
 
             retrofit = Retrofit.Builder()

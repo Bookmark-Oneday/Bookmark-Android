@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.data.datasource.book_datasource
 
-import com.bookmark.bookmark_oneday.app.di.RetrofitModule
+import com.bookmark.bookmark_oneday.app.di.core.RetrofitModule
 import com.bookmark.bookmark_oneday.data.models.dto.BookDetailDto
 import com.bookmark.bookmark_oneday.data.models.dto.BookItemDto
 import com.bookmark.bookmark_oneday.data.models.dto.BookTimerDto
