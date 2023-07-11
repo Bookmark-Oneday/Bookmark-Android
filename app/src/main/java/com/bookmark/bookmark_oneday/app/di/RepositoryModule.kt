@@ -14,31 +14,7 @@ abstract class RepositoryModule {
 
     @Singleton
     @Binds
-    abstract fun bindReadingHistoryRepository(impl : ReadingHistoryRepositoryImpl) : ReadingHistoryRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindMyLibraryRepository(impl : MyLibraryRepositoryImpl) : MyLibraryRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindRegisterBookRepository(impl : RegisterBookRepositoryImpl) : RegisterBookRepository
-
-    @Singleton
-    @Binds
     abstract fun bindSearchBookDetailRepository(impl : SearchBookDetailRepositoryImpl) : SearchBookDetailRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindSearchBookDeleteRepository(impl : DeleteBookRepositoryImpl) : DeleteBookRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindBookDetailRepository(impl : BookDetailRepositoryImpl) : BookDetailRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindEditPageRepository(impl : EditPageRepositoryImpl) : EditPageRepository
 
     @Singleton
     @Binds
@@ -51,10 +27,6 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindOnelineRepository(impl : OnelineRepositoryImpl) : OnelineRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindBookRepository(impl : BookRepositoryImpl) : BookRepository
 
     @Singleton
     @Binds
