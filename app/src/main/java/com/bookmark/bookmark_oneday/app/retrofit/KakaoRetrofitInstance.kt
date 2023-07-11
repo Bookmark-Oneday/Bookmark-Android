@@ -9,9 +9,9 @@ object KakaoRetrofitInstance {
     private const val BASE_URL = "https://dapi.kakao.com"
     private lateinit var retrofit : Retrofit
 
-    fun init() {
+    fun init(apiKey : String) {
         if (!::retrofit.isInitialized) {
-            val okhttpClient = getOkHttpClient()
+            val okhttpClient = getOkHttpClient(apiKey)
 
             retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -21,12 +21,12 @@ object KakaoRetrofitInstance {
         }
     }
 
-    private fun getOkHttpClient(): OkHttpClient {
+    private fun getOkHttpClient(apiKey : String): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(10000L, TimeUnit.MILLISECONDS)
             .writeTimeout(10000L, TimeUnit.MILLISECONDS)
             .readTimeout(5000L, TimeUnit.MILLISECONDS)
-            .addInterceptor(KakaoNetworkInterceptor())
+            .addInterceptor(KakaoNetworkInterceptor(apiKey))
             .build()
     }
 

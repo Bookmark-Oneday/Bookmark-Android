@@ -1,9 +1,7 @@
 package com.bookmark.bookmark_oneday.app.retrofit
 
 import android.annotation.SuppressLint
-import com.bookmark.bookmark_oneday.data.datasource.token_datasource.TokenDataSource
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.SecureRandom
@@ -14,13 +12,14 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
 class BookMarkOneDayRetrofit @Inject constructor(
-    private val tokenDataSource: TokenDataSource
+    private val getAccessToken : () -> String?,
+    private val getRefreshToken : () -> String?
 ) {
     private lateinit var retrofit : Retrofit
 
     fun init() {
         if (!::retrofit.isInitialized) {
-            val okhttpClient = getUnsafeOkHttpClient(tokenDataSource)
+            val okhttpClient = getUnsafeOkHttpClient()
 
             retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -30,12 +29,12 @@ class BookMarkOneDayRetrofit @Inject constructor(
         }
     }
 
-    private fun getOkHttpClient(tokenDataSource: TokenDataSource): OkHttpClient {
+    private fun getOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(10000L, TimeUnit.MILLISECONDS)
             .writeTimeout(10000L, TimeUnit.MILLISECONDS)
             .readTimeout(5000L, TimeUnit.MILLISECONDS)
-            .addInterceptor(NetworkInterceptor(tokenDataSource::accessToken))
+            .addInterceptor(NetworkInterceptor(getAccessToken))
             .build()
     }
 
@@ -48,7 +47,7 @@ class BookMarkOneDayRetrofit @Inject constructor(
     }
 
     // TODO SSL 인증서 발급 이후 상단의 getOkHttpClient 를 사용하도록 변경
-    private fun getUnsafeOkHttpClient(tokenDataSource: TokenDataSource): OkHttpClient {
+    private fun getUnsafeOkHttpClient(): OkHttpClient {
         val trustAllCerts = arrayOf<TrustManager>(@SuppressLint("CustomX509TrustManager") object : X509TrustManager {
             @SuppressLint("TrustAllX509TrustManager")
             override fun checkClientTrusted(
@@ -82,7 +81,7 @@ class BookMarkOneDayRetrofit @Inject constructor(
             .connectTimeout(10000L, TimeUnit.MILLISECONDS)
             .writeTimeout(10000L, TimeUnit.MILLISECONDS)
             .readTimeout(5000L, TimeUnit.MILLISECONDS)
-            .addInterceptor(NetworkInterceptor(tokenDataSource::accessToken))
+            .addInterceptor(NetworkInterceptor(getAccessToken))
             .build()
     }
 }

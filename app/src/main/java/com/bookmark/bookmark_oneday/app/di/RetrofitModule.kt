@@ -1,8 +1,9 @@
 package com.bookmark.bookmark_oneday.app.di
 
+import com.bookmark.bookmark_oneday.BuildConfig
 import com.bookmark.bookmark_oneday.app.retrofit.KakaoRetrofitInstance
 import com.bookmark.bookmark_oneday.app.retrofit.BookMarkOneDayRetrofit
-import com.bookmark.bookmark_oneday.app.retrofit.GoogleLoginRetrofitInstance
+import com.bookmark.bookmark_oneday.core.api.google.GoogleLoginRetrofitInstance
 import com.bookmark.bookmark_oneday.data.datasource.token_datasource.TokenDataSource
 import dagger.Module
 import dagger.Provides
@@ -33,7 +34,7 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideKakaoHttpRetrofit() : Retrofit {
-        KakaoRetrofitInstance.init()
+        KakaoRetrofitInstance.init(BuildConfig.KAKAO_KEY)
         return KakaoRetrofitInstance.getInstance()
     }
 
@@ -41,7 +42,7 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideBookmarkOneDayRetrofit(tokenDataSource: TokenDataSource) : Retrofit {
-        val retrofit = BookMarkOneDayRetrofit(tokenDataSource)
+        val retrofit = BookMarkOneDayRetrofit(tokenDataSource::accessToken, tokenDataSource::refreshToken)
         retrofit.init()
         return retrofit.getRetrofit()
     }
