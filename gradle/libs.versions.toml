@@ -32,6 +32,7 @@ mlkit = { module = "com.google.mlkit:barcode-scanning", version = "17.0.3" }
 
 # coroutines
 coroutine = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version = "1.6.4" }
+coroutineCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.6.4"}
 
 # glide : https://github.com/bumptech/glide
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }

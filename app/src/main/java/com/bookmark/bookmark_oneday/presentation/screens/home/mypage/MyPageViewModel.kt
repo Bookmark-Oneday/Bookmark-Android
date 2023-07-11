@@ -2,9 +2,9 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.mypage
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.model.UserInfo
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseClearUser
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetUser
+import com.bookmark.bookmark_oneday.domain.user.model.UserInfo
+import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseClearUser
+import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseGetUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn

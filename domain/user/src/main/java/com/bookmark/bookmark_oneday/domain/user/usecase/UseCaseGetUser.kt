@@ -1,7 +1,7 @@
-package com.bookmark.bookmark_oneday.domain.usecase
+package com.bookmark.bookmark_oneday.domain.user.usecase
 
-import com.bookmark.bookmark_oneday.domain.model.UserInfo
-import com.bookmark.bookmark_oneday.domain.repository.UserRepository
+import com.bookmark.bookmark_oneday.domain.user.model.UserInfo
+import com.bookmark.bookmark_oneday.domain.user.repository.UserRepository
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 

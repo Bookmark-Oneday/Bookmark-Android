@@ -1,6 +1,6 @@
-package com.bookmark.bookmark_oneday.domain.repository
+package com.bookmark.bookmark_oneday.domain.user.repository
 
-import com.bookmark.bookmark_oneday.domain.model.UserInfo
+import com.bookmark.bookmark_oneday.domain.user.model.UserInfo
 import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {

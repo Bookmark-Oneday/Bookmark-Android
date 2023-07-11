@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.model.TokenInfo
 import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetGoogleAccessToken
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseSetUser
+import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseSetUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow

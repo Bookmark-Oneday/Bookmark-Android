@@ -52,7 +52,9 @@ android {
 dependencies {
 
     implementation project(":domain:book")
+    implementation project(":domain:user")
     implementation project(":data:book")
+    implementation project(":data:user")
     implementation project(":core:model")
     implementation project(":core:room")
     implementation project(":core:datastore")

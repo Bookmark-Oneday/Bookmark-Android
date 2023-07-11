@@ -1,6 +1,6 @@
-package com.bookmark.bookmark_oneday.domain.usecase
+package com.bookmark.bookmark_oneday.domain.user.usecase
 
-import com.bookmark.bookmark_oneday.domain.repository.UserRepository
+import com.bookmark.bookmark_oneday.domain.user.repository.UserRepository
 import javax.inject.Inject
 
 class UseCaseSetUser @Inject constructor(

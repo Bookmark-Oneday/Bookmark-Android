@@ -24,7 +24,11 @@ data class OneLineDto(
     companion object {
         fun toOneLine(oneLineDto: OneLineDto) : OneLine {
             val bookInfo = "${oneLineDto.title}, ${oneLineDto.authors.joinToString(",")}"
-            val userProfile = UserProfile(id = oneLineDto.user_id, profileImageUrl = oneLineDto.profile_image, nickname = oneLineDto.nickname)
+            val userProfile = UserProfile(
+                id = oneLineDto.user_id,
+                profileImageUrl = oneLineDto.profile_image,
+                nickname = oneLineDto.nickname
+            )
 
             return OneLine(
                 id = oneLineDto.id,
