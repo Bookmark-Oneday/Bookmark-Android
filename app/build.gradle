@@ -51,6 +51,7 @@ android {
 
 dependencies {
 
+    implementation project(":domain:appinfo")
     implementation project(":domain:book")
     implementation project(":domain:user")
     implementation project(":domain:login")
