@@ -3,7 +3,7 @@ package com.bookmark.bookmark_oneday.data.repository_impl
 import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.BookInfoDataSource
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
-import com.bookmark.bookmark_oneday.domain.repository.SearchBookDetailRepository
+import com.bookmark.bookmark_oneday.domain.book.repository.SearchBookDetailRepository
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
