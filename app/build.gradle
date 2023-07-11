@@ -53,6 +53,7 @@ dependencies {
 
     implementation project(":domain:book")
     implementation project(":domain:user")
+    implementation project(":domain:login")
     implementation project(":domain:oneline")
     implementation project(":data:book")
     implementation project(":data:user")

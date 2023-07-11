@@ -5,8 +5,8 @@ import com.bookmark.bookmark_oneday.data.models.response_body.GoogleAccessTokenR
 import com.bookmark.bookmark_oneday.data.models.response_body.GoogleReIssueAccessTokenResponse
 import com.bookmark.bookmark_oneday.data.utils.mapBaseResponse
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.TokenInfo
-import com.bookmark.bookmark_oneday.domain.repository.GoogleLoginRepository
+import com.bookmark.bookmark_oneday.domain.login.model.TokenInfo
+import com.bookmark.bookmark_oneday.domain.login.repository.GoogleLoginRepository
 import javax.inject.Inject
 
 class GoogleLoginRepositoryImpl @Inject constructor(

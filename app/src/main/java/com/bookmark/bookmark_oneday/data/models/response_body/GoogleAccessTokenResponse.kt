@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.data.models.response_body
 
-import com.bookmark.bookmark_oneday.domain.model.TokenInfo
+import com.bookmark.bookmark_oneday.domain.login.model.TokenInfo
 
 data class GoogleAccessTokenResponse(
     val access_token : String,
