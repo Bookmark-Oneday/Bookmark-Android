@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.domain.model
+package com.bookmark.bookmark_oneday.domain.oneline.model
 
 import com.bookmark.bookmark_oneday.core.model.TimeString
 

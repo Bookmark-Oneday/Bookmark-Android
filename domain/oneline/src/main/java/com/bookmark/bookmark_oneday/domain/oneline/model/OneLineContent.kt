@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.domain.model
+package com.bookmark.bookmark_oneday.domain.oneline.model
 
 data class OneLineContent(
     val id : String,

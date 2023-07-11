@@ -1,7 +1,6 @@
 package com.bookmark.bookmark_oneday.data.models.dto
 
-import com.bookmark.bookmark_oneday.domain.model.OneLine
-import com.bookmark.bookmark_oneday.domain.model.UserProfile
+import com.bookmark.bookmark_oneday.domain.oneline.model.OneLine
 import com.bookmark.bookmark_oneday.core.model.toTimeString
 
 data class OneLineDto(
@@ -24,7 +23,7 @@ data class OneLineDto(
     companion object {
         fun toOneLine(oneLineDto: OneLineDto) : OneLine {
             val bookInfo = "${oneLineDto.title}, ${oneLineDto.authors.joinToString(",")}"
-            val userProfile = UserProfile(
+            val userProfile = com.bookmark.bookmark_oneday.domain.oneline.model.UserProfile(
                 id = oneLineDto.user_id,
                 profileImageUrl = oneLineDto.profile_image,
                 nickname = oneLineDto.nickname
