@@ -1,6 +1,6 @@
-package com.bookmark.bookmark_oneday.data.repository_impl
+package com.bookmark.bookmark_oneday.data.appinfo.repository
 
-import com.bookmark.bookmark_oneday.data.datasource.application_datasource.ApplicationDataSource
+import com.bookmark.bookmark_oneday.data.appinfo.datasource.ApplicationDataSource
 import com.bookmark.bookmark_oneday.domain.appinfo.repository.ApplicationRepository
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.data.datasource.application_datasource
+package com.bookmark.bookmark_oneday.data.appinfo.datasource
 
 interface ApplicationDataSource {
     fun getFirstExecution() : Boolean

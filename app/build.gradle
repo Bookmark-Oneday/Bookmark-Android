@@ -56,6 +56,7 @@ dependencies {
     implementation project(":domain:user")
     implementation project(":domain:login")
     implementation project(":domain:oneline")
+    implementation project(":data:appinfo")
     implementation project(":data:book")
     implementation project(":data:user")
     implementation project(":data:oneline")
