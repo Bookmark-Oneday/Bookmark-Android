@@ -1,8 +1,8 @@
-package com.bookmark.bookmark_oneday.data.repository_impl
+package com.bookmark.bookmark_oneday.data.oneline.repository
 
-import com.bookmark.bookmark_oneday.data.datasource.oneline_datasource.OnelineDataSource
-import com.bookmark.bookmark_oneday.data.models.dto.OneLineDto
-import com.bookmark.bookmark_oneday.data.models.request_body.RegisterOneLineRequestBody
+import com.bookmark.bookmark_oneday.data.oneline.datasource.OnelineDataSource
+import com.bookmark.bookmark_oneday.data.oneline.model.dto.OneLineDto
+import com.bookmark.bookmark_oneday.data.oneline.model.request.RegisterOneLineRequestBody
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.oneline.model.OneLine
 import com.bookmark.bookmark_oneday.core.model.PagingData

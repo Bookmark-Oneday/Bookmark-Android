@@ -1,12 +1,12 @@
-package com.bookmark.bookmark_oneday.data.datasource.oneline_datasource
+package com.bookmark.bookmark_oneday.data.oneline.datasource
 
-import com.bookmark.bookmark_oneday.app.di.core.RetrofitModule
-import com.bookmark.bookmark_oneday.data.models.dto.OneLineDto
-import com.bookmark.bookmark_oneday.data.models.request_body.RegisterOneLineRequestBody
-import com.bookmark.bookmark_oneday.data.models.response_body.DefaultResponseBody
-import com.bookmark.bookmark_oneday.data.models.response_meta.PagingResponseMeta
+import com.bookmark.bookmark_oneday.core.api.di.BookmarkOneDayClient
+import com.bookmark.bookmark_oneday.data.oneline.model.dto.OneLineDto
+import com.bookmark.bookmark_oneday.data.oneline.model.request.RegisterOneLineRequestBody
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.core.model.PagingData
+import com.bookmark.bookmark_oneday.data.oneline.model.response.DefaultResponseBody
+import com.bookmark.bookmark_oneday.data.oneline.model.response.PagingResponseMeta
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -17,7 +17,7 @@ import retrofit2.http.Query
 import javax.inject.Inject
 
 class RemoteOnelineDataSource @Inject constructor(
-    @RetrofitModule.BookmarkOneDayClient retrofit : Retrofit
+    @BookmarkOneDayClient retrofit : Retrofit
 ) : OnelineDataSource {
     private val service = retrofit.create(OnelineApi::class.java)
 

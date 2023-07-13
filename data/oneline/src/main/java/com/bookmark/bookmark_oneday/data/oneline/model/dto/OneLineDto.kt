@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.data.models.dto
+package com.bookmark.bookmark_oneday.data.oneline.model.dto
 
 import com.bookmark.bookmark_oneday.domain.oneline.model.OneLine
 import com.bookmark.bookmark_oneday.core.model.toTimeString

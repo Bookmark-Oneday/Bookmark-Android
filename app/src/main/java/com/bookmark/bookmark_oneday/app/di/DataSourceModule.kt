@@ -6,8 +6,8 @@ import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.BookInf
 import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.KakaoBookInfoDataSource
 import com.bookmark.bookmark_oneday.data.datasource.google_login_datasource.GoogleLoginDataSource
 import com.bookmark.bookmark_oneday.data.datasource.google_login_datasource.GoogleLoginDataSourceImpl
-import com.bookmark.bookmark_oneday.data.datasource.oneline_datasource.OnelineDataSource
-import com.bookmark.bookmark_oneday.data.datasource.oneline_datasource.TestOnelineDataSource
+import com.bookmark.bookmark_oneday.data.oneline.datasource.OnelineDataSource
+import com.bookmark.bookmark_oneday.data.oneline.datasource.TestOnelineDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -1,5 +1,6 @@
 package com.bookmark.bookmark_oneday.app.di
 
+import com.bookmark.bookmark_oneday.data.oneline.repository.OnelineRepositoryImpl
 import com.bookmark.bookmark_oneday.data.repository_impl.*
 import com.bookmark.bookmark_oneday.domain.appinfo.repository.ApplicationRepository
 import com.bookmark.bookmark_oneday.domain.book.repository.SearchBookDetailRepository

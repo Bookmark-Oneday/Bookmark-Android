@@ -58,6 +58,7 @@ dependencies {
     implementation project(":domain:oneline")
     implementation project(":data:book")
     implementation project(":data:user")
+    implementation project(":data:oneline")
     implementation project(":core:api")
     implementation project(":core:datastore")
     implementation project(":core:model")

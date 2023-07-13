@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.data.models.response_body
+package com.bookmark.bookmark_oneday.data.oneline.model.response
 
 data class DefaultResponseBody<T, G>(
     val data : T,

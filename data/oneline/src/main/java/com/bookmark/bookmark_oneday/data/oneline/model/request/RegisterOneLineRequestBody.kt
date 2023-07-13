@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.data.models.request_body
+package com.bookmark.bookmark_oneday.data.oneline.model.request
 
 import com.bookmark.bookmark_oneday.domain.oneline.model.OneLineContent
 
