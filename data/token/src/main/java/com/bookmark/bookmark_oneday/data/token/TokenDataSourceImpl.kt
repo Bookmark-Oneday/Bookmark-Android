@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.data.datasource.token_datasource
+package com.bookmark.bookmark_oneday.data.token
 
 import android.content.SharedPreferences
 import androidx.core.content.edit

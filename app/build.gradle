@@ -58,6 +58,8 @@ dependencies {
     implementation project(":domain:oneline")
     implementation project(":data:appinfo")
     implementation project(":data:book")
+    implementation project(":data:google_auth")
+    implementation project(":data:token")
     implementation project(":data:user")
     implementation project(":data:oneline")
     implementation project(":core:api")

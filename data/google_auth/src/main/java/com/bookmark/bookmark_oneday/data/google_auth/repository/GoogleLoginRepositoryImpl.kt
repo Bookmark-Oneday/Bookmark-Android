@@ -1,9 +1,9 @@
-package com.bookmark.bookmark_oneday.data.repository_impl
+package com.bookmark.bookmark_oneday.data.google_auth.repository
 
-import com.bookmark.bookmark_oneday.data.datasource.google_login_datasource.GoogleLoginDataSource
-import com.bookmark.bookmark_oneday.data.models.response_body.GoogleAccessTokenResponse
-import com.bookmark.bookmark_oneday.data.models.response_body.GoogleReIssueAccessTokenResponse
-import com.bookmark.bookmark_oneday.data.utils.mapBaseResponse
+import com.bookmark.bookmark_oneday.data.google_auth.datasource.GoogleLoginDataSource
+import com.bookmark.bookmark_oneday.data.google_auth.model.response.GoogleAccessTokenResponse
+import com.bookmark.bookmark_oneday.data.google_auth.model.response.GoogleReIssueAccessTokenResponse
+import com.bookmark.bookmark_oneday.data.google_auth.util.mapBaseResponse
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.login.model.TokenInfo
 import com.bookmark.bookmark_oneday.domain.login.repository.GoogleLoginRepository

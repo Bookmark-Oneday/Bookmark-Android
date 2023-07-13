@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.data.utils
+package com.bookmark.bookmark_oneday.data.google_auth.util
 
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 

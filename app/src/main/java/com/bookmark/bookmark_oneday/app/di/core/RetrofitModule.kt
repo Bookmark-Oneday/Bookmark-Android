@@ -7,7 +7,7 @@ import com.bookmark.bookmark_oneday.core.api.di.BookmarkOneDayClient
 import com.bookmark.bookmark_oneday.core.api.di.GoogleClient
 import com.bookmark.bookmark_oneday.core.api.di.KakaoHttpClient
 import com.bookmark.bookmark_oneday.core.api.google.GoogleLoginRetrofitInstance
-import com.bookmark.bookmark_oneday.data.datasource.token_datasource.TokenDataSource
+import com.bookmark.bookmark_oneday.data.token.TokenDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

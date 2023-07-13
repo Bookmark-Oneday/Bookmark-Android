@@ -1,11 +1,10 @@
-package com.bookmark.bookmark_oneday.data.datasource.google_login_datasource
+package com.bookmark.bookmark_oneday.data.google_auth.datasource
 
-import com.bookmark.bookmark_oneday.BuildConfig
 import com.bookmark.bookmark_oneday.core.api.di.GoogleClient
-import com.bookmark.bookmark_oneday.data.models.response_body.GoogleAccessTokenResponse
-import com.bookmark.bookmark_oneday.data.models.response_body.GoogleReIssueAccessTokenResponse
-import com.bookmark.bookmark_oneday.data.models.request_body.RequestIssueGoogleAccessToken
-import com.bookmark.bookmark_oneday.data.models.request_body.RequestReIssueGoogleAccessToken
+import com.bookmark.bookmark_oneday.data.google_auth.model.response.GoogleAccessTokenResponse
+import com.bookmark.bookmark_oneday.data.google_auth.model.response.GoogleReIssueAccessTokenResponse
+import com.bookmark.bookmark_oneday.data.google_auth.model.request.RequestIssueGoogleAccessToken
+import com.bookmark.bookmark_oneday.data.google_auth.model.request.RequestReIssueGoogleAccessToken
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -14,16 +13,19 @@ import retrofit2.http.POST
 import javax.inject.Inject
 
 class GoogleLoginDataSourceImpl @Inject constructor(
-    @GoogleClient retrofit : Retrofit
+    @GoogleClient retrofit : Retrofit,
+    private val redirectUri : String,
+    private val clientId : String,
+    private val clientSecret : String
 ) : GoogleLoginDataSource {
     private val service = retrofit.create(GoogleLoginApi::class.java)
 
     override suspend fun getAccessToken(authCode: String): BaseResponse<GoogleAccessTokenResponse> {
         val requestBody = RequestIssueGoogleAccessToken(
             code = authCode,
-            redirect_uri = BuildConfig.GOOGLE_REDIRECT_URI,
-            client_id = BuildConfig.GOOGLE_CLIENT_ID,
-            client_secret = BuildConfig.GOOGLE_CLIENT_SECRENT
+            redirect_uri = redirectUri,
+            client_id = clientId,
+            client_secret = clientSecret
         )
 
         val response = service.getAccessToken(requestBody)
@@ -40,8 +42,8 @@ class GoogleLoginDataSourceImpl @Inject constructor(
     override suspend fun reIssueAccessToken(refreshToken: String): BaseResponse<GoogleReIssueAccessTokenResponse> {
         val requestBody = RequestReIssueGoogleAccessToken(
             refresh_token = refreshToken,
-            client_id = BuildConfig.GOOGLE_CLIENT_ID,
-            client_secret = BuildConfig.GOOGLE_CLIENT_SECRENT,
+            client_id = clientId,
+            client_secret = clientSecret
         )
 
         val response = service.reIssueAccessToken(requestBody)

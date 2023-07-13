@@ -4,8 +4,6 @@ import com.bookmark.bookmark_oneday.data.appinfo.datasource.ApplicationDataSourc
 import com.bookmark.bookmark_oneday.data.appinfo.datasource.ApplicationDataSourceImpl
 import com.bookmark.bookmark_oneday.data.book.datasorce.BookInfoDataSource
 import com.bookmark.bookmark_oneday.data.book.datasorce.KakaoBookInfoDataSource
-import com.bookmark.bookmark_oneday.data.datasource.google_login_datasource.GoogleLoginDataSource
-import com.bookmark.bookmark_oneday.data.datasource.google_login_datasource.GoogleLoginDataSourceImpl
 import com.bookmark.bookmark_oneday.data.oneline.datasource.OnelineDataSource
 import com.bookmark.bookmark_oneday.data.oneline.datasource.TestOnelineDataSource
 import dagger.Binds
@@ -25,10 +23,6 @@ abstract class DataSourceModule {
     @Singleton
     @Binds
     abstract fun bindApplicationDataSource(impl : ApplicationDataSourceImpl) : ApplicationDataSource
-
-    @Singleton
-    @Binds
-    abstract fun bindGoogleLoginDataSource(impl : GoogleLoginDataSourceImpl) : GoogleLoginDataSource
 
     @Singleton
     @Binds

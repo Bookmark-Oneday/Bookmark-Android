@@ -1,7 +1,7 @@
-package com.bookmark.bookmark_oneday.data.datasource.google_login_datasource
+package com.bookmark.bookmark_oneday.data.google_auth.datasource
 
-import com.bookmark.bookmark_oneday.data.models.response_body.GoogleAccessTokenResponse
-import com.bookmark.bookmark_oneday.data.models.response_body.GoogleReIssueAccessTokenResponse
+import com.bookmark.bookmark_oneday.data.google_auth.model.response.GoogleAccessTokenResponse
+import com.bookmark.bookmark_oneday.data.google_auth.model.response.GoogleReIssueAccessTokenResponse
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 
 interface GoogleLoginDataSource {

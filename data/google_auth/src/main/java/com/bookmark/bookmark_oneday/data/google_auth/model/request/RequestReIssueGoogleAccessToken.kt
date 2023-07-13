@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.data.models.request_body
+package com.bookmark.bookmark_oneday.data.google_auth.model.request
 
 data class RequestReIssueGoogleAccessToken(
     val client_id : String,
