@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.data.models.request_body
+package com.bookmark.bookmark_oneday.data.book.model.request
 
 data class UpdateReadingTimeRequestBody(
     val book_id : String,

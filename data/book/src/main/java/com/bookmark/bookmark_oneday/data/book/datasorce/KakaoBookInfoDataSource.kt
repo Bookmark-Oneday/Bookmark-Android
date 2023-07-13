@@ -1,7 +1,7 @@
-package com.bookmark.bookmark_oneday.data.datasource.book_info_datasource
+package com.bookmark.bookmark_oneday.data.book.datasorce
 
 import com.bookmark.bookmark_oneday.core.api.di.KakaoHttpClient
-import com.bookmark.bookmark_oneday.data.models.KakaoBookResponse
+import com.bookmark.bookmark_oneday.data.book.model.response.KakaoBookResponse
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET

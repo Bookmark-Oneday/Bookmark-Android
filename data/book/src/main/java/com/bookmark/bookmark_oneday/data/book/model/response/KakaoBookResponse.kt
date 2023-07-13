@@ -1,4 +1,4 @@
-package com.bookmark.bookmark_oneday.data.models
+package com.bookmark.bookmark_oneday.data.book.model.response
 
 data class KakaoBookResponse(
     val documents : List<KakaoBookDetail>,

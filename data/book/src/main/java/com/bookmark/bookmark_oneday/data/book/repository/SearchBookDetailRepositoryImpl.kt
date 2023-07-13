@@ -1,6 +1,6 @@
-package com.bookmark.bookmark_oneday.data.repository_impl
+package com.bookmark.bookmark_oneday.data.book.repository
 
-import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.BookInfoDataSource
+import com.bookmark.bookmark_oneday.data.book.datasorce.BookInfoDataSource
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.book.repository.SearchBookDetailRepository

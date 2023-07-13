@@ -2,8 +2,8 @@ package com.bookmark.bookmark_oneday.app.di
 
 import com.bookmark.bookmark_oneday.data.appinfo.datasource.ApplicationDataSource
 import com.bookmark.bookmark_oneday.data.appinfo.datasource.ApplicationDataSourceImpl
-import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.BookInfoDataSource
-import com.bookmark.bookmark_oneday.data.datasource.book_info_datasource.KakaoBookInfoDataSource
+import com.bookmark.bookmark_oneday.data.book.datasorce.BookInfoDataSource
+import com.bookmark.bookmark_oneday.data.book.datasorce.KakaoBookInfoDataSource
 import com.bookmark.bookmark_oneday.data.datasource.google_login_datasource.GoogleLoginDataSource
 import com.bookmark.bookmark_oneday.data.datasource.google_login_datasource.GoogleLoginDataSourceImpl
 import com.bookmark.bookmark_oneday.data.oneline.datasource.OnelineDataSource
