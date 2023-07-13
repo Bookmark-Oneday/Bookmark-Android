@@ -3,11 +3,11 @@ package com.bookmark.bookmark_oneday.data.datasource.oneline_datasource
 import android.annotation.SuppressLint
 import com.bookmark.bookmark_oneday.data.models.dto.OneLineDto
 import com.bookmark.bookmark_oneday.data.models.request_body.RegisterOneLineRequestBody
-import com.bookmark.bookmark_oneday.data.room_database.dao.BookDao
-import com.bookmark.bookmark_oneday.data.room_database.dao.OneLineDao
-import com.bookmark.bookmark_oneday.data.room_database.entity.OneLine
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.core.model.PagingData
+import com.bookmark.bookmark_oneday.core.room.dao.BookDao
+import com.bookmark.bookmark_oneday.core.room.dao.OneLineDao
+import com.bookmark.bookmark_oneday.core.room.entity.OneLineEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.withContext
@@ -70,7 +70,7 @@ class LocalOneLineDataSource @Inject constructor(
         withContext(defaultDispatcher) {
             try {
                 val isbn = bookDao.getIsbnByRegisteredBookId(oneLineContent.book_id.toInt())
-                val oneLine = OneLine(
+                val oneLine = OneLineEntity(
                     userId = 0,
                     isbn = isbn,
                     color = oneLineContent.color,
