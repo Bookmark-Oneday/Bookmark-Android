@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday
 
-import com.bookmark.bookmark_oneday.domain.model.toTimeString
+import com.bookmark.bookmark_oneday.core.model.toTimeString
 import org.junit.Test
 import org.junit.Assert.*
 
