@@ -4,6 +4,8 @@ import com.bookmark.bookmark_oneday.BuildConfig
 import com.bookmark.bookmark_oneday.core.api.di.GoogleClient
 import com.bookmark.bookmark_oneday.data.google_auth.datasource.GoogleLoginDataSourceImpl
 import com.bookmark.bookmark_oneday.data.google_auth.datasource.GoogleLoginDataSource
+import com.bookmark.bookmark_oneday.data.google_auth.repository.GoogleLoginRepositoryImpl
+import com.bookmark.bookmark_oneday.domain.login.repository.GoogleLoginRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +27,13 @@ object GoogleAuthModule {
             clientId = BuildConfig.GOOGLE_CLIENT_ID,
             clientSecret = BuildConfig.GOOGLE_CLIENT_SECRENT
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoogleLoginRepository(
+        googleLoginDataSource: GoogleLoginDataSource
+    ) : GoogleLoginRepository {
+        return GoogleLoginRepositoryImpl(googleLoginDataSource)
     }
 }
