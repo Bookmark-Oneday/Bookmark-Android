@@ -3,7 +3,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.compo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseEditReadingPage
+import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseEditReadingPage
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_editpage.model.BookDetailEditPageDialogState
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_editpage.model.BookDetailEditPageEvent
 import kotlinx.coroutines.channels.Channel

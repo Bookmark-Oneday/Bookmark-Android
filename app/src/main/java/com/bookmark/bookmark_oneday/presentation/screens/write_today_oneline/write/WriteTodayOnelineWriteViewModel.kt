@@ -3,10 +3,10 @@ package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.wr
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.BookItem
-import com.bookmark.bookmark_oneday.domain.model.OneLineContent
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseRegisterOneLine
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.book.model.BookItem
+import com.bookmark.bookmark_oneday.domain.oneline.model.OneLineContent
+import com.bookmark.bookmark_oneday.domain.oneline.usecase.UseCaseRegisterOneLine
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.EditTextDetailState
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.Font
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.Position

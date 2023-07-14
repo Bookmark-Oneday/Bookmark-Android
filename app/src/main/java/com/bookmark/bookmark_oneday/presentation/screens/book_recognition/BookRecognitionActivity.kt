@@ -15,7 +15,7 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.bookmark.bookmark_oneday.databinding.ActivityBookRecognitionBinding
-import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
+import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.BookConfirmationActivity
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.component.BookRecognitionFailDialog

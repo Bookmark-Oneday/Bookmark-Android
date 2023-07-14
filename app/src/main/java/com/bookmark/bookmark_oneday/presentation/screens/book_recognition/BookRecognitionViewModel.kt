@@ -2,9 +2,9 @@ package com.bookmark.bookmark_oneday.presentation.screens.book_recognition
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseSearchBookInfo
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
+import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseSearchBookInfo
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.model.BookRecognitionEvent
 import com.bookmark.bookmark_oneday.presentation.screens.book_recognition.model.BookRecognitionState
 import dagger.hilt.android.lifecycle.HiltViewModel

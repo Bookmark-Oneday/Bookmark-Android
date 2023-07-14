@@ -2,8 +2,8 @@ package com.bookmark.bookmark_oneday.presentation.screens.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseCheckFirstExecuted
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetUser
+import com.bookmark.bookmark_oneday.domain.appinfo.usecase.UseCaseCheckFirstExecuted
+import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseGetUser
 import com.bookmark.bookmark_oneday.presentation.screens.splash.model.NextAction
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay

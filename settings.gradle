@@ -14,3 +14,18 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Bookmark-Oneday"
 include ':app'
+include ':domain:book'
+include ':core:model'
+include ':core:room'
+include ':data:book'
+include ':core:datastore'
+include ':data:user'
+include ':domain:user'
+include ':core:api'
+include ':domain:oneline'
+include ':domain:login'
+include ':domain:appinfo'
+include ':data:oneline'
+include ':data:appinfo'
+include ':data:google_auth'
+include ':data:token'

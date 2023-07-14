@@ -6,7 +6,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentMypageBinding
-import com.bookmark.bookmark_oneday.domain.model.UserInfo
+import com.bookmark.bookmark_oneday.domain.user.model.UserInfo
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.home.mypage.component.ConfirmClearDataDialog
 import com.bookmark.bookmark_oneday.presentation.screens.modify_profile.ModifyProfileActivity

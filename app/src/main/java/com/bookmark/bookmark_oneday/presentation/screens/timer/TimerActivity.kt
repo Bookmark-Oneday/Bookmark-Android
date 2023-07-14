@@ -14,6 +14,7 @@ import com.bookmark.bookmark_oneday.databinding.ActivityTimerBinding
 import com.bookmark.bookmark_oneday.presentation.adapter.timer_record.TimerRecordHistoryAdapter
 import com.bookmark.bookmark_oneday.presentation.adapter.timer_record.TimerRecordHistoryDecoration
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
+import com.bookmark.bookmark_oneday.presentation.model.ReadingHistoryParcelable
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.bottomsheet_more.TimerMoreBottomSheetDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_remove.TimerRemoveHistoryDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.StopWatchState
@@ -27,8 +28,8 @@ import javax.inject.Inject
 class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBinding::inflate) {
 
     @Inject
-    lateinit var timerViewModelFactory : TimerViewModel.AssistedViewModelFactory
-    private val viewModel: TimerViewModel by viewModels{
+    lateinit var timerViewModelFactory: TimerViewModel.AssistedViewModelFactory
+    private val viewModel: TimerViewModel by viewModels {
         TimerViewModel.provideViewModelFactory(
             assistedFactory = timerViewModelFactory,
             bookId = intent.getStringExtra("book_id") ?: "1"
@@ -49,9 +50,13 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
     private fun setBackButtonCallback() {
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                viewModel.getReadingHistoryIfChanged()?.let {
-                    val readingHistoryArray = ArrayList(it)
-                    intent.putExtra("reading_history", readingHistoryArray)
+                viewModel.getReadingHistoryIfChanged()?.let { readingHistoryList ->
+                    intent.putExtra(
+                        "reading_history",
+                        ArrayList(readingHistoryList.map { readingHistory ->
+                            ReadingHistoryParcelable.fromReadingHistory(readingHistory)
+                        })
+                    )
                     setResult(RESULT_OK, intent)
                 }
 
@@ -83,10 +88,13 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
     }
 
     private fun callBottomSheet() {
-        TimerMoreBottomSheetDialog(::callRemoveDialog).show(supportFragmentManager, "TimerMoreBottomSheet")
+        TimerMoreBottomSheetDialog(::callRemoveDialog).show(
+            supportFragmentManager,
+            "TimerMoreBottomSheet"
+        )
     }
 
-    private fun callRemoveDialog(targetId : String ?= null) {
+    private fun callRemoveDialog(targetId: String? = null) {
         TimerRemoveHistoryDialog(
             onRemoveItemSuccess = viewModel::setReadingInfo,
             targetId = targetId,
@@ -95,8 +103,10 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
     }
 
     private fun setRecyclerView() {
-        binding.listTimerHistory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        binding.listTimerHistory.adapter = TimerRecordHistoryAdapter(onClickRemove = ::callRemoveDialog)
+        binding.listTimerHistory.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.listTimerHistory.adapter =
+            TimerRecordHistoryAdapter(onClickRemove = ::callRemoveDialog)
         binding.listTimerHistory.addItemDecoration(TimerRecordHistoryDecoration(this))
     }
 
@@ -120,12 +130,13 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         binding.btnTimerTotal.setToggleState(state.totalButtonToggled)
         binding.btnTimerPlay.setToggleState(state.playButtonToggled)
 
-        binding.labelTimerTotal.visibility = if (state.totalButtonToggled) View.VISIBLE else View.INVISIBLE
+        binding.labelTimerTotal.visibility =
+            if (state.totalButtonToggled) View.VISIBLE else View.INVISIBLE
         val totalTextColor = if (state.totalButtonToggled) R.color.orange else R.color.default_text
         binding.labelTimerTime.setTextColor(ContextCompat.getColor(this, totalTextColor))
     }
 
-    private fun applyStopWatchState(state : StopWatchState) {
+    private fun applyStopWatchState(state: StopWatchState) {
         binding.labelTimerTime.text = state.getTimerText()
         binding.partialTimerStopwatch.setProgress(state.getProgress())
     }

@@ -1,6 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.model
 
-import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
+import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 
 sealed class BookConfirmEvent {
     object BookConfirmEventNormal : BookConfirmEvent()

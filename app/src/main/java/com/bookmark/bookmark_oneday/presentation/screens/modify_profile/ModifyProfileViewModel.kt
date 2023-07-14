@@ -2,8 +2,8 @@ package com.bookmark.bookmark_oneday.presentation.screens.modify_profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetUser
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseSetUser
+import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseGetUser
+import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseSetUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

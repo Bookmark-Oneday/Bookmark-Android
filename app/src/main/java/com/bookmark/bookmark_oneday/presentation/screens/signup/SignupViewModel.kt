@@ -2,10 +2,10 @@ package com.bookmark.bookmark_oneday.presentation.screens.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.TokenInfo
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseGetGoogleAccessToken
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseSetUser
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.login.model.TokenInfo
+import com.bookmark.bookmark_oneday.domain.login.usecase.UseCaseGetGoogleAccessToken
+import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseSetUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow

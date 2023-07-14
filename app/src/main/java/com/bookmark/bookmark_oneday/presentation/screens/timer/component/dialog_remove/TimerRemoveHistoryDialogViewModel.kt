@@ -3,9 +3,9 @@ package com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.model.BaseResponse
-import com.bookmark.bookmark_oneday.domain.model.ReadingInfo
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseDeleteHistory
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingInfo
+import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseDeleteHistory
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_remove.model.TimerRemoveHistoryDialogEvent
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_remove.model.TimerRemoveHistoryDialogState
 import kotlinx.coroutines.channels.Channel

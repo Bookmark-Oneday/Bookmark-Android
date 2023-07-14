@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.databinding.ItemTimerHistoryBinding
-import com.bookmark.bookmark_oneday.domain.model.ReadingHistory
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
 
 class TimerRecordHistoryAdapter(
     private val onClickRemove: (String) -> Unit

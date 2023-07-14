@@ -5,7 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.bookmark.bookmark_oneday.databinding.ActivityBookConfirmationBinding
-import com.bookmark.bookmark_oneday.domain.model.RecognizedBook
+import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation.component.BookConfirmDuplicateDialog
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle

@@ -42,7 +42,7 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
     private val viewModel : WriteTodayOnelineWriteViewModel by viewModels {
         WriteTodayOnelineWriteViewModel.providerViewModelFactory(
             assistedFactory = writeTodayOnelineWriteViewModelFactory,
-            book = args.book
+            book = args.book.toBookItem()
         )
     }
     private val getImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri : Uri? ->

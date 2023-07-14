@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.databinding.ItemTodayOnelineBinding
-import com.bookmark.bookmark_oneday.domain.model.OneLine
+import com.bookmark.bookmark_oneday.domain.oneline.model.OneLine
 import com.bumptech.glide.Glide
 
 class TodayOnelineAdapter : ListAdapter<OneLine, TodayOnelineAdapter.TodayOnelineViewHolder>(OneLineDiffUtil()) {

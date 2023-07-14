@@ -3,7 +3,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.compo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseDeleteBook
+import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseDeleteBook
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_remove.model.BookDetailRemoveDialogEvent
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_remove.model.BookDetailRemoveDialogState
 import dagger.assisted.Assisted

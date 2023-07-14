@@ -12,7 +12,7 @@ import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ItemWriteTodayOnelineBookAddBinding
 import com.bookmark.bookmark_oneday.databinding.ItemWriteTodayOnelineBookBinding
 import com.bookmark.bookmark_oneday.databinding.ItemWriteTodayOnelineBookLoadingBinding
-import com.bookmark.bookmark_oneday.domain.model.BookItem
+import com.bookmark.bookmark_oneday.domain.book.model.BookItem
 import com.bookmark.bookmark_oneday.presentation.model.ListItem
 import com.bumptech.glide.Glide
 
@@ -24,7 +24,7 @@ class WriteTodayOnelineBookAdapter(
 
     private val asyncDiffer = AsyncListDiffer(this, BookItemDiffUtil())
     private var lastSelectedPosition : Int ?= null
-    private var selectedBook : BookItem ?= null
+    private var selectedBook : BookItem?= null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

@@ -1,7 +1,7 @@
 package com.bookmark.bookmark_oneday.presentation.screens.intro
 
 import androidx.lifecycle.ViewModel
-import com.bookmark.bookmark_oneday.domain.usecase.UseCaseSetExecuted
+import com.bookmark.bookmark_oneday.domain.appinfo.usecase.UseCaseSetExecuted
 import com.bookmark.bookmark_oneday.presentation.screens.intro.model.IntroData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

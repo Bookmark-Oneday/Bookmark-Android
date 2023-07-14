@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bookmark.bookmark_oneday.databinding.PartialTodayOnelineToolbarBinding
-import com.bookmark.bookmark_oneday.domain.model.UserProfile
+import com.bookmark.bookmark_oneday.domain.oneline.model.UserProfile
 import com.bumptech.glide.Glide
 
 class TodayOnelineToolbar(context : Context, attrs : AttributeSet) : ConstraintLayout(context, attrs) {
