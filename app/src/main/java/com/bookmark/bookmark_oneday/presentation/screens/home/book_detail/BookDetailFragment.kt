@@ -27,6 +27,7 @@ import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.compon
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.component.dialog_remove.BookDetailRemoveDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.TimerActivity
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
+import com.bookmark.bookmark_oneday.domain.book.util.groupByDate
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -168,7 +169,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
         binding.pbBookdetailReadpage.progress = bookDetail.readingPageRatio
 
-        (binding.listReadinghistory.adapter as BookDetailReadingHistoryAdapter).setReadingHistoryListData(bookDetail.history)
+        (binding.listReadinghistory.adapter as BookDetailReadingHistoryAdapter).setReadingHistoryListData(bookDetail.history.groupByDate())
     }
 
     private fun showLoadingView(show : Boolean) {
