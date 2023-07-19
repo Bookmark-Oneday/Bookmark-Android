@@ -17,7 +17,6 @@ import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.u
 import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.util.lastDaysOfPrevMonth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -66,8 +65,6 @@ class ReadingCalendarViewModel @Inject constructor(
         viewModelScope.launch {
             events.send(ReadingCalendarScreenEvent.HistoryOfTheDayLoading)
 
-            delay(1000L)
-
             val response = useCaseGetReadingHistory.getHistoryOfDay(year, month, day)
             if (response is BaseResponse.Success<List<ReadingHistoryWithBook>>) {
                 val bookList = response.data.map { readingHistoryWithBook ->
@@ -90,8 +87,6 @@ class ReadingCalendarViewModel @Inject constructor(
     fun loadCalendar(year : Int, month : Int) {
         viewModelScope.launch {
             events.send(ReadingCalendarScreenEvent.CalendarCellLoading)
-
-            delay(1000L)
 
             val goalTime = goalTime.first()
             val response = useCaseGetReadingHistory.getHistoryOfMonth(year, month)
