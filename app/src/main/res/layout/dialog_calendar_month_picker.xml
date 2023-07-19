@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/all_dialogbackground"
+        android:paddingVertical="21dp"
+        android:paddingHorizontal="32dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/label_change_year_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/label_change_year_month"/>
+
+        <NumberPicker
+            android:id="@+id/picker_calendar_year"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/picker_calendar_month"
+            app:layout_constraintTop_toBottomOf="@id/label_change_year_month"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp" />
+
+        <NumberPicker
+            android:id="@+id/picker_calendar_month"
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            app:layout_constraintStart_toEndOf="@id/picker_calendar_year"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_change_year_month"
+            android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_calendar_cancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:text="@string/label_cancel"
+            android:background="@drawable/all_roundbutton_negative"
+            android:textColor="@color/default_background"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_calendar_select"
+            app:layout_constraintTop_toBottomOf="@id/picker_calendar_year"
+            android:layout_marginTop="16dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_calendar_select"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:minHeight="0dp"
+            android:text="@string/label_change"
+            android:background="@drawable/all_roundbutton_positive"
+            android:textColor="@color/default_background"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/btn_calendar_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/picker_calendar_year"
+            android:layout_marginTop="16dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

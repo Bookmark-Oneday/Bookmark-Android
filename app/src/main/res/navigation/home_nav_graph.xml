@@ -38,4 +38,8 @@
         android:id="@+id/homeNav_mypageFragment"
         android:name="com.bookmark.bookmark_oneday.presentation.screens.home.mypage.MyPageFragment"
         android:label="MyPageFragment"/>
+    <fragment
+        android:id="@+id/homeNav_readingCalendarFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.ReadingCalendarFragment"
+        android:label="ReadingCalendarFragment" />
 </navigation>

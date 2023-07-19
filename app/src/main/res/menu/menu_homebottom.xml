@@ -8,21 +8,15 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/homeNav_bookclubFragment"
-        android:icon="@drawable/ic_menu_bookclub_negative"
-        android:title="@string/menu_homebottom_bookclub"
+        android:id="@+id/homeNav_readingCalendarFragment"
+        android:icon="@drawable/ic_menu_scrapbook_negative"
+        android:title="@string/menu_homebottom_reading_calendar"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/homeNav_todayOnelineFragment"
         android:icon="@drawable/ic_menu_todayonline_negative"
         android:title="@string/menu_homebottom_todayoneline"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/homeNav_scrapbookFragment"
-        android:icon="@drawable/ic_menu_scrapbook_negative"
-        android:title="@string/menu_homebottom_scrapbook"
         app:showAsAction="ifRoom"/>
 
     <item

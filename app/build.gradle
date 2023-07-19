@@ -65,6 +65,7 @@ dependencies {
     implementation project(":core:api")
     implementation project(":core:datastore")
     implementation project(":core:model")
+    implementation project(":core:presentation")
     implementation project(":core:room")
 
     implementation libs.bundles.androidCore

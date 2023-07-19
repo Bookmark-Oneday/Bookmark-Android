@@ -9,6 +9,7 @@ import com.bookmark.bookmark_oneday.core.room.entity.ReadingHistoryEntity
 import com.bookmark.bookmark_oneday.core.room.entity.RegisteredBookEntity
 import com.bookmark.bookmark_oneday.core.room.model.BookItemDto
 import com.bookmark.bookmark_oneday.core.room.model.HistoryDto
+import com.bookmark.bookmark_oneday.core.room.model.HistoryWithBookDto
 
 @Dao
 interface BookDao {
@@ -59,4 +60,14 @@ interface BookDao {
 
     @Query("SELECT isbn FROM registeredBook WHERE id = :bookId")
     suspend fun getIsbnByRegisteredBookId(bookId : Int) : String
+
+    @Query("SELECT RegisteredBook.id AS bookId, timeSec AS time, date, BookEntity.title AS title, BookEntity.authors AS authors, BookEntity.backgroundUri AS titleImage FROM ReadingHistory " +
+            "INNER JOIN RegisteredBook ON RegisteredBook.id == ReadingHistory.bookId " +
+            "INNER JOIN BookEntity ON BookEntity.isbn == RegisteredBook.isbn " +
+            "WHERE ReadingHistory.date LIKE :dateQuery || '%' ")
+    suspend fun getReadingHistoryWithBookByDateQuery(dateQuery : String) : List<HistoryWithBookDto>
+
+    @Query("SELECT id, timeSec AS time, date FROM ReadingHistory WHERE ReadingHistory.date LIKE :dateQuery || '%' ")
+    suspend fun getReadingHistoryByDateQuery(dateQuery : String) : List<HistoryDto>
+
 }
