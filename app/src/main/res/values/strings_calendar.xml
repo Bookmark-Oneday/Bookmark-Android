@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_reading_calendar_title">독서 달력</string>
+    
+    <string name="label_mon">MON</string>
+    <string name="label_tue">TUE</string>
+    <string name="label_wed">WED</string>
+    <string name="label_thu">THU</string>
+    <string name="label_fri">FRI</string>
+    <string name="label_sat">SAT</string>
+    <string name="label_sun">SUN</string>
+    
+    <string name="label_reading_history_of_the_day">%d월 %d일의 독서기록</string>
+    <string name="caption_reading_history_of_the_day">그때는 어떤 책을 읽었을까요?</string>
+    
+    <string name="label_jan">January</string>
+    <string name="label_feb">February</string>
+    <string name="label_mar">March</string>
+    <string name="label_apr">April</string>
+    <string name="label_may">May</string>
+    <string name="label_jun">June</string>
+    <string name="label_jul">July</string>
+    <string name="label_aug">August</string>
+    <string name="label_sep">September</string>
+    <string name="label_oct">October</string>
+    <string name="label_nov">November</string>
+    <string name="label_dec">December</string>
+    
+</resources>
