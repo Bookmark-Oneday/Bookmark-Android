@@ -60,6 +60,7 @@ class ReadingCalendarCellAdapter(
         }
 
         private fun applyReadingTime(readingTimeOfGoalTime : Float) {
+            binding.labelCalendarCellDay.setTextColor(ContextCompat.getColor(binding.root.context, R.color.default_text))
             val color = when {
                 (readingTimeOfGoalTime <= 0f) -> {
                     ContextCompat.getColor(binding.root.context, R.color.default_background)
