@@ -3,16 +3,24 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar
 import android.icu.util.Calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistoryWithBook
 import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetReadingHistory
+import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseGetUser
 import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.model.CalendarCell
 import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.model.CalendarReadingHistory
 import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.model.ReadingCalendarScreenEvent
 import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.model.ReadingCalendarScreenState
+import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.util.firstDaysOfNextMonth
+import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.util.getDayAmountOfMonth
+import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.util.lastDaysOfPrevMonth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
@@ -21,7 +29,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReadingCalendarViewModel @Inject constructor(
-    private val useCaseGetReadingHistory: UseCaseGetReadingHistory
+    private val useCaseGetReadingHistory: UseCaseGetReadingHistory,
+    private val useCaseGetUserInfo : UseCaseGetUser
 ) : ViewModel() {
 
     private val events = Channel<ReadingCalendarScreenEvent>()
@@ -31,6 +40,8 @@ class ReadingCalendarViewModel @Inject constructor(
         }.stateIn(viewModelScope, SharingStarted.Eagerly, ReadingCalendarScreenState.getCurrentDayInstance())
 
     init {
+        println("<><> init")
+
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH) + 1
@@ -41,16 +52,24 @@ class ReadingCalendarViewModel @Inject constructor(
         viewModelScope.launch {
             events.send(ReadingCalendarScreenEvent.HistoryOfTheDayLoading)
 
-            // 대충 데이터 로드 성공했다 가정
-            val tempReadingHistory = listOf(
-                CalendarReadingHistory("1", "", "title", "author", 10),
-                CalendarReadingHistory("1", "", "title2", "author2", 10),
-                CalendarReadingHistory("1", "", "title3", "author3", 10)
-            )
+            delay(1000L)
 
-            delay(3000L)
+            val response = useCaseGetReadingHistory.getHistoryOfDay(year, month, day)
+            if (response is BaseResponse.Success<List<ReadingHistoryWithBook>>) {
+                val bookList = response.data.map { readingHistoryWithBook ->
+                    CalendarReadingHistory(
+                        id = readingHistoryWithBook.bookId,
+                        cover = readingHistoryWithBook.bookCover,
+                        title = readingHistoryWithBook.bookTitle,
+                        author = readingHistoryWithBook.author,
+                        time = readingHistoryWithBook.time
+                    )
+                }
+                events.send(ReadingCalendarScreenEvent.HistoryOfTheDayLoadSuccess(year, month, day, bookList))
+            } else {
+                events.send(ReadingCalendarScreenEvent.HistoryOfTheDayLoadFailure)
+            }
 
-            events.send(ReadingCalendarScreenEvent.HistoryOfTheDayLoadSuccess(year, month, day, tempReadingHistory))
         }
     }
 
@@ -58,28 +77,53 @@ class ReadingCalendarViewModel @Inject constructor(
         viewModelScope.launch {
             events.send(ReadingCalendarScreenEvent.CalendarCellLoading)
 
-            delay(3000L)
+            delay(1000L)
 
-            // 대충 데이터 로드 성공했다 가정
-            val tempCell = listOf<CalendarCell>(
-                CalendarCell(year, month, 1, 0.2f),
-                CalendarCell(year, month, 1, 1.2f),
-                CalendarCell(year, month, 1, 0.7f),
-                CalendarCell(year, month, 1, 0.9f),
-                CalendarCell(year, month, 1, 0.1f),
-                CalendarCell(year, month, 1, 0.0f),
-                CalendarCell(year, month, 1, 1.0f),
-                CalendarCell(year, month, 1, 0.2f),
-                CalendarCell(year, month, 1, 1.2f),
-                CalendarCell(year, month, 1, 0.7f),
-                CalendarCell(year, month, 1, 0.9f),
-                CalendarCell(year, month, 1, 0.1f),
-                CalendarCell(year, month, 1, 0.0f),
-                CalendarCell(year, month, 1, 1.0f)
-            )
+            val goalTime = useCaseGetUserInfo.getGoalReadingTime().first()
+            val response = useCaseGetReadingHistory.getHistoryOfMonth(year, month)
+            if (response is BaseResponse.Success<List<ReadingHistory>>) {
+                val cellList = mapToCalendarCell(year, month, response.data, goalTime)
+                events.send(ReadingCalendarScreenEvent.CalendarCellLoadSuccess(year, month, cellList))
+            } else {
+                events.send(ReadingCalendarScreenEvent.CalendarCellLoadFailure)
+            }
 
-            events.send(ReadingCalendarScreenEvent.CalendarCellLoadSuccess(year, month, tempCell))
         }
+    }
+
+    private fun mapToCalendarCell(year : Int, month : Int, readingHistoryList: List<ReadingHistory>, goalTime : Int) : List<CalendarCell> {
+        val nextCell = firstDaysOfNextMonth(year, month).map { day ->
+            CalendarCell(
+                year = if (month == 12) year + 1 else year,
+                month = if (month == 12) 1 else month + 1,
+                day = day,
+                readingTimeOfTargetTime = 0f
+            )
+        }
+
+        val prevCell = lastDaysOfPrevMonth(year, month).map { day ->
+            CalendarCell(
+                year = if (month == 1) year - 1 else year,
+                month = if (month == 1) 12 else month - 1,
+                day = day,
+                readingTimeOfTargetTime = 0f
+            )
+        }
+
+        val currentCell = Array(getDayAmountOfMonth(year, month)) {
+            CalendarCell(
+                year = year,
+                month = month,
+                day = it + 1,
+                readingTimeOfTargetTime = 0f
+            )
+        }
+        for (readingHistory in readingHistoryList) {
+            val dayIndex = readingHistory.dateString.getDate() - 1
+            currentCell[dayIndex] = currentCell[dayIndex].copy(readingTimeOfTargetTime = readingHistory.time / goalTime.toFloat())
+        }
+
+        return prevCell + currentCell.toList() + nextCell
     }
 
     fun getYear() = state.value.readingHistoryCalendar.year

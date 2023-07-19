@@ -32,5 +32,9 @@
     <string name="label_change_year_month">연도/월 변경</string>
     <string name="label_cancel">취소</string>
     <string name="label_change">변경</string>
+
+    <string name="form_reading_time_hour">%dH %dM</string>
+    <string name="form_reading_time_minute">%dM</string>
+    <string name="form_reading_time_less_than_1_minute">1분 미만</string>
     
 </resources>

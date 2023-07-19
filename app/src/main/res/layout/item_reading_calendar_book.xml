@@ -44,7 +44,7 @@
         tools:text="이펙티브 코틀린\n줄넘김" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/label_item_write_today_oneline_book_author"
+        android:id="@+id/label_item_write_today_oneline_book_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -54,6 +54,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="end"
         tools:text="3시간 35분" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

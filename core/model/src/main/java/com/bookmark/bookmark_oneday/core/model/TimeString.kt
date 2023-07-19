@@ -9,6 +9,8 @@ value class TimeString(val timeString : String) : Serializable {
     fun getOnlyDate() : String = timeString.split(" ")[0]
     // "MM/DD"
     fun getOnlyMonthAndDay() : String = timeString.split(" ")[0].split(".").slice(1..2).joinToString("/")
+
+    fun getDate() : Int = timeString.split(" ")[0].split(".")[2].toInt()
 }
 
 fun String.toTimeString() : TimeString {

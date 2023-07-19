@@ -5,6 +5,8 @@ import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.domain.book.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.book.model.BookItem
 import com.bookmark.bookmark_oneday.domain.book.model.MyLibraryItem
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistoryWithBook
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingInfo
 import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 
@@ -21,4 +23,6 @@ interface BookRepository  {
     suspend fun updateHistory(bookId : String, time : Int) : BaseResponse<ReadingInfo>
     suspend fun registerBook(book: RecognizedBook) : BaseResponse<Nothing>
     suspend fun checkDuplicate(isbn : String) : BaseResponse<Nothing>
+    suspend fun getReadingHistoryOfMonth(year : Int, month : Int) : BaseResponse<List<ReadingHistory>>
+    suspend fun getReadingHistoryWithBookOfDay(year : Int, month : Int, day : Int) : BaseResponse<List<ReadingHistoryWithBook>>
 }

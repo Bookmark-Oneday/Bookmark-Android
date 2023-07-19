@@ -12,6 +12,7 @@ import com.bookmark.bookmark_oneday.domain.book.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.book.model.BookItem
 import com.bookmark.bookmark_oneday.domain.book.model.MyLibraryItem
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
+import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistoryWithBook
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingInfo
 import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.book.repository.BookRepository
@@ -303,6 +304,58 @@ class LocalBookRepository constructor(
             // todo : 중복 화인 절차에 따라 변경하기
             delay(1000L)
             return@withContext BaseResponse.Failure(errorCode = 409, errorMessage = "exist book isbn")
+        } catch (e : Exception) {
+            return@withContext BaseResponse.Failure(
+                errorCode = -1,
+                errorMessage = "${e.message}"
+            )
+        }
+    }
+
+    override suspend fun getReadingHistoryOfMonth(
+        year: Int,
+        month: Int
+    ): BaseResponse<List<ReadingHistory>> = withContext(defaultDispatcher) {
+        try {
+            val query = String.format("%d-%02d", year, month)
+            val response = bookDao.getReadingHistoryByDateQuery(query)
+            return@withContext BaseResponse.Success(
+                data = response.map { historyDto ->
+                    ReadingHistory(
+                        id = historyDto.id,
+                        dateString = historyDto.date.toTimeString(),
+                        time = historyDto.time
+                    )
+                }
+            )
+        } catch (e : Exception) {
+            return@withContext BaseResponse.Failure(
+                errorCode = -1,
+                errorMessage = "${e.message}"
+            )
+        }
+    }
+
+    override suspend fun getReadingHistoryWithBookOfDay(
+        year: Int,
+        month: Int,
+        day: Int
+    ): BaseResponse<List<ReadingHistoryWithBook>> = withContext(defaultDispatcher) {
+        try {
+            val query = String.format("%d-%02d-%02d", year, month, day)
+            val response = bookDao.getReadingHistoryWithBookByDateQuery(query)
+            return@withContext BaseResponse.Success(
+                data = response.map { historyWithBookDto ->
+                    ReadingHistoryWithBook(
+                        dateString = historyWithBookDto.date.toTimeString(),
+                        time = historyWithBookDto.time,
+                        bookTitle = historyWithBookDto.title,
+                        author = historyWithBookDto.authors.joinToString(","),
+                        bookCover = historyWithBookDto.titleImage,
+                        bookId = historyWithBookDto.bookId.toString()
+                    )
+                }
+            )
         } catch (e : Exception) {
             return@withContext BaseResponse.Failure(
                 errorCode = -1,

@@ -73,6 +73,7 @@ class ReadingCalendarFragment : ViewBindingFragment<FragmentReadingCalendarBindi
         }
         (binding.listCalendarBook.adapter as ReadingCalendarBookAdapter).changeReadingHistoryData(readingHistoryOfTheDay.readingHistory)
         binding.viewCalendarLoadingBookIntro.root.visibility = showIntro.toVisibility()
+        binding.viewCalendarLoadingBookEmpty.root.visibility = (readingHistoryOfTheDay.readingHistory.isEmpty() && !showIntro).toVisibility()
     }
 
     private fun applyCalendarUi(readingHistoryCalendar: ReadingHistoryCalendar) {

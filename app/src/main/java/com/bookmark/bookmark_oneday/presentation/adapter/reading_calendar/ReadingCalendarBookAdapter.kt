@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ItemReadingCalendarBookBinding
 import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.model.CalendarReadingHistory
 import com.bumptech.glide.Glide
@@ -37,8 +38,25 @@ class ReadingCalendarBookAdapter : Adapter<ReadingCalendarBookAdapter.BookViewHo
 
         fun bind(newBook : CalendarReadingHistory) {
             binding.labelItemWriteTodayOnelineBookTitle.text = newBook.title
-            binding.labelItemWriteTodayOnelineBookAuthor.text = newBook.author
             Glide.with(binding.root.context).load(newBook.cover).into(binding.imgItemWriteTodayOnelineBookCover)
+            binding.labelItemWriteTodayOnelineBookTime.text = getTimeText(newBook.time)
+        }
+
+        private fun getTimeText(readingTime : Int) : String {
+            val readingTimeMinute = readingTime / 60
+            val hour = readingTimeMinute / 60
+            val minute = readingTimeMinute % 60
+            return when {
+                (hour > 0) -> {
+                    binding.root.context.getString(R.string.form_reading_time_hour, hour, minute)
+                }
+                (hour == 0 && minute > 0) -> {
+                     binding.root.context.getString(R.string.form_reading_time_minute, minute)
+                }
+                else -> {
+                    binding.root.context.getString(R.string.form_reading_time_less_than_1_minute)
+                }
+            }
         }
     }
 }
