@@ -61,6 +61,8 @@ class ReadingCalendarViewModel @Inject constructor(
     }
 
     fun loadReadingHistoryOfTheDay(year : Int, month : Int, day : Int) {
+        if (state.value.showCalendarCellLoading || state.value.showReadingHistoryLoading) return
+
         viewModelScope.launch {
             events.send(ReadingCalendarScreenEvent.HistoryOfTheDayLoading)
 
