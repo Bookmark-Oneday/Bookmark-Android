@@ -10,8 +10,11 @@
     <string name="label_sat">SAT</string>
     <string name="label_sun">SUN</string>
     
-    <string name="label_reading_history_of_the_day">%d월 %d일의 독서기록</string>
+    <string name="label_reading_history_of_the_day_with_date">%d월 %d일의 독서기록</string>
+    <string name="label_reading_history_of_the_day">그날의 독서기록</string>
     <string name="caption_reading_history_of_the_day">그때는 어떤 책을 읽었을까요?</string>
+    <string name="label_reading_history_of_the_day_empty">이날은 읽은 책이 없어요</string>
+    <string name="label_reading_history_of_the_day_intro">달력의 날짜를 클릭하면\n해당 날짜의 독서 기록을\n확인할 수 있어요!</string>
     
     <string name="label_jan">January</string>
     <string name="label_feb">February</string>
@@ -25,5 +28,9 @@
     <string name="label_oct">October</string>
     <string name="label_nov">November</string>
     <string name="label_dec">December</string>
+
+    <string name="label_change_year_month">연도/월 변경</string>
+    <string name="label_cancel">취소</string>
+    <string name="label_change">변경</string>
     
 </resources>

@@ -20,6 +20,7 @@
     <color name="black_surface">#FF111111</color>
 
     <color name="default_background">#FF111111</color>
+    <color name="default_background_40">#66111111</color>
     <color name="default_text">#FFFFFFFF</color>
     <color name="default_icon_tint">#FFFFFFFF</color>
     <color name="default_separator">#FF444444</color>
