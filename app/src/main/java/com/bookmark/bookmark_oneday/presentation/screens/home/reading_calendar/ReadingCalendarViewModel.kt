@@ -30,7 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ReadingCalendarViewModel @Inject constructor(
     private val useCaseGetReadingHistory: UseCaseGetReadingHistory,
-    private val useCaseGetUserInfo : UseCaseGetUser
+    useCaseGetUserInfo : UseCaseGetUser
 ) : ViewModel() {
 
     private val events = Channel<ReadingCalendarScreenEvent>()
@@ -39,9 +39,9 @@ class ReadingCalendarViewModel @Inject constructor(
             event.reduce(state)
         }.stateIn(viewModelScope, SharingStarted.Eagerly, ReadingCalendarScreenState.getCurrentDayInstance())
 
-    init {
-        println("<><> init")
+    private val goalTime = useCaseGetUserInfo.getGoalReadingTime()
 
+    init {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH) + 1
@@ -79,7 +79,7 @@ class ReadingCalendarViewModel @Inject constructor(
 
             delay(1000L)
 
-            val goalTime = useCaseGetUserInfo.getGoalReadingTime().first()
+            val goalTime = goalTime.first()
             val response = useCaseGetReadingHistory.getHistoryOfMonth(year, month)
             if (response is BaseResponse.Success<List<ReadingHistory>>) {
                 val cellList = mapToCalendarCell(year, month, response.data, goalTime)
@@ -120,7 +120,7 @@ class ReadingCalendarViewModel @Inject constructor(
         }
         for (readingHistory in readingHistoryList) {
             val dayIndex = readingHistory.dateString.getDate() - 1
-            currentCell[dayIndex] = currentCell[dayIndex].copy(readingTimeOfTargetTime = readingHistory.time / goalTime.toFloat())
+            currentCell[dayIndex] = currentCell[dayIndex].copy(readingTimeOfTargetTime = readingHistory.time / 60 / goalTime.toFloat())
         }
 
         return prevCell + currentCell.toList() + nextCell
