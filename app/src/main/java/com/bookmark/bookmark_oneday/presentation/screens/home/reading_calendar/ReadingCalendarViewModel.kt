@@ -20,6 +20,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.runningFold
@@ -33,13 +34,24 @@ class ReadingCalendarViewModel @Inject constructor(
     useCaseGetUserInfo : UseCaseGetUser
 ) : ViewModel() {
 
+    private val goalTime = useCaseGetUserInfo.getGoalReadingTime()
+
     private val events = Channel<ReadingCalendarScreenEvent>()
     val state : StateFlow<ReadingCalendarScreenState> = events.receiveAsFlow()
         .runningFold(ReadingCalendarScreenState.getCurrentDayInstance()) { state, event ->
             event.reduce(state)
-        }.stateIn(viewModelScope, SharingStarted.Eagerly, ReadingCalendarScreenState.getCurrentDayInstance())
+        }
+        .combine(goalTime) { state, goalTime ->
+            return@combine state.copy(
+                readingHistoryCalendar = state.readingHistoryCalendar.copy(
+                    cell = state.readingHistoryCalendar.cell.map { cell ->
+                        cell.copy(goalTimeMinute = goalTime)
+                    }
+                )
+            )
+        }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, ReadingCalendarScreenState.getCurrentDayInstance())
 
-    private val goalTime = useCaseGetUserInfo.getGoalReadingTime()
 
     init {
         val calendar = Calendar.getInstance()
@@ -97,7 +109,8 @@ class ReadingCalendarViewModel @Inject constructor(
                 year = if (month == 12) year + 1 else year,
                 month = if (month == 12) 1 else month + 1,
                 day = day,
-                readingTimeOfTargetTime = 0f
+                readTimeMinute = 0,
+                goalTimeMinute = goalTime
             )
         }
 
@@ -106,7 +119,8 @@ class ReadingCalendarViewModel @Inject constructor(
                 year = if (month == 1) year - 1 else year,
                 month = if (month == 1) 12 else month - 1,
                 day = day,
-                readingTimeOfTargetTime = 0f
+                readTimeMinute = 0,
+                goalTimeMinute = goalTime
             )
         }
 
@@ -115,12 +129,13 @@ class ReadingCalendarViewModel @Inject constructor(
                 year = year,
                 month = month,
                 day = it + 1,
-                readingTimeOfTargetTime = 0f
+                readTimeMinute = 0,
+                goalTimeMinute = goalTime
             )
         }
         for (readingHistory in readingHistoryList) {
             val dayIndex = readingHistory.dateString.getDate() - 1
-            currentCell[dayIndex] = currentCell[dayIndex].copy(readingTimeOfTargetTime = readingHistory.time / 60 / goalTime.toFloat())
+            currentCell[dayIndex] = currentCell[dayIndex].copy(readTimeMinute = readingHistory.time / 60)
         }
 
         return prevCell + currentCell.toList() + nextCell
