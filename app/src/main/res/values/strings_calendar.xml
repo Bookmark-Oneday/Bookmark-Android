@@ -12,7 +12,7 @@
     
     <string name="label_reading_history_of_the_day_with_date">%d월 %d일의 독서기록</string>
     <string name="label_reading_history_of_the_day">그날의 독서기록</string>
-    <string name="caption_reading_history_of_the_day">그때는 어떤 책을 읽었을까요?</string>
+    <string name="caption_reading_history_of_the_day">이날은 어떤 책을 읽었을까요?</string>
     <string name="label_reading_history_of_the_day_empty">이날은 읽은 책이 없어요</string>
     <string name="label_reading_history_of_the_day_intro">달력의 날짜를 클릭하면\n해당 날짜의 독서 기록을\n확인할 수 있어요!</string>
     
@@ -33,8 +33,8 @@
     <string name="label_cancel">취소</string>
     <string name="label_change">변경</string>
 
-    <string name="form_reading_time_hour">%dH %dM</string>
-    <string name="form_reading_time_minute">%dM</string>
+    <string name="form_reading_time_hour">%d시간 %d분</string>
+    <string name="form_reading_time_minute">%d분</string>
     <string name="form_reading_time_less_than_1_minute">1분 미만</string>
     
 </resources>
