@@ -22,6 +22,7 @@ sealed class ReadingCalendarScreenEvent {
         override fun reduce(prevState: ReadingCalendarScreenState): ReadingCalendarScreenState {
             return prevState.copy(
                 showCalendarCellLoading = false,
+                showReadingHistoryLoadingIntro = true,
                 readingHistoryCalendar = ReadingHistoryCalendar(
                     year = year,
                     month = month,
