@@ -7,7 +7,6 @@ data class TodayOnelineState (
     val onelineList : List<OneLine> = listOf(),
     val showLoadingFail : Boolean = false,
     val showLoading : Boolean = false,
-    val viewPagerPosition : ViewPagerPosition ?= null,
     val userProfile: UserProfile ?= null,
     val showEmptyView : Boolean = false
 )
