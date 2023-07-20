@@ -34,7 +34,9 @@ class MyLibrarySortBottomSheet(
     }
 
     private fun onClickItem(sortData: SortData) {
-        onClick(sortData)
+        if (currentSort != sortData) {
+            onClick(sortData)
+        }
         dismiss()
     }
 
