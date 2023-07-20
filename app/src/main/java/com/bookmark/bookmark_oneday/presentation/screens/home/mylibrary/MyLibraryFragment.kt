@@ -35,7 +35,6 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
     R.layout.fragment_mylibrary
 ) {
     private val viewModel: MyLibraryViewModel by activityViewModels()
-    private lateinit var sortBottomSheet: MyLibrarySortBottomSheet
 
     private val cameraScreenLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -62,7 +61,6 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
         setRecyclerView()
         setAppbarEvent()
         setObserver()
-        setBottomSheet()
     }
 
     private fun allPermissionGranted() = REQUIRED_PERMISSIONS.all {
@@ -71,9 +69,17 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
 
     private fun setButton() {
         binding.llbtnMylibrarySort.setOnClickListener {
-            if (sortBottomSheet.isAdded) return@setOnClickListener
-            sortBottomSheet.show(childFragmentManager, "MyLibrarySortBottomSheet")
+            showBottomSheet()
         }
+    }
+
+    private fun showBottomSheet() {
+        val sortBottomSheet = MyLibrarySortBottomSheet(
+            MyLibraryViewModel.sortList,
+            viewModel::tryGetInitPagingData,
+            viewModel.state.value.currentSortData
+        )
+        sortBottomSheet.show(childFragmentManager, "MyLibrarySortBottomSheet")
     }
 
     private fun setRecyclerView() {
@@ -164,16 +170,7 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
         binding.labelMylibraryBookcount.text = state.totalItemCountString
         binding.llbtnMylibrarySort.isEnabled = state.sortButtonActive
 
-        sortBottomSheet.setCurrentSort(state.currentSortData)
-
         if (state.showLoadingFail) { callErrorViewInActivity() }
-    }
-
-    private fun setBottomSheet() {
-        sortBottomSheet = MyLibrarySortBottomSheet(
-            MyLibraryViewModel.sortList,
-            viewModel::tryGetInitPagingData
-        )
     }
 
     // HomeActivity 에 정의된 네트워크 에러 view 를 보여줍니다.
