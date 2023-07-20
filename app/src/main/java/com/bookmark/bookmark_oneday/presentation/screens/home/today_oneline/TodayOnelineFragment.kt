@@ -5,14 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.bookmark.bookmark_oneday.R
+import com.bookmark.bookmark_oneday.core.presentation.util.toVisibility
 import com.bookmark.bookmark_oneday.databinding.FragmentTodayOnelineBinding
 import com.bookmark.bookmark_oneday.presentation.adapter.today_oneline.TodayOnelineAdapter
 import com.bookmark.bookmark_oneday.presentation.base.DataBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.home.HomeActivity
+import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineSideEffect
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.ViewPagerPosition
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.WriteTodayOnelineActivity
 import com.bookmark.bookmark_oneday.presentation.util.applyStatusBarPadding
@@ -33,7 +36,10 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
 
         setButton()
         setPager()
-        observeViewTree()
+        observeViewTree {
+            setObserver()
+        }
+
     }
 
     private fun setButton() {
@@ -61,7 +67,7 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
 
                 if (state == ViewPager2.SCROLL_STATE_IDLE &&
                     previousState == ViewPager2.SCROLL_STATE_DRAGGING &&
-                    viewModel.state.value.viewPagerPosition?.position != 0
+                    binding.pagerTodayOneline.currentItem != 0
                 ) {
                     viewModel.tryGetNextPagingData()
                 }
@@ -71,7 +77,7 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
         })
     }
 
-    private fun observeViewTree() {
+    private fun observeViewTree(callback : () -> Unit) {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 val contentAreaRight = resources.displayMetrics.widthPixels
@@ -85,7 +91,7 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
                     right = contentAreaRight
                 )
 
-                setObserver()
+                callback()
 
                 binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
@@ -97,11 +103,24 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
     // 오늘 한줄 글자 위치가 부적절하게 적용되는 문제가 발생하여 순서를 맞추고자 observe 위치를 조정
     private fun setObserver() {
         viewModel.state.collectLatestInLifecycle(viewLifecycleOwner) { state ->
-            (binding.pagerTodayOneline.adapter as TodayOnelineAdapter).submitList(state.onelineList)
+            binding.partialTodayOnelineEmpty.root.visibility = state.showEmptyView.toVisibility()
             setLoadingDialogVisibility(state.showLoading)
             state.userProfile?.let { binding.partialTodayOnlineToolbar.setWriterProfile(it) }
-            changeViewPagerPosition(state.viewPagerPosition)
             binding.pagerTodayOneline.isUserInputEnabled = !state.showLoading
+            (binding.pagerTodayOneline.adapter as TodayOnelineAdapter).submitList(state.onelineList) {
+                viewModel.callMoveSideEffect(state.onelineList.size)
+            }
+        }
+
+        viewModel.sideEffect.collectLatestInLifecycle(viewLifecycleOwner) { sideEffect ->
+            when (sideEffect) {
+                is TodayOnelineSideEffect.MovePage -> {
+                    changeViewPagerPosition(sideEffect.viewPagerPosition)
+                }
+                is TodayOnelineSideEffect.ShowToast -> {
+                    Toast.makeText(requireContext(), sideEffect.toastMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -115,12 +134,10 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
         }
     }
 
-    private fun changeViewPagerPosition(viewPagerPosition: ViewPagerPosition?) {
-        if (viewPagerPosition != null &&
-            binding.pagerTodayOneline.currentItem != viewPagerPosition.position) {
-            binding.pagerTodayOneline.post {
-                binding.pagerTodayOneline.setCurrentItem(viewPagerPosition.position, viewPagerPosition.useAnimation)
-            }
+    private fun changeViewPagerPosition(viewPagerPosition: ViewPagerPosition) {
+        binding.pagerTodayOneline.post {
+            binding.pagerTodayOneline.setCurrentItem(viewPagerPosition.position, viewPagerPosition.useAnimation)
         }
     }
+
 }

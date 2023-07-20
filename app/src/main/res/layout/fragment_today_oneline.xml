@@ -12,6 +12,13 @@
             android:layout_height="match_parent"
             android:orientation="vertical"/>
 
+        <include
+            android:id="@+id/partial_today_oneline_empty"
+            layout="@layout/view_today_oneline_empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"/>
+
         <com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.component.TodayOnelineToolbar
             android:id="@+id/partial_today_online_toolbar"
             android:layout_width="match_parent"

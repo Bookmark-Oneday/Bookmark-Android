@@ -3,6 +3,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.mypage
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.FragmentMypageBinding
@@ -60,8 +61,17 @@ class MyPageFragment : ViewBindingFragment<FragmentMypageBinding>(
     private fun applyUserInfo(userInfo: UserInfo) {
         binding.partialMypageProfile.labelMypageUsername.text = userInfo.nickname
         binding.partialMypageProfile.labelMypageUserIntro.text = userInfo.bio
-        userInfo.profileImage?.let {
-            Glide.with(requireContext()).load(it).into(binding.partialMypageProfile.imgMypageProfile)
+        applyProfileImage(userInfo.profileImage)
+    }
+
+    private fun applyProfileImage(profileImage : String?) {
+        if (profileImage == null) {
+            binding.partialMypageProfile.imgMypageProfile.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_all_default_profile))
+        } else {
+            Glide.with(requireContext())
+                .load(profileImage)
+                .placeholder(R.drawable.ic_all_default_profile)
+                .into(binding.partialMypageProfile.imgMypageProfile)
         }
     }
 }

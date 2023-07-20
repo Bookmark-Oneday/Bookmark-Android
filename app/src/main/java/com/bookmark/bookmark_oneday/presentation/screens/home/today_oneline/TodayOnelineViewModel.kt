@@ -4,15 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.core.model.PagingCheckData
-import com.bookmark.bookmark_oneday.domain.oneline.model.UserProfile
 import com.bookmark.bookmark_oneday.domain.oneline.usecase.UseCaseGetOneline
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineEvent
+import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineSideEffect
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineState
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.ViewPagerPosition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
@@ -29,6 +31,12 @@ class TodayOnelineViewModel @Inject constructor(
     val state : StateFlow<TodayOnelineState> = event.receiveAsFlow()
         .runningFold(TodayOnelineState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, TodayOnelineState())
+
+    private val _sideEvent = MutableSharedFlow<TodayOnelineSideEffect>()
+    val sideEffect = _sideEvent.asSharedFlow()
+
+    // 사용자의 터치 반응 없이 pager 를 이동했는지 여부를 나타냅니다.
+    private var moveByResponse = false
 
     init {
         tryGetFirstPagingData()
@@ -72,18 +80,27 @@ class TodayOnelineViewModel @Inject constructor(
     }
 
     fun setCurrentPage(pageIdx : Int) {
-        if (state.value.viewPagerPosition?.position == pageIdx) return
-
         viewModelScope.launch {
             event.send(TodayOnelineEvent.ChangePagerPosition(pageIdx))
         }
+    }
+
+    // MVI 패턴에서 sideEffect 는 Intent 에 의해서만 수행되어야 하지만 (reduce 함수 내),
+    // 다음 페이지의 첫 아이멭으로 이동하는 이벤트의 경우, state가 collect 되기 전, 먼저 이 sideEffect 가 collect 된다면
+    // outOfIndex 에러가 발생할 가능성이 있어, Activity 의 viewPager 의 ListAdapter 의 submit List 의 콜백으로 호출될 수 있도록
+    // 별도의 함수로 분리했습니다.
+    fun callMoveSideEffect(itemSize : Int) {
+        if (!moveByResponse) return
+        moveByResponse = false
+        val viewPagerPosition = ViewPagerPosition (position = itemSize / 5 * 5, useAnimation = true)
+        callSideEffect(TodayOnelineSideEffect.MovePage(viewPagerPosition))
     }
 
     private fun reduce(state : TodayOnelineState, event: TodayOnelineEvent) : TodayOnelineState {
         return when (event) {
             is TodayOnelineEvent.ChangePagerPosition -> {
                 val userProfile = if(state.onelineList.isEmpty()) null else state.onelineList[event.position].userProfile
-                state.copy(viewPagerPosition = ViewPagerPosition(position = event.position), userProfile = userProfile)
+                state.copy(userProfile = userProfile)
             }
             TodayOnelineEvent.DataLoading -> {
                 state.copy(
@@ -98,43 +115,43 @@ class TodayOnelineViewModel @Inject constructor(
                 )
             }
             is TodayOnelineEvent.DataLoadingSuccess -> {
+                val loadDataIsEmpty = event.pagingData.dataList.isEmpty()
+                if (loadDataIsEmpty) {
+                    return state.copy(
+                        showLoading = false,
+                        showLoadingFail = false,
+                        showEmptyView = state.onelineList.isEmpty()
+                    )
+                }
+
                 val dataList = state.onelineList + event.pagingData.dataList
+                val userProfile = dataList[state.onelineList.size].userProfile
 
-                val viewPagerPosition = if (event.pagingData.dataList.isEmpty()) {
-                    state.viewPagerPosition
-                } else {
-                    ViewPagerPosition(position = state.onelineList.size)
-                }
-
-                val userProfile = viewPagerPosition?.let {
-                    dataList[viewPagerPosition.position].userProfile
-                }
-
+                moveByResponse = true
                 state.copy(
-                    viewPagerPosition = viewPagerPosition,
                     onelineList = dataList,
                     showLoading = false,
                     showLoadingFail = false,
-                    userProfile = userProfile
+                    userProfile = userProfile,
+                    showEmptyView = false
                 )
             }
             is TodayOnelineEvent.FirstPageDataLoadingSuccess -> {
                 val dataList = event.pagingData.dataList
 
-                val userProfile = if (dataList.isEmpty()) {
-                    UserProfile(id = "none", nickname = "", profileImageUrl = null)
-                } else {
-                    dataList[0].userProfile
-                }
-
                 state.copy(
-                    viewPagerPosition = ViewPagerPosition(0, false),
                     onelineList = dataList,
                     showLoading = false,
                     showLoadingFail = false,
-                    userProfile = userProfile
+                    showEmptyView = dataList.isEmpty()
                 )
             }
+        }
+    }
+
+    private fun callSideEffect(sideEffect: TodayOnelineSideEffect) {
+        viewModelScope.launch {
+            _sideEvent.emit(sideEffect)
         }
     }
 

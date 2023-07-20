@@ -66,6 +66,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:tint="@color/default_icon_tint"
                     android:src="@drawable/ic_next"/>
                 
             </LinearLayout>
@@ -90,6 +91,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:tint="@color/default_icon_tint"
                     android:src="@drawable/ic_next"/>
 
             </LinearLayout>

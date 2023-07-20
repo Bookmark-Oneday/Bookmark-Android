@@ -13,10 +13,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class MyLibrarySortBottomSheet(
     private val sortList : List<SortData>,
-    private val onClick : (SortData) -> Unit
+    private val onClick : (SortData) -> Unit,
+    private var currentSort : SortData = sortList[0]
 ) : BottomSheetDialogFragment() {
     private lateinit var binding : BottomsheetMylibrarySortBinding
-    private var currentSort : SortData = sortList[0]
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +34,9 @@ class MyLibrarySortBottomSheet(
     }
 
     private fun onClickItem(sortData: SortData) {
-        onClick(sortData)
+        if (currentSort != sortData) {
+            onClick(sortData)
+        }
         dismiss()
     }
 
@@ -44,7 +46,4 @@ class MyLibrarySortBottomSheet(
         binding.listMylibrarySort.addItemDecoration(MyLibrarySortDecoration(requireContext()))
     }
 
-    fun setCurrentSort(sortData: SortData) {
-        currentSort = sortData
-    }
 }
