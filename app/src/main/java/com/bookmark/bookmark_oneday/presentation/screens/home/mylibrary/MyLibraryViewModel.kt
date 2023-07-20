@@ -7,6 +7,7 @@ import com.bookmark.bookmark_oneday.core.model.PagingCheckData
 import com.bookmark.bookmark_oneday.domain.book.model.BookState
 import com.bookmark.bookmark_oneday.domain.book.model.MyLibraryItem
 import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetBookList
+import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseGetUser
 import com.bookmark.bookmark_oneday.presentation.model.SortData
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryEvent
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryState
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyLibraryViewModel @Inject constructor(
-    private val useCaseGetBookList: UseCaseGetBookList
+    private val useCaseGetBookList: UseCaseGetBookList,
+    useCaseGetUser: UseCaseGetUser
 ) : ViewModel() {
 
     private val event = Channel<MyLibraryEvent>()
@@ -27,6 +29,8 @@ class MyLibraryViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Eagerly, MyLibraryState())
 
     private val pagingCheckData = PagingCheckData()
+
+    val userProfile = useCaseGetUser.getProfile()
 
     init {
         tryGetInitPagingData()

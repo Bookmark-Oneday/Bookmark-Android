@@ -5,6 +5,7 @@ import android.view.View
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ActivityModifyProfileBinding
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
@@ -61,7 +62,7 @@ class ModifyProfileActivity : ViewBindingActivity<ActivityModifyProfileBinding>(
             if (imageUri == null) {
                 binding.btnModifyProfileAddImage.visibility = View.VISIBLE
                 binding.btnModifyProfileRemoveImage.visibility = View.INVISIBLE
-                binding.imgSignupProfile.setBackgroundResource(R.drawable.ic_all_default_profile)
+                binding.imgSignupProfile.setImageDrawable(ContextCompat.getDrawable(this@ModifyProfileActivity, R.drawable.ic_all_default_profile))
             } else {
                 binding.btnModifyProfileAddImage.visibility = View.INVISIBLE
                 binding.btnModifyProfileRemoveImage.visibility = View.VISIBLE

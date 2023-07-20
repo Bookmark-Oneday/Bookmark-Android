@@ -27,6 +27,7 @@ import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.componen
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.component.dialog_permission.MyLibraryPermissionDialog
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryState
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
+import com.bumptech.glide.Glide
 import kotlin.math.abs
 
 class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
@@ -147,6 +148,12 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BookStateParcelable>("book_state")?.observe(viewLifecycleOwner){
             viewModel.applyItemChange(it.toBookState())
+        }
+
+        viewModel.userProfile.collectLatestInLifecycle(owner = this) { userInfo ->
+            Glide.with(requireContext()).load(userInfo.profileImage)
+                .placeholder(R.drawable.ic_all_default_profile)
+                .into(binding.partialMylibraryProfile.imgMylibraryProfile)
         }
     }
 
