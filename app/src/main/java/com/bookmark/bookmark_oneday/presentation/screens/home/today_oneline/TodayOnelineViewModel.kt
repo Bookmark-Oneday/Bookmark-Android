@@ -115,7 +115,8 @@ class TodayOnelineViewModel @Inject constructor(
                     onelineList = dataList,
                     showLoading = false,
                     showLoadingFail = false,
-                    userProfile = userProfile
+                    userProfile = userProfile,
+                    showEmptyView = false
                 )
             }
             is TodayOnelineEvent.FirstPageDataLoadingSuccess -> {
@@ -132,7 +133,8 @@ class TodayOnelineViewModel @Inject constructor(
                     onelineList = dataList,
                     showLoading = false,
                     showLoadingFail = false,
-                    userProfile = userProfile
+                    userProfile = userProfile,
+                    showEmptyView = dataList.isEmpty()
                 )
             }
         }

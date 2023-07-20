@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.bookmark.bookmark_oneday.R
+import com.bookmark.bookmark_oneday.core.presentation.util.toVisibility
 import com.bookmark.bookmark_oneday.databinding.FragmentTodayOnelineBinding
 import com.bookmark.bookmark_oneday.presentation.adapter.today_oneline.TodayOnelineAdapter
 import com.bookmark.bookmark_oneday.presentation.base.DataBindingFragment
@@ -97,6 +98,7 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
     // 오늘 한줄 글자 위치가 부적절하게 적용되는 문제가 발생하여 순서를 맞추고자 observe 위치를 조정
     private fun setObserver() {
         viewModel.state.collectLatestInLifecycle(viewLifecycleOwner) { state ->
+            binding.partialTodayOnelineEmpty.root.visibility = state.showEmptyView.toVisibility()
             (binding.pagerTodayOneline.adapter as TodayOnelineAdapter).submitList(state.onelineList)
             setLoadingDialogVisibility(state.showLoading)
             state.userProfile?.let { binding.partialTodayOnlineToolbar.setWriterProfile(it) }
