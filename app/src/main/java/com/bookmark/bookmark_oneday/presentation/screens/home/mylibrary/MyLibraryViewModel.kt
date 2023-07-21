@@ -153,7 +153,10 @@ class MyLibraryViewModel @Inject constructor(
                 val bookList = state.bookList.filter {
                     it !is MyLibraryItem.Book || it.id != event.bookId
                 }
-                state.copy(bookList = bookList)
+                state.copy(
+                    bookList = bookList,
+                    totalItemCountString = "${state.totalItemCountString.toInt() - 1}"
+                )
             }
         }
     }

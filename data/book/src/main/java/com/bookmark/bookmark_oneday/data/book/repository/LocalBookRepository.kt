@@ -18,7 +18,6 @@ import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.book.repository.BookRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -267,12 +266,7 @@ class LocalBookRepository constructor(
     override suspend fun registerBook(book: RecognizedBook): BaseResponse<Nothing> = withContext(defaultDispatcher) {
         try {
             val bookExist = bookDao.getBookCount(book.isbn) > 0
-            if (bookExist) {
-                return@withContext BaseResponse.Failure(
-                    errorMessage = "이미 등록된 책입니다.",
-                    errorCode = 409
-                )
-            } else {
+            if (!bookExist) {
                 val bookEntity = BookEntity(
                     isbn = book.isbn,
                     title = book.title,
@@ -303,9 +297,15 @@ class LocalBookRepository constructor(
 
     override suspend fun checkDuplicate(isbn: String): BaseResponse<Nothing> = withContext(defaultDispatcher) {
         try {
-            // todo : 중복 화인 절차에 따라 변경하기
-            delay(1000L)
-            return@withContext BaseResponse.Failure(errorCode = 409, errorMessage = "exist book isbn")
+            val bookCount = bookDao.getBookCount(isbn)
+            return@withContext if (bookCount == 0) {
+                BaseResponse.EmptySuccess
+            } else {
+                BaseResponse.Failure(
+                    errorCode = 409,
+                    errorMessage = "exist book isbn"
+                )
+            }
         } catch (e : Exception) {
             return@withContext BaseResponse.Failure(
                 errorCode = -1,
