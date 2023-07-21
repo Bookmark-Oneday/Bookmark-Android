@@ -40,6 +40,9 @@ interface BookDao {
     @Query("SELECT COUNT(*) FROM bookEntity WHERE isbn = :isbn")
     suspend fun getBookCount(isbn : String) : Int
 
+    @Query("SELECT COUNT(*) FROM registeredBook")
+    suspend fun getAmountOfRegisteredBook() : Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReadingHistory(readingHistory: ReadingHistoryEntity)
 
