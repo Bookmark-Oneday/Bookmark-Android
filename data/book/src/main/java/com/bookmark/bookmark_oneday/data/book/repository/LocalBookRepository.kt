@@ -57,7 +57,7 @@ class LocalBookRepository constructor(
             },
             nextPageToken = (pageIdx + 1).toString(),
             totalItemCount = 0,
-            isFinish = false
+            isFinish = bookList.isEmpty()
         ))
     }
 
@@ -83,7 +83,7 @@ class LocalBookRepository constructor(
                 },
                 nextPageToken = (pageIdx + 1).toString(),
                 totalItemCount = 0,
-                isFinish = false
+                isFinish = bookList.isEmpty()
             ))
 
         } catch (e: Exception) {
