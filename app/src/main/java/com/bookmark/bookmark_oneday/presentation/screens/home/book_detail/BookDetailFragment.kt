@@ -133,7 +133,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
     private fun removeSuccessCallback() {
         val navController = binding.root.findNavController()
-        val bookState = viewModel.getBookState(removeState = true)
+        val bookState = viewModel.getBookState(removeState = true)?.let { BookStateParcelable.fromBookState(it) }
 
         if (bookState != null) {
             navController.previousBackStackEntry?.savedStateHandle?.set("book_state", bookState)
