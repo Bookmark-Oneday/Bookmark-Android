@@ -74,7 +74,7 @@ class BookConfirmationViewModel @Inject constructor(
                 }
             }
             else {
-                tryRegisterBook()
+                _sideEffectSuccessRegister.emit(true)
             }
 
         }

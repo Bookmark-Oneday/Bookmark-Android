@@ -18,7 +18,6 @@ import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.book.repository.BookRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -41,9 +40,10 @@ class LocalBookRepository constructor(
         key: String,
         sortType: String
     ): BaseResponse<PagingData<BookItem>> {
-        val pageIdx =
-            key.toIntOrNull() ?: throw IllegalArgumentException("page Key must be int : $key")
+        val pageIdx = key.toIntOrNull() ?: throw IllegalArgumentException("page Key must be int : $key")
         val bookList = bookDao.getBookItemList(pageSize = perPage, pageIdx = pageIdx)
+        val amountOfBook = bookDao.getAmountOfRegisteredBook()
+
         return BaseResponse.Success(data = PagingData(
             dataList = bookList.map { bookItemDto ->
                 BookItem(
@@ -56,8 +56,8 @@ class LocalBookRepository constructor(
                 )
             },
             nextPageToken = (pageIdx + 1).toString(),
-            totalItemCount = 0,
-            isFinish = false
+            totalItemCount = amountOfBook,
+            isFinish = bookList.isEmpty()
         ))
     }
 
@@ -69,6 +69,7 @@ class LocalBookRepository constructor(
         val pageIdx = key.toIntOrNull() ?: throw IllegalArgumentException("page Key must be int : $key")
         try {
             val bookList = bookDao.getBookItemList(pageSize = perPage, pageIdx = pageIdx)
+            val amountOfBook = bookDao.getAmountOfRegisteredBook()
 
             return@withContext BaseResponse.Success(data = PagingData(
                 dataList = bookList.map { bookItemDto ->
@@ -82,8 +83,8 @@ class LocalBookRepository constructor(
                     )
                 },
                 nextPageToken = (pageIdx + 1).toString(),
-                totalItemCount = 0,
-                isFinish = false
+                totalItemCount = amountOfBook,
+                isFinish = bookList.isEmpty()
             ))
 
         } catch (e: Exception) {
@@ -265,12 +266,7 @@ class LocalBookRepository constructor(
     override suspend fun registerBook(book: RecognizedBook): BaseResponse<Nothing> = withContext(defaultDispatcher) {
         try {
             val bookExist = bookDao.getBookCount(book.isbn) > 0
-            if (bookExist) {
-                return@withContext BaseResponse.Failure(
-                    errorMessage = "이미 등록된 책입니다.",
-                    errorCode = 409
-                )
-            } else {
+            if (!bookExist) {
                 val bookEntity = BookEntity(
                     isbn = book.isbn,
                     title = book.title,
@@ -301,9 +297,15 @@ class LocalBookRepository constructor(
 
     override suspend fun checkDuplicate(isbn: String): BaseResponse<Nothing> = withContext(defaultDispatcher) {
         try {
-            // todo : 중복 화인 절차에 따라 변경하기
-            delay(1000L)
-            return@withContext BaseResponse.Failure(errorCode = 409, errorMessage = "exist book isbn")
+            val bookCount = bookDao.getBookCount(isbn)
+            return@withContext if (bookCount == 0) {
+                BaseResponse.EmptySuccess
+            } else {
+                BaseResponse.Failure(
+                    errorCode = 409,
+                    errorMessage = "exist book isbn"
+                )
+            }
         } catch (e : Exception) {
             return@withContext BaseResponse.Failure(
                 errorCode = -1,
