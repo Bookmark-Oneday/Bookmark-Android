@@ -169,7 +169,6 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
             }
 
             savedStateHandle.getLiveData<List<Boolean>>("change_state").observe(viewLifecycleOwner){ changedState ->
-                println("<><> $changedState")
                 val (readingChanged, likeChanged) = changedState
                 viewModel.refreshIfSortTypeIsMatched(readingChanged, likeChanged)
             }
