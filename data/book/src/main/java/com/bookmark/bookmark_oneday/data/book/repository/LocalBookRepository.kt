@@ -41,7 +41,7 @@ class LocalBookRepository constructor(
         sortType: String
     ): BaseResponse<PagingData<BookItem>> {
         val pageIdx = key.toIntOrNull() ?: throw IllegalArgumentException("page Key must be int : $key")
-        val bookList = bookDao.getBookItemList(pageSize = perPage, pageIdx = pageIdx)
+        val bookList = bookDao.getBookItemList(pageSize = perPage, pageIdx = pageIdx, sort = sortType)
         val amountOfBook = bookDao.getAmountOfRegisteredBook()
 
         return BaseResponse.Success(data = PagingData(
@@ -68,7 +68,7 @@ class LocalBookRepository constructor(
     ): BaseResponse<PagingData<MyLibraryItem.Book>> = withContext(defaultDispatcher) {
         val pageIdx = key.toIntOrNull() ?: throw IllegalArgumentException("page Key must be int : $key")
         try {
-            val bookList = bookDao.getBookItemList(pageSize = perPage, pageIdx = pageIdx)
+            val bookList = bookDao.getBookItemList(pageSize = perPage, pageIdx = pageIdx, sort = sortType)
             val amountOfBook = bookDao.getAmountOfRegisteredBook()
 
             return@withContext BaseResponse.Success(data = PagingData(
