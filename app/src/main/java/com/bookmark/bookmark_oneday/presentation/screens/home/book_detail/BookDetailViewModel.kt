@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.book.model.BookDetail
 import com.bookmark.bookmark_oneday.domain.book.model.BookState
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
 import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetBookDetail
@@ -27,6 +28,9 @@ class BookDetailViewModel @AssistedInject constructor(
     val state : StateFlow<BookDetailState> = events.receiveAsFlow()
         .runningFold(BookDetailState(), ::reduce)
         .stateIn(viewModelScope, SharingStarted.Eagerly, BookDetailState())
+
+    // 처음 로드한 책 상세 데이터로, 좋아요 및 읽는 중 여부가 변화했는 지를 확인하기 위해 사용합니다.
+    private var initBookDetail  : BookDetail ?= null
 
     fun tryGetBookDetail() {
         viewModelScope.launch {
@@ -73,6 +77,21 @@ class BookDetailViewModel @AssistedInject constructor(
         }
     }
 
+    fun bookLikeChanged() : Boolean {
+        val bookDetail = state.value.bookDetail ?: return false
+
+        return bookDetail.favorite != initBookDetail?.favorite
+    }
+
+    fun bookReadingChanged() : Boolean {
+        val bookDetail = state.value.bookDetail ?: return false
+
+        val currentReading = bookDetail.currentPage != 0
+        val initReading = initBookDetail?.currentPage != null && initBookDetail?.currentPage != 0
+
+        return currentReading != initReading
+    }
+
     private fun reduce(state : BookDetailState, event : BookDetailEvent) : BookDetailState {
         return when(event) {
             BookDetailEvent.GetBookDetailLoading -> {
@@ -82,6 +101,7 @@ class BookDetailViewModel @AssistedInject constructor(
                 state.copy(toolbarButtonActive = false, inputPageButtonActive = false, isShowingLoadingView = false)
             }
             is BookDetailEvent.GetBookDetailSuccess -> {
+                initBookDetail = event.bookDetail
                 BookDetailState(
                     bookDetail = event.bookDetail,
                     toolbarButtonActive = true,

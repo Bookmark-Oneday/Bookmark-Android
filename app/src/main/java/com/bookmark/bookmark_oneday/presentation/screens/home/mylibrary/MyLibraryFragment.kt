@@ -152,14 +152,28 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
             applyState(state)
         }
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BookStateParcelable>("book_state")?.observe(viewLifecycleOwner){
-            viewModel.applyItemChange(it.toBookState())
-        }
 
         viewModel.userProfile.collectLatestInLifecycle(owner = this) { userInfo ->
             Glide.with(requireContext()).load(userInfo.profileImage)
                 .placeholder(R.drawable.ic_all_default_profile)
                 .into(binding.partialMylibraryProfile.imgMylibraryProfile)
+        }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BookStateParcelable>("book_state")?.observe(viewLifecycleOwner){
+            viewModel.applyItemChange(it.toBookState())
+        }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.let { savedStateHandle ->
+            savedStateHandle.getLiveData<BookStateParcelable>("book_state").observe(viewLifecycleOwner){
+                viewModel.applyItemChange(it.toBookState())
+            }
+
+            savedStateHandle.getLiveData<List<Boolean>>("change_state").observe(viewLifecycleOwner){ changedState ->
+                println("<><> $changedState")
+                val (readingChanged, likeChanged) = changedState
+                viewModel.refreshIfSortTypeIsMatched(readingChanged, likeChanged)
+            }
+
         }
     }
 

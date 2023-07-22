@@ -78,6 +78,7 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
 
         if (bookState != null) {
             navController.previousBackStackEntry?.savedStateHandle?.set("book_state", BookStateParcelable.fromBookState(bookState))
+            navController.previousBackStackEntry?.savedStateHandle?.set("change_state", listOf(viewModel.bookReadingChanged(), viewModel.bookLikeChanged()))
         }
         navController.popBackStack()
     }
