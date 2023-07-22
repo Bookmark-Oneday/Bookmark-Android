@@ -7,6 +7,7 @@ import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.book.model.BookState
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
 import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetBookDetail
+import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseToggleBookLike
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.model.BookDetailEvent
 import com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.model.BookDetailState
 import kotlinx.coroutines.channels.Channel
@@ -18,6 +19,7 @@ import dagger.assisted.AssistedInject
 
 class BookDetailViewModel @AssistedInject constructor(
     private val useCaseGetBookDetail : UseCaseGetBookDetail,
+    private val useCaseToggleBookLike: UseCaseToggleBookLike,
     @Assisted private val bookId : String
 ): ViewModel() {
 
@@ -43,6 +45,19 @@ class BookDetailViewModel @AssistedInject constructor(
     fun setPageInfo(currentPage : Int, totalPage : Int) {
         viewModelScope.launch {
             events.send(BookDetailEvent.SetPageInfo(currentPage, totalPage))
+        }
+    }
+
+    fun toggleLike() {
+        val currentLike = state.value.bookDetail?.favorite ?: return
+        viewModelScope.launch {
+            events.send(BookDetailEvent.ToggleLikeLoading)
+            val response = useCaseToggleBookLike(bookId, !currentLike)
+            if (response is BaseResponse.Success) {
+                events.send(BookDetailEvent.ToggleLikeSuccess(response.data))
+            } else {
+                events.send(BookDetailEvent.ToggleLikeFail)
+            }
         }
     }
 
@@ -86,6 +101,19 @@ class BookDetailViewModel @AssistedInject constructor(
             is BookDetailEvent.UpdateReadingHistory -> {
                 val bookDetail = state.bookDetail?.copy(history = event.readingHistoryList)
                 state.copy(
+                    bookDetail = bookDetail
+                )
+            }
+            BookDetailEvent.ToggleLikeLoading -> {
+                state.copy(toolbarButtonActive = false)
+            }
+            BookDetailEvent.ToggleLikeFail -> {
+                state.copy(toolbarButtonActive = true)
+            }
+            is BookDetailEvent.ToggleLikeSuccess -> {
+                val bookDetail = state.bookDetail?.copy(favorite = event.isLike)
+                state.copy(
+                    toolbarButtonActive = true,
                     bookDetail = bookDetail
                 )
             }

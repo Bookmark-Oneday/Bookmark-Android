@@ -10,6 +10,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
@@ -125,6 +126,10 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
         binding.btnBookdetailMore.setOnClickListener {
             BookDetailMoreBottomSheetDialog(::showRemoveConfirmDialog).show(childFragmentManager, "BookDetailMoreBottomSheet")
         }
+
+        binding.btnBookdetailLike.setOnClickListener {
+            viewModel.toggleLike()
+        }
     }
 
     private fun showRemoveConfirmDialog() {
@@ -164,12 +169,21 @@ class BookDetailFragment : ViewBindingFragment<FragmentBookdetailBinding>(Fragme
         binding.labelBookdetailReadProgress.text = "${100 - bookDetail.readingPageRatio}%"
         Glide.with(this@BookDetailFragment).load(bookDetail.imageUrl).into(binding.imgBookdetailBookcover)
 
+        setLikeButton(bookDetail.favorite)
+
         binding.labelBookdetailFirstReadDay.text = bookDetail.firstReadTime
         binding.labelBookdetailTotalReadingTime.text = bookDetail.totalTime
 
         binding.pbBookdetailReadpage.progress = bookDetail.readingPageRatio
 
         (binding.listReadinghistory.adapter as BookDetailReadingHistoryAdapter).setReadingHistoryListData(bookDetail.history.groupByDate())
+    }
+
+    private fun setLikeButton(isLike : Boolean) {
+        val likeBtnDrawable = ContextCompat.getDrawable(requireContext(),
+            if (isLike) R.drawable.ic_bookdetail_like_positive else R.drawable.ic_bookdetail_like_negative
+        )
+        binding.btnBookdetailLike.setImageDrawable(likeBtnDrawable)
     }
 
     private fun showLoadingView(show : Boolean) {

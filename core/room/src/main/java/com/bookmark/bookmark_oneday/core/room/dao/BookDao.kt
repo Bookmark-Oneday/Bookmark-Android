@@ -80,4 +80,6 @@ interface BookDao {
     @Query("SELECT id, timeSec AS time, date FROM ReadingHistory WHERE ReadingHistory.date LIKE :dateQuery || '%' ")
     suspend fun getReadingHistoryByDateQuery(dateQuery : String) : List<HistoryDto>
 
+    @Query("UPDATE registeredBook SET favorite = :like WHERE id = :id")
+    suspend fun updateBookLike(id : Int, like : Boolean)
 }
