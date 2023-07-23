@@ -67,6 +67,21 @@ class MyLibraryViewModel @Inject constructor(
         }
     }
 
+    /*
+     * 책 상세 화면에서 좋아요 및 읽는 중 여부를 변경했을 때,
+     * 현재 정렬 기준이 '즐겨찾는 책' 혹은 '읽고 있는 책' 인 경우
+     * 전체 목록을 다시 로드해야 하는데, 이 여부를 확인하기 위한 함수입니다.
+     */
+    fun refreshIfSortTypeIsMatched(readingChanged : Boolean, likeChanged : Boolean) {
+        val currentSort = state.value.currentSortData
+        if (
+            readingChanged && currentSort.apiValue == "reading" ||
+            likeChanged && currentSort.apiValue == "favorite"
+        ) {
+            tryGetInitPagingData(currentSort)
+        }
+    }
+
     fun applyItemChange(bookState: BookState) {
         viewModelScope.launch {
             if (!bookState.isRemoved)

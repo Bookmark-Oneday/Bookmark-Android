@@ -9,4 +9,7 @@ sealed class BookDetailEvent {
     class GetBookDetailSuccess(val bookDetail: BookDetail) : BookDetailEvent()
     class SetPageInfo(val currentPage : Int, val totalPage : Int) : BookDetailEvent()
     class UpdateReadingHistory(val readingHistoryList : List<ReadingHistory>) : BookDetailEvent()
+    object ToggleLikeLoading : BookDetailEvent()
+    object ToggleLikeFail : BookDetailEvent()
+    class ToggleLikeSuccess(val isLike : Boolean) : BookDetailEvent()
 }

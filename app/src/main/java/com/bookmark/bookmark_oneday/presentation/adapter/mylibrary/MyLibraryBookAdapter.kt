@@ -1,9 +1,11 @@
 package com.bookmark.bookmark_oneday.presentation.adapter.mylibrary
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -89,8 +91,22 @@ class MyLibraryBookNormalViewHolder(
         binding.labelItemMylibraryBookAuthor.text = book.author
         Glide.with(binding.root.context).load(book.thumbnail).into(binding.imgItemMylibraryBookThumbnail)
 
-        binding.imgItemMylibraryLike.visibility = if (book.favorite) View.VISIBLE else View.INVISIBLE
+        setLikeButtonDrawable(book.favorite, book.reading)
         binding.imgItemMylibraryBookmark.visibility = if (book.reading) View.VISIBLE else View.INVISIBLE
+    }
+
+    private fun setLikeButtonDrawable(favorite : Boolean, reading : Boolean) {
+        if (!favorite) {
+            binding.imgItemMylibraryLike.visibility = View.INVISIBLE
+        } else {
+            binding.imgItemMylibraryLike.visibility = View.VISIBLE
+            val tintColor = if (reading) {
+                R.color.white
+            } else {
+                R.color.orange
+            }
+            binding.imgItemMylibraryLike.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context, tintColor))
+        }
     }
 }
 

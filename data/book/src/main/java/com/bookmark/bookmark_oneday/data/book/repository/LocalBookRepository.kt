@@ -41,7 +41,7 @@ class LocalBookRepository constructor(
         sortType: String
     ): BaseResponse<PagingData<BookItem>> {
         val pageIdx = key.toIntOrNull() ?: throw IllegalArgumentException("page Key must be int : $key")
-        val bookList = bookDao.getBookItemList(pageSize = perPage, pageIdx = pageIdx)
+        val bookList = bookDao.getBookItemList(pageSize = perPage, pageIdx = pageIdx, sort = sortType)
         val amountOfBook = bookDao.getAmountOfRegisteredBook()
 
         return BaseResponse.Success(data = PagingData(
@@ -68,7 +68,7 @@ class LocalBookRepository constructor(
     ): BaseResponse<PagingData<MyLibraryItem.Book>> = withContext(defaultDispatcher) {
         val pageIdx = key.toIntOrNull() ?: throw IllegalArgumentException("page Key must be int : $key")
         try {
-            val bookList = bookDao.getBookItemList(pageSize = perPage, pageIdx = pageIdx)
+            val bookList = bookDao.getBookItemList(pageSize = perPage, pageIdx = pageIdx, sort = sortType)
             val amountOfBook = bookDao.getAmountOfRegisteredBook()
 
             return@withContext BaseResponse.Success(data = PagingData(
@@ -117,7 +117,8 @@ class LocalBookRepository constructor(
                     imageUrl = bookInfo.backgroundUri,
                     totalPage = registeredBook.totalPage,
                     currentPage = registeredBook.currentPage,
-                    history = readingHistory
+                    history = readingHistory,
+                    favorite = registeredBook.favorite
                 )
             )
         } catch (e: Exception) {
@@ -358,6 +359,19 @@ class LocalBookRepository constructor(
                     )
                 }
             )
+        } catch (e : Exception) {
+            return@withContext BaseResponse.Failure(
+                errorCode = -1,
+                errorMessage = "${e.message}"
+            )
+        }
+    }
+
+    override suspend fun updateBookLike(bookId : String, like: Boolean): BaseResponse<Boolean> = withContext(defaultDispatcher) {
+        requireNotNull(bookId.toIntOrNull()) {"bookId must be int : $bookId"}
+        try {
+            bookDao.updateBookLike(bookId.toInt(), like)
+            return@withContext  BaseResponse.Success(data = like)
         } catch (e : Exception) {
             return@withContext BaseResponse.Failure(
                 errorCode = -1,

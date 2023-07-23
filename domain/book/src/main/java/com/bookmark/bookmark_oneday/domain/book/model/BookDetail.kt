@@ -9,7 +9,8 @@ data class BookDetail(
     val imageUrl: String,
     val currentPage : Int,
     val totalPage : Int,
-    val history: List<ReadingHistory>
+    val history: List<ReadingHistory>,
+    val favorite : Boolean = false
 ) {
     val readingPageRatio : Int get() {
         return currentPage * 100 / totalPage

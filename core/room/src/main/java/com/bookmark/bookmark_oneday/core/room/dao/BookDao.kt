@@ -18,9 +18,16 @@ interface BookDao {
         "authors, translators, publisher, bookEntity.backgroundUri AS titleImage, reading, favorite " +
         "FROM registeredBook " +
         "INNER JOIN bookEntity ON bookEntity.isbn = registeredBook.isbn " +
-        "ORDER BY registeredBook.registeredAt DESC LIMIT :pageSize OFFSET :pageIdx * :pageSize"
+        "ORDER BY " +
+            "CASE WHEN :sort = 'latest' THEN registeredBook.registeredAt END DESC," +
+            "CASE WHEN :sort = 'past' THEN registeredBook.registeredAt END ASC, " +
+            "CASE WHEN :sort = 'favorite' THEN registeredBook.favorite END DESC," +
+            "CASE WHEN :sort = 'favorite' THEN registeredBook.registeredAt END DESC," +
+            "CASE WHEN :sort = 'reading' THEN registeredBook.reading END DESC, " +
+            "CASE WHEN :sort = 'reading' THEN registeredBook.registeredAt END DESC " +
+        "LIMIT :pageSize OFFSET :pageIdx * :pageSize"
     )
-    suspend fun getBookItemList(pageIdx: Int, pageSize: Int) : List<BookItemDto>
+    suspend fun getBookItemList(pageIdx: Int, pageSize: Int, sort : String = "latest") : List<BookItemDto>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRegisteredBook(registeredBook: RegisteredBookEntity)
@@ -55,7 +62,7 @@ interface BookDao {
     @Query("DELETE FROM readingHistory WHERE bookId = :bookId")
     suspend fun deleteAllReadingHistoryOfBook(bookId : Int)
 
-    @Query("UPDATE registeredBook SET currentPage = :currentPage, totalPage = :totalPage WHERE id = :bookId")
+    @Query("UPDATE registeredBook SET currentPage = :currentPage, totalPage = :totalPage, reading = :currentPage > 0 WHERE id = :bookId")
     suspend fun updatePageInfo(bookId : Int, currentPage : Int, totalPage : Int) : Int
 
     @Query("SELECT COALESCE(SUM(timeSec), 0) FROM readingHistory WHERE date LIKE :dateQuery || '%' ")
@@ -73,4 +80,6 @@ interface BookDao {
     @Query("SELECT id, timeSec AS time, date FROM ReadingHistory WHERE ReadingHistory.date LIKE :dateQuery || '%' ")
     suspend fun getReadingHistoryByDateQuery(dateQuery : String) : List<HistoryDto>
 
+    @Query("UPDATE registeredBook SET favorite = :like WHERE id = :id")
+    suspend fun updateBookLike(id : Int, like : Boolean)
 }

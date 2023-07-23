@@ -25,4 +25,5 @@ interface BookRepository  {
     suspend fun checkDuplicate(isbn : String) : BaseResponse<Nothing>
     suspend fun getReadingHistoryOfMonth(year : Int, month : Int) : BaseResponse<List<ReadingHistory>>
     suspend fun getReadingHistoryWithBookOfDay(year : Int, month : Int, day : Int) : BaseResponse<List<ReadingHistoryWithBook>>
+    suspend fun updateBookLike(bookId : String, like : Boolean) : BaseResponse<Boolean>
 }
