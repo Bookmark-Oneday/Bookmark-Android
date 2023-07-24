@@ -2,6 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.modify_profile
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -11,6 +12,7 @@ import com.bookmark.bookmark_oneday.databinding.ActivityModifyProfileBinding
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -66,10 +68,17 @@ class ModifyProfileActivity : ViewBindingActivity<ActivityModifyProfileBinding>(
             } else {
                 binding.btnModifyProfileAddImage.visibility = View.INVISIBLE
                 binding.btnModifyProfileRemoveImage.visibility = View.VISIBLE
-                Glide.with(baseContext).load(imageUri).into(binding.imgSignupProfile)
+                Glide.with(baseContext)
+                    .load(imageUri)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(binding.imgSignupProfile)
             }
         }
 
+        viewModel.toastMessage.collectLatestInLifecycle(this) { message ->
+            Toast.makeText(baseContext, message, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setEditText(){

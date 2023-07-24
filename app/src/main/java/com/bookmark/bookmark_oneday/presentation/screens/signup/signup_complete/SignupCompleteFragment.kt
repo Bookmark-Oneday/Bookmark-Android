@@ -2,6 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.signup.signup_complete
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
@@ -37,6 +38,10 @@ class SignupCompleteFragment : ViewBindingFragment<FragmentSignupCompleteBinding
             } else {
                 findNavController().popBackStack()
             }
+        }
+
+        viewModel.toastMessage.collectLatestInLifecycle(this) { message ->
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
         }
     }
 }
