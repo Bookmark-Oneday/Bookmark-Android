@@ -1,9 +1,13 @@
 package com.bookmark.bookmark_oneday.presentation.screens.modify_profile
 
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.file.usecase.UseCaseUploadFile
 import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseGetUser
 import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseSetUser
+import com.bookmark.bookmark_oneday.presentation.util.FileMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +20,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ModifyProfileViewModel @Inject constructor(
     useCaseGetUser: UseCaseGetUser,
-    private val useCaseSetUser: UseCaseSetUser
+    private val useCaseSetUser: UseCaseSetUser,
+    private val useCaseUploadFile: UseCaseUploadFile,
+    private val fileMapper: FileMapper
 ): ViewModel() {
     private val userInfo = useCaseGetUser.getProfile()
 
@@ -30,6 +36,9 @@ class ModifyProfileViewModel @Inject constructor(
 
     private val _modifyProfileResult = MutableSharedFlow<Boolean>()
     val modifyProfileResult = _modifyProfileResult.asSharedFlow()
+
+    private val _toastMessage = MutableSharedFlow<String>()
+    val toastMessage = _toastMessage.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -50,7 +59,22 @@ class ModifyProfileViewModel @Inject constructor(
 
     fun tryModifyUserInfo() {
         viewModelScope.launch {
-            useCaseSetUser.setUserProfile(nickname = _nickname.value, bio = _bio.value, profileUri = _profileImageUri.value)
+            val currentProfileImageUri = profileImageUri.value
+            val profileImagePath = if (currentProfileImageUri != null) {
+                val file = fileMapper.uriToImageFile(currentProfileImageUri.toUri(), "temp_profile.jpg")
+                val response = useCaseUploadFile(file, "profile.jpg")
+
+                if (response is BaseResponse.Failure) {
+                    _toastMessage.emit(response.errorMessage)
+                    return@launch
+                }
+
+                (response as BaseResponse.Success<String>).data
+            } else {
+                null
+            }
+
+            useCaseSetUser.setUserProfile(nickname = _nickname.value, bio = _bio.value, profileUri = profileImagePath)
             _modifyProfileResult.emit(true)
         }
     }

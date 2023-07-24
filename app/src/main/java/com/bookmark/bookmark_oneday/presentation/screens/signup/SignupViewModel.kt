@@ -1,11 +1,14 @@
 package com.bookmark.bookmark_oneday.presentation.screens.signup
 
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
+import com.bookmark.bookmark_oneday.domain.file.usecase.UseCaseUploadFile
 import com.bookmark.bookmark_oneday.domain.login.model.TokenInfo
 import com.bookmark.bookmark_oneday.domain.login.usecase.UseCaseGetGoogleAccessToken
 import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseSetUser
+import com.bookmark.bookmark_oneday.presentation.util.FileMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,7 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class SignupViewModel @Inject constructor(
     private val useCaseGetGoogleAccessToken: UseCaseGetGoogleAccessToken,
-    private val useCaseSetUser: UseCaseSetUser
+    private val useCaseSetUser: UseCaseSetUser,
+    private val useCaseUploadFile: UseCaseUploadFile,
+    private val fileMapper: FileMapper
 ) : ViewModel() {
     private var prevProgress = 0
 
@@ -43,6 +48,9 @@ class SignupViewModel @Inject constructor(
     private val _getGoogleAccessTokenSuccess = MutableSharedFlow<Boolean>()
     val getGoogleAccessTokenSuccess = _getGoogleAccessTokenSuccess.asSharedFlow()
 
+    private val _toastMessage = MutableSharedFlow<String>()
+    val toastMessage = _toastMessage.asSharedFlow()
+
     private var tempTokenInfo : TokenInfo ?= null
 
     fun setPrevProgress(progress : Int)  { prevProgress = progress }
@@ -66,7 +74,23 @@ class SignupViewModel @Inject constructor(
         viewModelScope.launch {
             _showLoadingDialog.value = true
 
-            useCaseSetUser.setUserProfile(nickname = nickname.value, profileUri = profileImageUrl.value, bio = comment.value)
+            val currentProfileImageUri = profileImageUrl.value
+            val profileImagePath = if (currentProfileImageUri != null) {
+                val file = fileMapper.uriToImageFile(currentProfileImageUri.toUri(), "temp_profile.jpg")
+                val response = useCaseUploadFile(file, "profile.jpg")
+
+                if (response is BaseResponse.Failure) {
+                    _toastMessage.emit(response.errorMessage)
+                    _loginSuccess.emit(false)
+                    return@launch
+                }
+
+                (response as BaseResponse.Success<String>).data
+            } else {
+                null
+            }
+
+            useCaseSetUser.setUserProfile(nickname = nickname.value, profileUri = profileImagePath, bio = comment.value)
             useCaseSetUser.setReadingTime(readingTime = goalReadingTimeMinute.value)
 
             delay(1000L)

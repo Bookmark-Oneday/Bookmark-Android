@@ -28,6 +28,7 @@ import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.componen
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryState
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlin.math.abs
 
 class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
@@ -155,6 +156,8 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
 
         viewModel.userProfile.collectLatestInLifecycle(owner = this) { userInfo ->
             Glide.with(requireContext()).load(userInfo.profileImage)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.ic_all_default_profile)
                 .into(binding.partialMylibraryProfile.imgMylibraryProfile)
         }

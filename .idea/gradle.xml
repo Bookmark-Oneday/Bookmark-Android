@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/data" />
             <option value="$PROJECT_DIR$/data/appinfo" />
             <option value="$PROJECT_DIR$/data/book" />
+            <option value="$PROJECT_DIR$/data/file" />
             <option value="$PROJECT_DIR$/data/google_auth" />
             <option value="$PROJECT_DIR$/data/oneline" />
             <option value="$PROJECT_DIR$/data/token" />
@@ -27,6 +28,7 @@
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/domain/appinfo" />
             <option value="$PROJECT_DIR$/domain/book" />
+            <option value="$PROJECT_DIR$/domain/file" />
             <option value="$PROJECT_DIR$/domain/login" />
             <option value="$PROJECT_DIR$/domain/oneline" />
             <option value="$PROJECT_DIR$/domain/user" />

@@ -53,11 +53,13 @@ dependencies {
 
     implementation project(":domain:appinfo")
     implementation project(":domain:book")
+    implementation project(":domain:file")
     implementation project(":domain:user")
     implementation project(":domain:login")
     implementation project(":domain:oneline")
     implementation project(":data:appinfo")
     implementation project(":data:book")
+    implementation project(":data:file")
     implementation project(":data:google_auth")
     implementation project(":data:token")
     implementation project(":data:user")

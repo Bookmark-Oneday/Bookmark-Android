@@ -13,6 +13,7 @@ import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.signup.SignupViewModel
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class SignupProfileFragment : ViewBindingFragment<FragmentSignupProfileBinding>(FragmentSignupProfileBinding::bind, R.layout.fragment_signup_profile) {
     private val viewModel : SignupViewModel by activityViewModels()
@@ -67,7 +68,11 @@ class SignupProfileFragment : ViewBindingFragment<FragmentSignupProfileBinding>(
                     ContextCompat.getDrawable(requireContext(), R.drawable.ic_all_default_profile)
                 )
             } else {
-               Glide.with(requireContext()).load(url).into(binding.imgSignupProfile)
+               Glide.with(requireContext())
+                   .load(url)
+                   .diskCacheStrategy(DiskCacheStrategy.NONE)
+                   .skipMemoryCache(true)
+                   .into(binding.imgSignupProfile)
             }
         }
 

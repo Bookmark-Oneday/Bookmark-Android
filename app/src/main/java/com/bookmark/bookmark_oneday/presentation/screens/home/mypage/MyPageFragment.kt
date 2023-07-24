@@ -14,6 +14,7 @@ import com.bookmark.bookmark_oneday.presentation.screens.modify_profile.ModifyPr
 import com.bookmark.bookmark_oneday.presentation.screens.modify_reading_time.ModifyReadingTimeActivity
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class MyPageFragment : ViewBindingFragment<FragmentMypageBinding>(
     FragmentMypageBinding::bind,
@@ -70,6 +71,8 @@ class MyPageFragment : ViewBindingFragment<FragmentMypageBinding>(
         } else {
             Glide.with(requireContext())
                 .load(profileImage)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.ic_all_default_profile)
                 .into(binding.partialMypageProfile.imgMypageProfile)
         }
