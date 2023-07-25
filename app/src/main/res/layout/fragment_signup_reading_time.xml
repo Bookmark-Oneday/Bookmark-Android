@@ -34,7 +34,7 @@
         android:minWidth="216dp"
         android:minHeight="180dp"
         android:layout_margin="56dp"
-        android:src="@drawable/img_singup_timer"/>
+        android:src="@drawable/img_signup_timer"/>
 
     <SeekBar
         android:id="@+id/progress_signup_reading_time"
