@@ -16,6 +16,7 @@ import com.bookmark.bookmark_oneday.presentation.adapter.timer_record.TimerRecor
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.model.ReadingHistoryParcelable
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.bottomsheet_more.TimerMoreBottomSheetDialog
+import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_cancel_timer.CancelTimerDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_remove.TimerRemoveHistoryDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.StopWatchState
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.TimerViewState
@@ -50,21 +51,38 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
     private fun setBackButtonCallback() {
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                viewModel.getReadingHistoryIfChanged()?.let { readingHistoryList ->
-                    intent.putExtra(
-                        "reading_history",
-                        ArrayList(readingHistoryList.map { readingHistory ->
-                            ReadingHistoryParcelable.fromReadingHistory(readingHistory)
-                        })
-                    )
-                    setResult(RESULT_OK, intent)
+                if (viewModel.state.value.playButtonToggled) {
+                    callCancelDialog()
+                } else {
+                    setBackStackExtra()
+                    finish()
                 }
-
-                finish()
             }
         }
 
         onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+    }
+
+    private fun setBackStackExtra() {
+        viewModel.getReadingHistoryIfChanged()?.let { readingHistoryList ->
+            intent.putExtra(
+                "reading_history",
+                ArrayList(readingHistoryList.map { readingHistory ->
+                    ReadingHistoryParcelable.fromReadingHistory(readingHistory)
+                })
+            )
+            setResult(RESULT_OK, intent)
+        }
+    }
+
+    private fun callCancelDialog() {
+        val dialog = CancelTimerDialog(
+            onClickBack = {
+                setBackStackExtra()
+                finish()
+            }
+        )
+        dialog.show(supportFragmentManager, "timerCancelDialog")
     }
 
     private fun setButton() {

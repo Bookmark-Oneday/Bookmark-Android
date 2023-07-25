@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/all_dialogbackground"
+        android:paddingVertical="21dp"
+        android:paddingHorizontal="32dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/label_timer_cancel_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="@string/label_timer_cancel" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_timer_cancel_dialog_not"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:text="@string/no"
+            android:background="@drawable/all_roundbutton_negative"
+            android:textColor="@color/default_background"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_timer_cancel_dialog_yes"
+            app:layout_constraintTop_toBottomOf="@id/label_timer_cancel_dialog_title"
+            android:layout_marginTop="24dp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_timer_cancel_dialog_yes"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:minHeight="0dp"
+            android:text="@string/yes"
+            android:background="@drawable/all_roundbutton_positive"
+            android:textColor="@color/default_background"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@id/btn_timer_cancel_dialog_not"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_timer_cancel_dialog_title"
+            android:layout_marginTop="24dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
