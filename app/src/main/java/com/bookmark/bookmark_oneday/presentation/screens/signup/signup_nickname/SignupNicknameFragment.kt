@@ -39,7 +39,7 @@ class SignupNicknameFragment : ViewBindingFragment<FragmentSignupNicknameBinding
     private fun setObserver() {
         viewModel.nickname.collectLatestInLifecycle(viewLifecycleOwner) {nickname ->
             binding.edittextSignupNickname.setText(nickname)
-            binding.btnSignupNicknameNext.setButtonEnabled(nickname.isNotEmpty())
+            binding.btnSignupNicknameNext.setButtonEnabled(nickname.trim().isNotEmpty())
         }
     }
 }
