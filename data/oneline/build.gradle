@@ -35,6 +35,7 @@ dependencies {
     implementation project(":core:api")
     implementation project(":core:room")
     implementation project(":core:model")
+    implementation project(":core:datastore")
     implementation project(":domain:oneline")
 
     implementation libs.androidx.core
@@ -49,4 +50,7 @@ dependencies {
 
     // retrofit2 : https://square.github.io/retrofit/
     implementation libs.bundles.retrofit
+
+    // data store
+    implementation libs.bundles.protoDataStore
 }

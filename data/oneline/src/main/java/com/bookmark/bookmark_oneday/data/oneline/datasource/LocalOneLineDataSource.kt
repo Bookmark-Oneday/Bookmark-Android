@@ -1,6 +1,8 @@
 package com.bookmark.bookmark_oneday.data.oneline.datasource
 
 import android.annotation.SuppressLint
+import androidx.datastore.core.DataStore
+import com.bookmark.bookmark_oneday.core.datastore.User
 import com.bookmark.bookmark_oneday.data.oneline.model.dto.OneLineDto
 import com.bookmark.bookmark_oneday.data.oneline.model.request.RegisterOneLineRequestBody
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
@@ -10,6 +12,7 @@ import com.bookmark.bookmark_oneday.core.room.dao.OneLineDao
 import com.bookmark.bookmark_oneday.core.room.entity.OneLineEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -18,7 +21,8 @@ import kotlin.coroutines.CoroutineContext
 
 class LocalOneLineDataSource @Inject constructor(
     private val oneLineDao: OneLineDao,
-    private val bookDao: BookDao
+    private val bookDao: BookDao,
+    private val dataStore : DataStore<User>
 ) : OnelineDataSource {
     private val defaultDispatcher: CoroutineContext = Dispatchers.IO + SupervisorJob()
     @SuppressLint("SimpleDateFormat")
@@ -32,6 +36,7 @@ class LocalOneLineDataSource @Inject constructor(
         withContext(defaultDispatcher) {
             try {
                 val oneLineList = oneLineDao.getOneLineList(continuousToken.toInt(), perPage)
+                val userInfo = dataStore.data.first()
 
                 return@withContext BaseResponse.Success(
                     PagingData(
@@ -39,8 +44,8 @@ class LocalOneLineDataSource @Inject constructor(
                            OneLineDto(
                                id = it.id,
                                user_id = "0",
-                               profile_image = null,
-                               nickname = "",
+                               profile_image = userInfo.profileUri,
+                               nickname = userInfo.nickname,
                                book_id = it.isbn,
                                title = it.title,
                                authors = it.authors,
