@@ -160,6 +160,8 @@ class MyLibraryFragment : ViewBindingFragment<FragmentMylibraryBinding>(
                 .skipMemoryCache(true)
                 .placeholder(R.drawable.ic_all_default_profile)
                 .into(binding.partialMylibraryProfile.imgMylibraryProfile)
+
+            binding.partialMylibraryProfile.labelMylibraryUsername.text = userInfo.nickname
         }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BookStateParcelable>("book_state")?.observe(viewLifecycleOwner){

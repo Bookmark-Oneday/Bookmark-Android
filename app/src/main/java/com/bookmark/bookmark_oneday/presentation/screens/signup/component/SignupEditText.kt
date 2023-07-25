@@ -6,6 +6,7 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.inputmethod.EditorInfo
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ViewSignupEdittextBinding
@@ -15,6 +16,8 @@ class SignupEditText(context : Context, attrs : AttributeSet) : ConstraintLayout
     private val binding : ViewSignupEdittextBinding
     private val max : Int
     private val placeHolder : String
+    private val maxLine : Int
+
     init {
         val layoutInflater = LayoutInflater.from(context)
         binding = ViewSignupEdittextBinding.inflate(layoutInflater, this, true)
@@ -23,6 +26,10 @@ class SignupEditText(context : Context, attrs : AttributeSet) : ConstraintLayout
             try {
                 max = getInteger(R.styleable.SignupEditText_max, 10)
                 placeHolder = getString(R.styleable.SignupEditText_placeHolder) ?: "내용 입력"
+                maxLine = getInteger(R.styleable.SignupEditText_maxLines, 1)
+
+                binding.inputSignup.inputType = if (maxLine > 1) EditorInfo.TYPE_CLASS_TEXT or EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE else EditorInfo.TYPE_CLASS_TEXT
+                binding.inputSignup.maxLines = maxLine
                 binding.inputSignup.filters = arrayOf(InputFilter.LengthFilter(max))
                 binding.inputSignup.hint = placeHolder
                 binding.labelSignupTextCount.text = context.getString(R.string.label_signup_text_count_format, 0, max)

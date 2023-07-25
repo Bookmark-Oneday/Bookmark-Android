@@ -20,6 +20,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:tint="@color/default_icon_tint"
             android:src="@drawable/ic_all_back"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -50,7 +51,7 @@
         android:minWidth="216dp"
         android:minHeight="180dp"
         android:layout_margin="56dp"
-        android:src="@drawable/img_singup_timer"/>
+        android:src="@drawable/img_signup_timer"/>
 
     <SeekBar
         android:id="@+id/progress_modify_reading_time_reading_time"
