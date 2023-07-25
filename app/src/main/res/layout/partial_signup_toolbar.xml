@@ -13,6 +13,7 @@
         android:scaleType="center"
         android:visibility="invisible"
         tools:visibility="visible"
+        android:tint="@color/default_icon_tint"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
