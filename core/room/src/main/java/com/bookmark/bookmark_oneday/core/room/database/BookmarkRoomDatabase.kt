@@ -28,12 +28,16 @@ abstract class BookmarkRoomDatabase : RoomDatabase() {
         fun getInstance(context : Context) : BookmarkRoomDatabase {
             if (!Companion::instance.isInitialized) {
                 synchronized(BookmarkRoomDatabase::class) {
-                    instance = Room.databaseBuilder(context, BookmarkRoomDatabase::class.java, "bookMark-local")
-                        .fallbackToDestructiveMigration().build()
+                    instance = Room.databaseBuilder(context, BookmarkRoomDatabase::class.java, "bookMark-local").build()
                 }
             }
 
             return instance
+        }
+
+        fun clearDatabase() {
+            if (!Companion::instance.isInitialized) return
+            instance.clearAllTables()
         }
     }
 }
