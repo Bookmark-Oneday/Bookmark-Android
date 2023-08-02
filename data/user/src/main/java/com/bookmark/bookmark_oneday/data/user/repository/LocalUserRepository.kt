@@ -2,6 +2,7 @@ package com.bookmark.bookmark_oneday.data.user.repository
 
 import androidx.datastore.core.DataStore
 import com.bookmark.bookmark_oneday.core.datastore.User
+import com.bookmark.bookmark_oneday.core.room.database.BookmarkRoomDatabase
 import com.bookmark.bookmark_oneday.domain.user.model.UserInfo
 import com.bookmark.bookmark_oneday.domain.user.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -38,5 +39,6 @@ class LocalUserRepository constructor(
         dataStore.updateData {
             it.toBuilder().clear().build()
         }
+        BookmarkRoomDatabase.clearDatabase()
     }
 }

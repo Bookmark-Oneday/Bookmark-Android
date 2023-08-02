@@ -10,6 +10,7 @@ import com.bookmark.bookmark_oneday.databinding.FragmentMypageBinding
 import com.bookmark.bookmark_oneday.domain.user.model.UserInfo
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingFragment
 import com.bookmark.bookmark_oneday.presentation.screens.home.mypage.component.ConfirmClearDataDialog
+import com.bookmark.bookmark_oneday.presentation.screens.intro.IntroActivity
 import com.bookmark.bookmark_oneday.presentation.screens.modify_profile.ModifyProfileActivity
 import com.bookmark.bookmark_oneday.presentation.screens.modify_reading_time.ModifyReadingTimeActivity
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
@@ -56,6 +57,14 @@ class MyPageFragment : ViewBindingFragment<FragmentMypageBinding>(
     private fun setObserver() {
         viewModel.user.collectLatestInLifecycle(owner = viewLifecycleOwner) { user ->
             applyUserInfo(user)
+        }
+
+        viewModel.clearDataSuccess.collectLatestInLifecycle(owner = viewLifecycleOwner) { clearDataSuccess ->
+            if (clearDataSuccess) {
+                val intent = Intent(requireContext(), IntroActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                startActivity(intent)
+            }
         }
     }
 
