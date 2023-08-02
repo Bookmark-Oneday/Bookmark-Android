@@ -27,7 +27,8 @@ sealed class ReadingCalendarScreenEvent {
                     year = year,
                     month = month,
                     cell = cellList
-                )
+                ),
+                readingHistoryOfTheDay = prevState.readingHistoryOfTheDay.copy(readingHistory = emptyList())
             )
         }
     }
