@@ -13,6 +13,7 @@ import com.bookmark.bookmark_oneday.presentation.screens.home.mypage.component.C
 import com.bookmark.bookmark_oneday.presentation.screens.intro.IntroActivity
 import com.bookmark.bookmark_oneday.presentation.screens.modify_profile.ModifyProfileActivity
 import com.bookmark.bookmark_oneday.presentation.screens.modify_reading_time.ModifyReadingTimeActivity
+import com.bookmark.bookmark_oneday.presentation.screens.set_alarm.SetAlarmActivity
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -37,7 +38,8 @@ class MyPageFragment : ViewBindingFragment<FragmentMypageBinding>(
         }
 
         binding.llbtnMypageAlarmSetting.setOnClickListener {
-
+            val intent = Intent(requireActivity(), SetAlarmActivity::class.java)
+            startActivity(intent)
         }
 
         binding.llbtnMypageModifyReadingTime.setOnClickListener {
