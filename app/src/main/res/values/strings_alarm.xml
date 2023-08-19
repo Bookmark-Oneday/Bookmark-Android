@@ -10,4 +10,6 @@
 
     <string name="label_time_of_day_pm_format">오후 %d시 %d분</string>
     <string name="label_time_of_day_am_format">오전 %d시 %d분</string>
+    <string name="label_time_of_day_night_format">밤 %d시 %d분</string>
+    <string name="label_time_of_day_afternoon_format">낮 %d시 %d분</string>
 </resources>

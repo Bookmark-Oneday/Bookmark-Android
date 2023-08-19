@@ -68,8 +68,12 @@ class SetAlarmActivity : ViewBindingActivity<ActivitySetAlarmBinding>(ActivitySe
     private fun setTimeTextView(timeMinute : Int) {
         val hour = timeMinute / 60
         val minute = timeMinute % 60
-        val text = if (timeMinute > 12 * 60) {
-            getString(R.string.label_time_of_day_pm_format, hour, minute)
+        val text = if (hour == 0) {
+            getString(R.string.label_time_of_day_night_format, 12, minute)
+        } else if (hour == 12) {
+            getString(R.string.label_time_of_day_afternoon_format, 12, minute)
+        } else if (hour > 12) {
+            getString(R.string.label_time_of_day_pm_format, hour - 12, minute)
         } else {
             getString(R.string.label_time_of_day_am_format, hour, minute)
         }
