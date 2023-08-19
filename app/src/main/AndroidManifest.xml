@@ -34,6 +34,9 @@
         <activity android:name=".presentation.screens.write_today_oneline.WriteTodayOnelineActivity"/>
         <activity android:name=".presentation.screens.modify_profile.ModifyProfileActivity"/>
         <activity android:name=".presentation.screens.modify_reading_time.ModifyReadingTimeActivity"/>
+        <activity android:name=".presentation.screens.set_alarm.SetAlarmActivity"/>
+
+        <receiver android:name=".core.presentation.alarm.AlarmReceiver"/>
     </application>
 
 </manifest>

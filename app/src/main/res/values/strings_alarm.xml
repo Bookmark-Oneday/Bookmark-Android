@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_setting_alarm_title">알람 설정</string>
+    <string name="label_setting_app_push_alarm">앱 푸시 알림 설정</string>
+    <string name="caption_setting_app_push_alarm">매일 정해진 시간에 독서 알림을 보내드려요.</string>
+    <string name="label_use_alarm">알람 사용</string>
+    <string name="label_alarm_time">알람 시간</string>
+    <string name="label_confirmation">결정</string>
+    <string name="label_set_alarm_time">알람 시간 설정</string>
+
+    <string name="label_time_of_day_pm_format">오후 %d시 %d분</string>
+    <string name="label_time_of_day_am_format">오전 %d시 %d분</string>
+    <string name="label_time_of_day_night_format">밤 %d시 %d분</string>
+    <string name="label_time_of_day_afternoon_format">낮 %d시 %d분</string>
+</resources>
