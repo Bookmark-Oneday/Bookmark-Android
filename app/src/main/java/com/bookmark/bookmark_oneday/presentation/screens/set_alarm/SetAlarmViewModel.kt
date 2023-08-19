@@ -3,18 +3,24 @@ package com.bookmark.bookmark_oneday.presentation.screens.set_alarm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.core.presentation.alarm.AlarmManager
+import com.bookmark.bookmark_oneday.domain.appinfo.usecase.UseCaseGetAlarmInfo
+import com.bookmark.bookmark_oneday.domain.appinfo.usecase.UseCaseSetAlarm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SetAlarmViewModel @Inject constructor(
-    private val alarmManager: AlarmManager
+    private val alarmManager: AlarmManager,
+    private val useCaseSetAlarm: UseCaseSetAlarm,
+    useCaseGetAlarmInfo: UseCaseGetAlarmInfo
 ) : ViewModel() {
+
     private val _useAlarm = MutableStateFlow(false)
     val useAlarm = _useAlarm.asStateFlow()
 
@@ -23,6 +29,15 @@ class SetAlarmViewModel @Inject constructor(
 
     private val _saveAlarmSettingResult = MutableSharedFlow<Boolean>()
     val saveAlarmSettingResult = _saveAlarmSettingResult.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            useCaseGetAlarmInfo().collectLatest {
+                _useAlarm.value = it.alarmOn
+                _alarmTime.value = (it.hour * 60 + it.minute)
+            }
+        }
+    }
 
     fun setUseSwitch(use : Boolean) {
         _useAlarm.value = use
@@ -34,10 +49,19 @@ class SetAlarmViewModel @Inject constructor(
     
     fun saveAlarmSetting() {
         viewModelScope.launch {
+            val hour = alarmTime.value / 60
+            val minute = alarmTime.value % 60
+
+            useCaseSetAlarm(
+                alarmOn = useAlarm.value,
+                hour = hour,
+                minute = minute
+            )
+
             if (useAlarm.value) {
                 alarmManager.setAlarmOn(
-                    hour = alarmTime.value / 60,
-                    minute = alarmTime.value % 60
+                    hour = hour,
+                    minute = minute
                 )
             } else {
                 alarmManager.setAlarmOff()
