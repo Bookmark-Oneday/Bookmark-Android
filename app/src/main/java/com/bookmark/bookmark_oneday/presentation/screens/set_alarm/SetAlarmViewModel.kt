@@ -2,7 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.set_alarm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.core.presentation.alarm.AlarmManager
+import com.bookmark.bookmark_oneday.core.presentation.alarm.BookMarkAlarmManager
 import com.bookmark.bookmark_oneday.domain.appinfo.usecase.UseCaseGetAlarmInfo
 import com.bookmark.bookmark_oneday.domain.appinfo.usecase.UseCaseSetAlarm
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SetAlarmViewModel @Inject constructor(
-    private val alarmManager: AlarmManager,
+    private val alarmManager: BookMarkAlarmManager,
     private val useCaseSetAlarm: UseCaseSetAlarm,
     useCaseGetAlarmInfo: UseCaseGetAlarmInfo
 ) : ViewModel() {

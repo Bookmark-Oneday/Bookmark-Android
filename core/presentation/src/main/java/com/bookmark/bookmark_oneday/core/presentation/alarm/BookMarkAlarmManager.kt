@@ -9,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
 import javax.inject.Inject
 
-class AlarmManager @Inject constructor(
+class BookMarkAlarmManager @Inject constructor(
     @ApplicationContext private val context : Context
 ) {
     fun setAlarmOff() {
