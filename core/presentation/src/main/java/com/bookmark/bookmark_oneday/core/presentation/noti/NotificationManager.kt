@@ -27,6 +27,7 @@ internal class NotificationManager {
         }
 
         val builder = NotificationCompat.Builder(context, channelId).apply {
+            setSmallIcon(R.drawable.ic_logo)
             setContentTitle(context.getString(R.string.alarm_title))
             setContentText(context.getString(R.string.alarm_text))
             setAutoCancel(true)

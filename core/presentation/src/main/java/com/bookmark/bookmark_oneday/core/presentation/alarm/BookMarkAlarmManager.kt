@@ -9,7 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
 import javax.inject.Inject
 
-class AlarmManager @Inject constructor(
+class BookMarkAlarmManager @Inject constructor(
     @ApplicationContext private val context : Context
 ) {
     fun setAlarmOff() {
@@ -28,9 +28,9 @@ class AlarmManager @Inject constructor(
         val intent = getAlarmIntent()
         val alarmManager = getAlarmManager()
         val pendingIntent = getAlarmPendingIntent(intent)
-        val calendar = getCalendar(hour, minute)
+        val alarmTime = getNextAlarmTime(hour, minute)
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, AlarmManager.INTERVAL_DAY, pendingIntent)
     }
 
     private fun getAlarmIntent() : Intent {
@@ -48,11 +48,18 @@ class AlarmManager @Inject constructor(
         )
     }
 
-    private fun getCalendar(hour : Int, minute : Int) : Calendar {
-        return Calendar.getInstance().apply {
+    private fun getNextAlarmTime(hour : Int, minute : Int) : Long {
+        val alarmTime = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
+        }.timeInMillis
+        val currentTime = Calendar.getInstance().timeInMillis
+
+        return if (currentTime > alarmTime) {
+            alarmTime + AlarmManager.INTERVAL_DAY
+        } else {
+            alarmTime
         }
     }
 }
