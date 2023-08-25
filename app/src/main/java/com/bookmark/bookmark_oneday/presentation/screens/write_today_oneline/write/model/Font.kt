@@ -14,5 +14,10 @@ data class Font(
             Font(R.font.suit_regular, "suit"),
             Font(R.font.suit_bold, "suit-Bold")
         )
+
+        fun getInstanceFromString(fontString : String) : Font {
+            val font = defaultList.find { it.title == fontString }
+            return font ?: Font(FONT_DEFAULT, "default")
+        }
     }
 }

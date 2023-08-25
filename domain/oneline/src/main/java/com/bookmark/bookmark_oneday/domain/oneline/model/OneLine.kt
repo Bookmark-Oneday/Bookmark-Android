@@ -12,6 +12,7 @@ data class OneLine(
     val centerYPosition : Float,
     val centerXPosition : Float,
     val fontSize : Int,
+    val font : String = "default",
     val backgroundImageUrl : String ?= null,
     val createdAt : TimeString
 )
