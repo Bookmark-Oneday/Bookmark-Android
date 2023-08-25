@@ -1,16 +1,18 @@
 package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model
 
+import com.bookmark.bookmark_oneday.R
+
 data class Font(
     val resourceId : Int, val title : String
 ) {
     companion object {
+        const val FONT_DEFAULT = -1
+
         val defaultList = listOf(
-            Font(0, "기본"),
-            Font(1, "yes24"),
-            Font(2, "에스코어 드립"),
-            Font(3, "기본"),
-            Font(4, "yes24"),
-            Font(5, "에스코어 드립")
+            Font(FONT_DEFAULT, "default"),
+            Font(R.font.yes24, "yes24"),
+            Font(R.font.suit_regular, "suit"),
+            Font(R.font.suit_bold, "suit-Bold")
         )
     }
 }

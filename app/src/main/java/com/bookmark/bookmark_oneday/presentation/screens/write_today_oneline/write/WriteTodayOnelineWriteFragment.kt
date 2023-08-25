@@ -291,6 +291,7 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
 
         viewModel.font.collectLatestInLifecycle(viewLifecycleOwner) { font ->
             binding.partialWriteTodayOnelineTextAttrSetting.setFont(font)
+            binding.partialWriteTodayOnelineContent.setFont(font.resourceId)
         }
 
         viewModel.bottomViewTranslationY.collectLatestInLifecycle(viewLifecycleOwner) { y ->
