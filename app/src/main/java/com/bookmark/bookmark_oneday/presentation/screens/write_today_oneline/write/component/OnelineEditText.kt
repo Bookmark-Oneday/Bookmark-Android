@@ -3,6 +3,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.wr
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -12,6 +13,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.addTextChangedListener
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.PartialWriteTodayOnelineEdittextBinding
+import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.Font
 
 class OnelineEditText(context : Context, attrs : AttributeSet) : FrameLayout(context, attrs) {
     private val binding : PartialWriteTodayOnelineEdittextBinding
@@ -64,8 +66,13 @@ class OnelineEditText(context : Context, attrs : AttributeSet) : FrameLayout(con
     }
 
     fun setFont(fontResourceId : Int) {
-        binding.edittextWriteTodayOnelineEdit.typeface = ResourcesCompat.getFont(context, fontResourceId)
-        binding.labelWriteTodayOnelineText.typeface = ResourcesCompat.getFont(context, fontResourceId)
+        if (fontResourceId == Font.FONT_DEFAULT) {
+            binding.edittextWriteTodayOnelineEdit.typeface = Typeface.DEFAULT
+            binding.labelWriteTodayOnelineText.typeface = Typeface.DEFAULT
+        } else {
+            binding.edittextWriteTodayOnelineEdit.typeface = ResourcesCompat.getFont(context, fontResourceId)
+            binding.labelWriteTodayOnelineText.typeface = ResourcesCompat.getFont(context, fontResourceId)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

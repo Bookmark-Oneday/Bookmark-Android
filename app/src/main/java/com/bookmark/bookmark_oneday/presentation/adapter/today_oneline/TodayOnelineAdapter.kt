@@ -1,14 +1,17 @@
 package com.bookmark.bookmark_oneday.presentation.adapter.today_oneline
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.databinding.ItemTodayOnelineBinding
 import com.bookmark.bookmark_oneday.domain.oneline.model.OneLine
+import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.model.Font
 import com.bumptech.glide.Glide
 
 class TodayOnelineAdapter : ListAdapter<OneLine, TodayOnelineAdapter.TodayOnelineViewHolder>(OneLineDiffUtil()) {
@@ -53,7 +56,7 @@ class TodayOnelineAdapter : ListAdapter<OneLine, TodayOnelineAdapter.TodayOnelin
             binding.labelTodayOnelineBookInfo.setTextColor(Color.parseColor(oneline.textColor))
             binding.labelTodayOnelineContent.setTextColor(Color.parseColor(oneline.textColor))
             moveViewInContentArea(binding.llTodayOnelineContent, oneline.centerYPosition, oneline.centerXPosition)
-
+            setFont(Font.getInstanceFromString(oneline.font))
         }
 
         private fun moveViewInContentArea(view : View, centerYPositionRatio : Float, centerXPositionRatio : Float) {
@@ -79,6 +82,16 @@ class TodayOnelineAdapter : ListAdapter<OneLine, TodayOnelineAdapter.TodayOnelin
             } else {
                 view.y = topPositionPixel
             }
+        }
+
+        private fun setFont(font : Font) {
+            val typeface = if (font.resourceId == Font.FONT_DEFAULT) {
+                Typeface.DEFAULT
+            } else {
+                ResourcesCompat.getFont(binding.root.context, font.resourceId)
+            }
+            binding.labelTodayOnelineBookInfo.typeface = typeface
+            binding.labelTodayOnelineContent.typeface = typeface
         }
     }
 

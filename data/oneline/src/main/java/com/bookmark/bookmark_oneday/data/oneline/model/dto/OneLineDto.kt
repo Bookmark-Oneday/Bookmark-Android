@@ -39,6 +39,7 @@ data class OneLineDto(
                 centerYPosition = oneLineDto.top.toFloat(),
                 centerXPosition = oneLineDto.left.toFloat(),
                 fontSize = oneLineDto.font_size.toInt(),
+                font = oneLineDto.font,
                 backgroundImageUrl = oneLineDto.bg_image_url,
                 createdAt = oneLineDto.created_at.toTimeString(),
             )

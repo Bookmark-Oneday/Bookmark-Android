@@ -115,6 +115,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
+        binding.btnWriteTodayOnelineSetText.setOnClickListener {
+            viewModel.changeToTextEditMode()
+        }
+
     }
 
     private fun setContentView() {
@@ -270,12 +274,10 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
 
         viewModel.backgroundUri.collectLatestInLifecycle(viewLifecycleOwner) { uri ->
             if (uri == null) {
-                binding.imgWriteTodayOnelineWriteIcBackground.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.default_icon_tint))
-                binding.labelWriteTodayOnelineWriteSetBackground.setTextColor(ContextCompat.getColor(requireContext(), R.color.default_text))
+                rollbackIconAndTextColor()
             } else {
                 Glide.with(this@WriteTodayOnelineWriteFragment).load(uri).into(binding.imgWriteTodayOnelineThumbnail)
-                binding.imgWriteTodayOnelineWriteIcBackground.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.white))
-                binding.labelWriteTodayOnelineWriteSetBackground.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+                setIconAndTextColorWhite()
             }
         }
 
@@ -291,11 +293,39 @@ class WriteTodayOnelineWriteFragment : ViewBindingFragment<FragmentWriteTodayOne
 
         viewModel.font.collectLatestInLifecycle(viewLifecycleOwner) { font ->
             binding.partialWriteTodayOnelineTextAttrSetting.setFont(font)
+            binding.partialWriteTodayOnelineContent.setFont(font.resourceId)
         }
 
         viewModel.bottomViewTranslationY.collectLatestInLifecycle(viewLifecycleOwner) { y ->
             moveSettingViewY(y)
         }
+    }
+
+    private fun rollbackIconAndTextColor() {
+        val iconColor = ContextCompat.getColor(requireContext(), R.color.default_icon_tint)
+        val textColor = ContextCompat.getColor(requireContext(), R.color.default_text)
+
+        binding.imgWriteTodayOnelineWriteIcBackground.imageTintList = ColorStateList.valueOf(iconColor)
+        binding.labelWriteTodayOnelineWriteSetBackground.setTextColor(textColor)
+
+        binding.imgWriteTodayOnelineWriteIcSetText.imageTintList = ColorStateList.valueOf(iconColor)
+        binding.labelWriteTodayOnelineWriteSetText.setTextColor(textColor)
+
+        binding.btnWriteTodayOnelineWriteBack.imageTintList = ColorStateList.valueOf(iconColor)
+        binding.labelWriteTodayOnelineTitle.setTextColor(textColor)
+    }
+
+    private fun setIconAndTextColorWhite() {
+        val whiteColor = ContextCompat.getColor(requireContext(), R.color.white)
+
+        binding.imgWriteTodayOnelineWriteIcBackground.imageTintList = ColorStateList.valueOf(whiteColor)
+        binding.labelWriteTodayOnelineWriteSetBackground.setTextColor(whiteColor)
+
+        binding.imgWriteTodayOnelineWriteIcSetText.imageTintList = ColorStateList.valueOf(whiteColor)
+        binding.labelWriteTodayOnelineWriteSetText.setTextColor(whiteColor)
+
+        binding.btnWriteTodayOnelineWriteBack.imageTintList = ColorStateList.valueOf(whiteColor)
+        binding.labelWriteTodayOnelineTitle.setTextColor(whiteColor)
     }
 
     private fun showSoftKeyboard() {
