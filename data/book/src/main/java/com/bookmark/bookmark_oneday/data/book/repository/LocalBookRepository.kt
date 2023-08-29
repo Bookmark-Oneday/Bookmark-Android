@@ -18,6 +18,9 @@ import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
 import com.bookmark.bookmark_oneday.domain.book.repository.BookRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -34,6 +37,8 @@ class LocalBookRepository constructor(
 
     @SuppressLint("SimpleDateFormat")
     private val dateOnlyFormatter = SimpleDateFormat("yyyy-MM-dd")
+
+    private val _lastUpdateBookListTimeMilli = MutableStateFlow(0L)
 
     override suspend fun getBookList(
         perPage: Int,
@@ -276,6 +281,7 @@ class LocalBookRepository constructor(
                 registeredAt = formatter.format(Calendar.getInstance().time)
             )
             bookDao.insertRegisteredBook(registeredBook)
+            setUpdateBookListTimeMilliToCurrent()
             return@withContext BaseResponse.EmptySuccess
         } catch (e : Exception) {
             return@withContext BaseResponse.Failure(
@@ -367,6 +373,12 @@ class LocalBookRepository constructor(
                 errorMessage = "${e.message}"
             )
         }
+    }
+
+    override fun lastUpdateTimeMilli(): Flow<Long> = _lastUpdateBookListTimeMilli.asStateFlow()
+
+    private fun setUpdateBookListTimeMilliToCurrent() {
+        _lastUpdateBookListTimeMilli.value = Calendar.getInstance().timeInMillis
     }
 
 }

@@ -7,6 +7,7 @@ import com.bookmark.bookmark_oneday.core.model.PagingCheckData
 import com.bookmark.bookmark_oneday.domain.book.model.BookState
 import com.bookmark.bookmark_oneday.domain.book.model.MyLibraryItem
 import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetBookList
+import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetBookListUpdateTimeMilli
 import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseGetUser
 import com.bookmark.bookmark_oneday.presentation.model.SortData
 import com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.model.MyLibraryEvent
@@ -15,12 +16,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
 class MyLibraryViewModel @Inject constructor(
     private val useCaseGetBookList: UseCaseGetBookList,
-    useCaseGetUser: UseCaseGetUser
+    useCaseGetUser: UseCaseGetUser,
+    useCaseGetBookListUpdateTimeMilli: UseCaseGetBookListUpdateTimeMilli
 ) : ViewModel() {
 
     private val event = Channel<MyLibraryEvent>()
@@ -32,8 +35,16 @@ class MyLibraryViewModel @Inject constructor(
 
     val userProfile = useCaseGetUser.getProfile()
 
+    private var lastLoadBookListTimeMilli = -1L
+
     init {
-        tryGetInitPagingData()
+        viewModelScope.launch {
+            useCaseGetBookListUpdateTimeMilli().collectLatest { lastUpdateBookListTimeMilli ->
+                if (lastUpdateBookListTimeMilli > lastLoadBookListTimeMilli) {
+                    tryGetInitPagingData(state.value.currentSortData)
+                }
+            }
+        }
     }
 
     fun tryGetInitPagingData(sortData : SortData = sortList[0]) {
@@ -118,6 +129,7 @@ class MyLibraryViewModel @Inject constructor(
                 if (event.pagingData.isFinish) pagingCheckData.setFinish()
 
                 val bookList = listOf(MyLibraryItem.BookAdder) + event.pagingData.dataList
+                lastLoadBookListTimeMilli = Calendar.getInstance().timeInMillis
                 state.copy(
                     showLoadingFail = false,
                     bookList = bookList,

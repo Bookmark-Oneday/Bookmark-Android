@@ -9,6 +9,7 @@ import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistoryWithBook
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingInfo
 import com.bookmark.bookmark_oneday.domain.book.model.RecognizedBook
+import kotlinx.coroutines.flow.Flow
 
 interface BookRepository  {
     suspend fun getBookList(perPage : Int = 30, key : String, sortType : String = "latest") : BaseResponse<PagingData<BookItem>>
@@ -25,4 +26,5 @@ interface BookRepository  {
     suspend fun getReadingHistoryOfMonth(year : Int, month : Int) : BaseResponse<List<ReadingHistory>>
     suspend fun getReadingHistoryWithBookOfDay(year : Int, month : Int, day : Int) : BaseResponse<List<ReadingHistoryWithBook>>
     suspend fun updateBookLike(bookId : String, like : Boolean) : BaseResponse<Boolean>
+    fun lastUpdateTimeMilli() : Flow<Long>
 }
