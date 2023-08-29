@@ -39,6 +39,7 @@ class LocalBookRepository constructor(
     private val dateOnlyFormatter = SimpleDateFormat("yyyy-MM-dd")
 
     private val _lastUpdateBookListTimeMilli = MutableStateFlow(0L)
+    private val _lastUpdateReadingHistoryTimeMilli = MutableStateFlow(0L)
 
     override suspend fun getBookList(
         perPage: Int,
@@ -171,6 +172,7 @@ class LocalBookRepository constructor(
         try {
             bookDao.deleteReadingHistory(targetId.toInt())
             val readingInfo = readingInfo(bookId.toInt())
+            setUpdateReadingHistoryTimeMilliToCurrent()
             return@withContext BaseResponse.Success(data = readingInfo)
         } catch (e: Exception) {
             return@withContext BaseResponse.Failure(
@@ -185,6 +187,7 @@ class LocalBookRepository constructor(
         try {
             bookDao.deleteAllReadingHistoryOfBook(bookId.toInt())
             val readingInfo = readingInfo(bookId.toInt())
+            setUpdateReadingHistoryTimeMilliToCurrent()
             return@withContext BaseResponse.Success(data = readingInfo)
         } catch (e: Exception) {
             return@withContext BaseResponse.Failure(
@@ -248,6 +251,7 @@ class LocalBookRepository constructor(
                     timeSec = time
                 )
             )
+            setUpdateReadingHistoryTimeMilliToCurrent()
             val readingInfo = readingInfo(bookId.toInt())
             return@withContext BaseResponse.Success(data = readingInfo)
         } catch (e: Exception) {
@@ -376,9 +380,14 @@ class LocalBookRepository constructor(
     }
 
     override fun lastUpdateTimeMilli(): Flow<Long> = _lastUpdateBookListTimeMilli.asStateFlow()
+    override fun lastUpdateReadingHistoryTimeMilli(): Flow<Long> = _lastUpdateReadingHistoryTimeMilli.asStateFlow()
 
     private fun setUpdateBookListTimeMilliToCurrent() {
         _lastUpdateBookListTimeMilli.value = Calendar.getInstance().timeInMillis
+    }
+
+    private fun setUpdateReadingHistoryTimeMilliToCurrent() {
+        _lastUpdateReadingHistoryTimeMilli.value = Calendar.getInstance().timeInMillis
     }
 
 }
