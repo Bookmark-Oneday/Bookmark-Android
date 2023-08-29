@@ -1,12 +1,12 @@
 package com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar
 
-import android.icu.util.Calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistoryWithBook
 import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetReadingHistory
+import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetReadingHistoryUpdateTime
 import com.bookmark.bookmark_oneday.domain.user.usecase.UseCaseGetUser
 import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.model.CalendarCell
 import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.model.CalendarReadingHistory
@@ -19,18 +19,21 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
 class ReadingCalendarViewModel @Inject constructor(
     private val useCaseGetReadingHistory: UseCaseGetReadingHistory,
-    useCaseGetUserInfo : UseCaseGetUser
+    useCaseGetUserInfo : UseCaseGetUser,
+    useCaseGetReadingHistoryUpdateTime: UseCaseGetReadingHistoryUpdateTime
 ) : ViewModel() {
 
     private val goalTime = useCaseGetUserInfo.getGoalReadingTime()
@@ -51,12 +54,18 @@ class ReadingCalendarViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.Eagerly, ReadingCalendarScreenState.getCurrentDayInstance())
 
+    private var lastLoadReadingHistoryTimeMilli = -1L
 
     init {
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH) + 1
-        loadCalendar(year, month)
+        viewModelScope.launch {
+            useCaseGetReadingHistoryUpdateTime().collectLatest { lastUpdateReadingHistoryTimeMilli ->
+                if (lastLoadReadingHistoryTimeMilli < lastUpdateReadingHistoryTimeMilli) {
+                    val year = state.value.readingHistoryCalendar.year
+                    val month = state.value.readingHistoryCalendar.month
+                    loadCalendar(year, month)
+                }
+            }
+        }
     }
 
     fun loadReadingHistoryOfTheDay(year : Int, month : Int, day : Int) {
@@ -93,6 +102,7 @@ class ReadingCalendarViewModel @Inject constructor(
             if (response is BaseResponse.Success<List<ReadingHistory>>) {
                 val cellList = mapToCalendarCell(year, month, response.data, goalTime)
                 events.send(ReadingCalendarScreenEvent.CalendarCellLoadSuccess(year, month, cellList))
+                lastLoadReadingHistoryTimeMilli = Calendar.getInstance().timeInMillis
             } else {
                 events.send(ReadingCalendarScreenEvent.CalendarCellLoadFailure)
             }

@@ -1,6 +1,8 @@
 package com.bookmark.bookmark_oneday.data.book.repository
 
 import android.annotation.SuppressLint
+import androidx.datastore.core.DataStore
+import com.bookmark.bookmark_oneday.core.datastore.User
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.core.model.toTimeString
@@ -21,6 +23,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -29,6 +32,7 @@ import kotlin.coroutines.CoroutineContext
 
 class LocalBookRepository constructor(
     private val bookDao: BookDao,
+    private val dataStore : DataStore<User>,
     private val defaultDispatcher: CoroutineContext = Dispatchers.IO + SupervisorJob()
 ) : BookRepository {
 
@@ -39,6 +43,7 @@ class LocalBookRepository constructor(
     private val dateOnlyFormatter = SimpleDateFormat("yyyy-MM-dd")
 
     private val _lastUpdateBookListTimeMilli = MutableStateFlow(0L)
+    private val _lastUpdateReadingHistoryTimeMilli = MutableStateFlow(0L)
 
     override suspend fun getBookList(
         perPage: Int,
@@ -171,6 +176,7 @@ class LocalBookRepository constructor(
         try {
             bookDao.deleteReadingHistory(targetId.toInt())
             val readingInfo = readingInfo(bookId.toInt())
+            setUpdateReadingHistoryTimeMilliToCurrent()
             return@withContext BaseResponse.Success(data = readingInfo)
         } catch (e: Exception) {
             return@withContext BaseResponse.Failure(
@@ -185,6 +191,7 @@ class LocalBookRepository constructor(
         try {
             bookDao.deleteAllReadingHistoryOfBook(bookId.toInt())
             val readingInfo = readingInfo(bookId.toInt())
+            setUpdateReadingHistoryTimeMilliToCurrent()
             return@withContext BaseResponse.Success(data = readingInfo)
         } catch (e: Exception) {
             return@withContext BaseResponse.Failure(
@@ -211,8 +218,7 @@ class LocalBookRepository constructor(
 
         val currentTime = Calendar.getInstance().time
         val currentReadingTime = getDailyTotalTime(currentTime)
-        // todo : user 데이터에 접근해 목표 시간 가져오기
-        val dailyGoalTime = 0
+        val dailyGoalTime = dataStore.data.first().targetReadTime * 60
 
         return ReadingInfo(
             dailyGoalTime = dailyGoalTime,
@@ -248,6 +254,7 @@ class LocalBookRepository constructor(
                     timeSec = time
                 )
             )
+            setUpdateReadingHistoryTimeMilliToCurrent()
             val readingInfo = readingInfo(bookId.toInt())
             return@withContext BaseResponse.Success(data = readingInfo)
         } catch (e: Exception) {
@@ -376,9 +383,14 @@ class LocalBookRepository constructor(
     }
 
     override fun lastUpdateTimeMilli(): Flow<Long> = _lastUpdateBookListTimeMilli.asStateFlow()
+    override fun lastUpdateReadingHistoryTimeMilli(): Flow<Long> = _lastUpdateReadingHistoryTimeMilli.asStateFlow()
 
     private fun setUpdateBookListTimeMilliToCurrent() {
         _lastUpdateBookListTimeMilli.value = Calendar.getInstance().timeInMillis
+    }
+
+    private fun setUpdateReadingHistoryTimeMilliToCurrent() {
+        _lastUpdateReadingHistoryTimeMilli.value = Calendar.getInstance().timeInMillis
     }
 
 }

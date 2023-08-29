@@ -27,4 +27,5 @@ interface BookRepository  {
     suspend fun getReadingHistoryWithBookOfDay(year : Int, month : Int, day : Int) : BaseResponse<List<ReadingHistoryWithBook>>
     suspend fun updateBookLike(bookId : String, like : Boolean) : BaseResponse<Boolean>
     fun lastUpdateTimeMilli() : Flow<Long>
+    fun lastUpdateReadingHistoryTimeMilli() : Flow<Long>
 }

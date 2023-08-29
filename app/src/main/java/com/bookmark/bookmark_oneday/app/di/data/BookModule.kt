@@ -1,6 +1,8 @@
 package com.bookmark.bookmark_oneday.app.di.data
 
+import androidx.datastore.core.DataStore
 import com.bookmark.bookmark_oneday.core.api.di.KakaoHttpClient
+import com.bookmark.bookmark_oneday.core.datastore.User
 import com.bookmark.bookmark_oneday.core.room.dao.BookDao
 import com.bookmark.bookmark_oneday.data.book.datasorce.BookInfoDataSource
 import com.bookmark.bookmark_oneday.data.book.datasorce.KakaoBookInfoDataSource
@@ -22,9 +24,10 @@ object BookModule {
     @Singleton
     @Provides
     fun provideLocalBookRepository(
-        bookDao: BookDao
+        bookDao: BookDao,
+        dataStore: DataStore<User>
     ) : BookRepository {
-        return LocalBookRepository(bookDao)
+        return LocalBookRepository(bookDao, dataStore)
     }
 
     @Singleton
