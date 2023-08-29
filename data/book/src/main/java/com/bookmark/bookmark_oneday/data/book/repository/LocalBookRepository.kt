@@ -141,17 +141,6 @@ class LocalBookRepository constructor(
         }
     }
 
-    override suspend fun removeAllBook(): BaseResponse<Nothing> = withContext(defaultDispatcher) {
-        try {
-            return@withContext BaseResponse.EmptySuccess
-        } catch (e: Exception) {
-            return@withContext BaseResponse.Failure(
-                errorCode = -1,
-                errorMessage = "${e.message}"
-            )
-        }
-    }
-
     override suspend fun updateReadingPage(
         bookId: String,
         currentPage: Int,

@@ -15,7 +15,6 @@ interface BookRepository  {
     suspend fun getMyLibraryList(perPage : Int = 30, key : String, sortType : String = "latest") : BaseResponse<PagingData<MyLibraryItem.Book>>
     suspend fun getBookDetail(bookId : String) : BaseResponse<BookDetail>
     suspend fun removeBook(bookId : String) : BaseResponse<Nothing>
-    suspend fun removeAllBook() : BaseResponse<Nothing>
     suspend fun updateReadingPage(bookId : String, currentPage : Int, totalPage : Int) : BaseResponse<Nothing>
     suspend fun deleteHistoryItem(bookId : String, targetId : String) : BaseResponse<ReadingInfo>
     suspend fun deleteHistoryAll(bookId: String) : BaseResponse<ReadingInfo>
