@@ -1,6 +1,8 @@
 package com.bookmark.bookmark_oneday.data.book.repository
 
 import android.annotation.SuppressLint
+import androidx.datastore.core.DataStore
+import com.bookmark.bookmark_oneday.core.datastore.User
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.core.model.PagingData
 import com.bookmark.bookmark_oneday.core.model.toTimeString
@@ -21,6 +23,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -29,6 +32,7 @@ import kotlin.coroutines.CoroutineContext
 
 class LocalBookRepository constructor(
     private val bookDao: BookDao,
+    private val dataStore : DataStore<User>,
     private val defaultDispatcher: CoroutineContext = Dispatchers.IO + SupervisorJob()
 ) : BookRepository {
 
@@ -214,8 +218,7 @@ class LocalBookRepository constructor(
 
         val currentTime = Calendar.getInstance().time
         val currentReadingTime = getDailyTotalTime(currentTime)
-        // todo : user 데이터에 접근해 목표 시간 가져오기
-        val dailyGoalTime = 0
+        val dailyGoalTime = dataStore.data.first().targetReadTime * 60
 
         return ReadingInfo(
             dailyGoalTime = dailyGoalTime,

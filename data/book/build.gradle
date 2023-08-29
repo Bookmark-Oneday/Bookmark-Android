@@ -33,6 +33,7 @@ android {
 dependencies {
 
     implementation project(":core:api")
+    implementation project(":core:datastore")
     implementation project(":core:room")
     implementation project(":core:model")
     implementation project(":domain:book")
@@ -46,4 +47,5 @@ dependencies {
     implementation libs.bundles.retrofit
 
     implementation libs.javaxInject
+    implementation libs.bundles.protoDataStore
 }
