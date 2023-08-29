@@ -11,4 +11,5 @@ java {
 dependencies {
     implementation project(":core:model")
     implementation libs.javaxInject
+    implementation libs.coroutineCore
 }
