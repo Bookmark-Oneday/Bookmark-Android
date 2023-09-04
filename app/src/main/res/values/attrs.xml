@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ToggleButton">
+        <attr name="toggleOnBackground" format="integer"/>
+        <attr name="toggleOffBackground" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="SignupToolbar">
+        <attr name="progress" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="SignupButton">
+        <attr name="text" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="SignupEditText">
+        <attr name="placeHolder" format="string"/>
+        <attr name="max" format="integer"/>
+        <attr name="maxLines" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="OnelineVerticalSeekbar">
+        <attr name="minValue" format="integer"/>
+        <attr name="maxValue" format="integer"/>
+    </declare-styleable>
+</resources>

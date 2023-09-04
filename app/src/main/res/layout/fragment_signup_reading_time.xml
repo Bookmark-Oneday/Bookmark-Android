@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.bookmark.bookmark_oneday.presentation.screens.signup.component.SignupToolbar
+        android:id="@+id/toolbar_signup_reading_time"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:progress="75"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_signup_reading_time_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_signup_reading_time"
+        android:layout_marginTop="54dp"
+        android:layout_marginStart="30dp"
+        android:text="@string/label_signup_set_reading_time_title"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_signup_reading_time_title"
+        app:layout_constraintBottom_toTopOf="@id/progress_signup_reading_time"
+        android:minWidth="216dp"
+        android:minHeight="180dp"
+        android:layout_margin="56dp"
+        android:src="@drawable/img_signup_timer"/>
+
+    <SeekBar
+        android:id="@+id/progress_signup_reading_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/label_signup_reading_time_time"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:thumb="@drawable/signup_seekbar_thumb"
+        tools:progress="23"
+        android:max="46"
+        android:splitTrack="false"
+        android:progressDrawable="@drawable/signup_seekbar_background"
+        android:layout_marginBottom="24dp"
+        android:layout_marginHorizontal="30dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_signup_reading_time_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/label_signup_reading_time_caption"
+        tools:text="15분"
+        android:textSize="24sp"
+        android:layout_marginBottom="24dp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_signup_reading_time_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/html_caption_signup_set_reading_time_more"
+        app:layout_constraintBottom_toTopOf="@id/btn_signup_reading_time_next"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="32dp"/>
+
+
+    <com.bookmark.bookmark_oneday.presentation.screens.signup.component.SignupButton
+        android:id="@+id/btn_signup_reading_time_next"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginBottom="24dp"
+        app:text="@string/label_signup_next"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.bookmark.bookmark_oneday.presentation.screens.signup.component.SignupToolbar
+        android:id="@+id/toolbar_signup_profile"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:progress="50"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_signup_profile_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_signup_profile"
+        android:layout_marginTop="54dp"
+        android:layout_marginStart="30dp"
+        android:text="@string/label_signup_set_profile_title"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cv_signup_profile"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        app:strokeWidth="4dp"
+        app:strokeColor="@color/gray"
+        app:cardCornerRadius="55dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_signup_profile_title"
+        android:layout_marginTop="62dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_signup_profile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_all_default_profile"
+            android:scaleType="centerCrop"
+            />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_signup_profile_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/cv_signup_profile"
+        app:layout_constraintEnd_toEndOf="@id/cv_signup_profile"
+        app:layout_constraintTop_toBottomOf="@id/cv_signup_profile"
+        android:layout_marginTop="16dp"
+        tools:text="프로브"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <com.bookmark.bookmark_oneday.presentation.screens.signup.component.SignupEditText
+        android:id="@+id/edittext_signup_profile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_signup_profile_nickname"
+        app:layout_constraintBottom_toTopOf="@id/btn_signup_profile_next"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginBottom="20dp"
+        app:placeHolder="@string/label_signup_set_profile_place_holder"
+        app:maxLines="3"
+        app:max="60"/>
+
+    <com.bookmark.bookmark_oneday.presentation.screens.signup.component.SignupButton
+        android:id="@+id/btn_signup_profile_next"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_signup_profile_later"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginBottom="4dp"
+        app:text="@string/label_signup_next"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/btn_signup_profile_later"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="12dp"
+        android:layout_margin="4dp"
+        android:text="@string/label_signup_set_later"
+        android:textColor="@color/default_caption_text"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

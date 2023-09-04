@@ -14,4 +14,17 @@
     <color name="gray">#E3E3E3</color>
 
     <color name="black_transparent_40">#66000000</color>
+    <color name="black_transparent_15">#28000000</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="black_surface">#FF111111</color>
+
+    <color name="default_background">#FFFFFFFF</color>
+    <color name="default_background_40">#66FFFFFF</color>
+    <color name="default_text">#FF000000</color>
+    <color name="default_icon_tint">#FF000000</color>
+    <color name="default_separator">#E3E3E3</color>
+    <color name="default_caption_text">#BDBDBD</color>
+
+    <color name="red">#FF2F2F</color>
 </resources>

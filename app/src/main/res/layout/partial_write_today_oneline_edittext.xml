@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:gravity="center">
+
+    <EditText
+        android:id="@+id/edittext_write_today_oneline_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="@string/label_write_today_oneline_place_holder"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:padding="0dp"
+        android:textCursorDrawable="@drawable/all_edittext_cursor"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:visibility="invisible"
+        tools:text="사랑에는 늘 약간의 망상이 있다." />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_write_today_oneline_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:textSize="17sp"
+        android:layout_gravity="center"
+        tools:text="사랑에는 늘 약간의 망상이 있다." />
+
+</FrameLayout>

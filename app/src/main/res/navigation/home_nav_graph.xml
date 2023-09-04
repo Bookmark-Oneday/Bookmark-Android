@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/homeNav_mylibraryFragment">
+
+    <fragment
+        android:id="@+id/homeNav_mylibraryFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.home.mylibrary.MyLibraryFragment"
+        android:label="MyLibraryFragment"
+        >
+        <action
+            android:id="@+id/action_myLibraryFragment_to_bookDetailFragment"
+            app:destination="@id/bookDetailFragment">
+            <argument
+                android:name="bookId"
+                app:argType="string"
+                android:defaultValue="0"/>
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/bookDetailFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.home.book_detail.BookDetailFragment"
+        android:label="BookDetailFragment" >
+
+        <argument
+            android:name="bookId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeNav_todayOnelineFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.TodayOnelineFragment"
+        android:label="TodayOnelineFragment" />
+
+    <fragment
+        android:id="@+id/homeNav_mypageFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.home.mypage.MyPageFragment"
+        android:label="MyPageFragment"/>
+    <fragment
+        android:id="@+id/homeNav_readingCalendarFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.ReadingCalendarFragment"
+        android:label="ReadingCalendarFragment" />
+</navigation>

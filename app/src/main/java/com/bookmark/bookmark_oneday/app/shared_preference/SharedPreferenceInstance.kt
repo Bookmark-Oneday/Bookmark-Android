@@ -1,30 +1,17 @@
 package com.bookmark.bookmark_oneday.app.shared_preference
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 
 object SharedPreferenceInstance {
     private lateinit var sharedPreference : SharedPreferences
 
     fun init(context : Context) {
         if (!::sharedPreference.isInitialized) {
-            sharedPreference = EncryptedSharedPreferences.create(
-                context,
-                context.packageName,
-                getMasterKey(context),
-                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            )
+            sharedPreference = context.getSharedPreferences("book_mark_one_day_secret_shared_prefs", MODE_PRIVATE)
         }
     }
-
-    private fun getMasterKey(context: Context) =
-        MasterKey
-            .Builder(context)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
 
     fun getInstance() = sharedPreference
 }

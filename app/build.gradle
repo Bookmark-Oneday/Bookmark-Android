@@ -1,7 +1,15 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'kotlin-kapt'
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-parcelize'
+    id "com.google.protobuf" version "0.8.17"
 }
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     namespace 'com.bookmark.bookmark_oneday'
@@ -15,6 +23,11 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "KAKAO_KEY", properties['kakao_api_key']
+        buildConfigField "String", "GOOGLE_CLIENT_ID", properties['google_client_id']
+        buildConfigField "String", "GOOGLE_CLIENT_SECRENT", properties['google_client_secret']
+        buildConfigField "String", "GOOGLE_REDIRECT_URI", properties['google_redirect_uri']
     }
 
     buildTypes {
@@ -28,7 +41,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
     buildFeatures {
         viewBinding = true
@@ -38,34 +51,74 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation project(":domain:appinfo")
+    implementation project(":domain:book")
+    implementation project(":domain:file")
+    implementation project(":domain:user")
+    implementation project(":domain:login")
+    implementation project(":domain:oneline")
+    implementation project(":data:appinfo")
+    implementation project(":data:book")
+    implementation project(":data:file")
+    implementation project(":data:google_auth")
+    implementation project(":data:token")
+    implementation project(":data:user")
+    implementation project(":data:oneline")
+    implementation project(":core:api")
+    implementation project(":core:datastore")
+    implementation project(":core:model")
+    implementation project(":core:presentation")
+    implementation project(":core:room")
 
-    // security-crypto : https://developer.android.com/jetpack/androidx/releases/security?hl=ko
-    implementation "androidx.security:security-crypto-ktx:1.1.0-alpha05"
+    implementation libs.bundles.androidCore
+    implementation libs.material
+    testImplementation libs.junit
+    androidTestImplementation libs.extJunit
+    androidTestImplementation libs.espresso
 
     // navigation
-    def nav_version = "2.5.3"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation libs.bundles.navigation
+
+    // cameraX
+    implementation libs.mlkit
+    implementation libs.bundles.cameraX
 
     // coroutine
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation libs.coroutine
 
     // glide : https://github.com/bumptech/glide
-    implementation 'com.github.bumptech.glide:glide:4.15.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.15.0'
+    implementation libs.glide
+    annotationProcessor libs.glideCompiler
 
     // okhttp3 : https://square.github.io/okhttp/
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+    implementation libs.bundles.okhttp
 
     // retrofit2 : https://square.github.io/retrofit/
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation libs.bundles.retrofit
+
+    // hilt
+    implementation libs.hilt
+    kapt libs.hiltComplier
+
+    // leakCanary
+    debugImplementation libs.leakCanary
+
+    // google login
+    implementation libs.googleAuth
+
+    // lottie
+    implementation libs.lottie
+
+    // proto data store
+    implementation libs.bundles.protoDataStore
+
+    // room
+    implementation libs.bundles.room
+    annotationProcessor libs.roomCompiler
+    kapt libs.roomCompiler
+
+}
+
+kapt {
+    correctErrorTypes true
 }

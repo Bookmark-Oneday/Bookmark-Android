@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/write_today_oneline_nav_graph"
+    app:startDestination="@id/writeTodayOnelineBookFragment">
+
+    <fragment
+        android:id="@+id/writeTodayOnelineBookFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.select_book.WriteTodayOnelineBookFragment"
+        android:label="WriteTodayOnelineBookFragment" >
+
+        <action
+            android:id="@+id/action_writeTodayOnelineBookFragment_to_writeTodayOnelineWriteFragment"
+            app:destination="@id/writeTodayOnelineWriteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/writeTodayOnelineWriteFragment"
+        android:name="com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.write.WriteTodayOnelineWriteFragment"
+        android:label="WriteTodayOnelineWriteFragment" >
+        <argument
+            android:name="book"
+            app:argType="com.bookmark.bookmark_oneday.presentation.model.BookInfoParcelable" />
+    </fragment>
+</navigation>

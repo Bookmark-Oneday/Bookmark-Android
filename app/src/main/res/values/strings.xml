@@ -1,9 +1,130 @@
 <resources>
-    <string name="app_name">Bookmark-Oneday</string>
-    
+    <string name="app_name">오늘 한줄</string>
+
     <string name="menu_homebottom_mylibrary">나의 서재</string>
-    <string name="menu_homebottom_bookclub">책 모임</string>
+    <string name="menu_homebottom_reading_calendar">독서 달력</string>
     <string name="menu_homebottom_todayoneline">오늘 한줄</string>
     <string name="menu_homebottom_scrapbook">스크랩 북</string>
     <string name="menu_homebottom_mypage">마이페이지</string>
+
+    <string name="label_bookrecognition_scan_barcode">바코드 인식</string>
+    <string name="caption_bookrecognition_scan_barcode">책의 바코드를 인식해 주세요.</string>
+    <string name="label_bookrecognition_scan_fail">인식 실패</string>
+    <string name="caption_bookrecognition_scan_fail">바코드가 인식되지 않습니다.</string>
+    <string name="label_bookrecognition_confirm">확인</string>
+
+    <string name="label_bookconfirm_register">등록</string>
+    <string name="label_bookconfirm_cancel">취소</string>
+    <string name="label_bookconfirm_publisher">출판사</string>
+    <string name="label_bookconfirm_publish_date">발행일</string>
+    <string name="label_bookconfirm_summary">줄거리</string>
+    <string name="label_bookconfirm_duplicate_register">중복 등록</string>
+    <string name="caption_bookconfirm_duplicate_register">이전에 등록한 책입니다. \n중복등록 하시겠습니까?</string>
+
+    <string name="label_bookdetail_first_read_day">처음 읽은 날</string>
+    <string name="label_bookdetail_total_reading_time">총 독서 시간</string>
+    <string name="label_bookdetail_input_page">페이지 입력</string>
+    <string name="label_bookdetail_until_complete">완독까지</string>
+    <string name="label_bookdetail_my_reading_record">나의 독서기록</string>
+    <string name="caption_bookdetail_my_reading_record">날짜별로 보는 하루 독서량</string>
+    <string name="label_bookdetail_remove_from_book_list">책 목록에서 삭제</string>
+
+    <string name="label_bookdetail_remove_book">책 삭제</string>
+    <string name="caption_bookdetail_remove_book">서재 목록에서 책을 삭제하시겠습니까?</string>
+    <string name="label_bookdetail_remove">삭제</string>
+    <string name="label_bookdetail_cancel">취소</string>
+
+    <string name="label_bookdetail_bookmark">책갈피</string>
+    <string name="caption_bookdetail_bookmark">몇 페이지까지 읽으셨나요?</string>
+    <string name="label_bookdetail_input">입력</string>
+
+    <string name="label_mylibrary">나의 서재</string>
+    <string name="label_mylibrary_title">책갈피 : 나의 서재</string>
+    <string name="label_mylibrary_profile_read_book">읽은 책</string>
+    <string name="label_mylibrary_profile_follower">팔로워</string>
+    <string name="label_mylibrary_profile_following">팔로잉</string>
+    
+    <string name="label_mylibrary_sort_recently">최신순</string>
+    <string name="label_mylibrary_sort_past_order">과거순</string>
+    <string name="label_mylibrary_sort_favorite_book">즐겨찾는 책</string>
+    <string name="label_mylibrary_sort_reading_book">읽고 있는 책</string>
+    <string name="label_mylibrary_chain">연속 %d일째 읽고 있어요!</string>
+
+    <string name="label_mylibrary_camera_permission">카메라 접근 권한 허용</string>
+    <string name="caption_mylibrary_camera_permission">위 접근 권한은 더 나은 서비스를 제공하기 위해 사용됩니다. 도서 등록 시 바코드 인식을 위해 사용되며, 접근 권한 미허용 시 도서 등록 서비스 이용이 불가 합니다.</string>
+    <string name="label_mylibrary_camera">카메라</string>
+    <string name="caption_mylibrary_camera">바코드 인식 시 카메라 사용</string>
+    <string name="label_mylibrary_confirm">확인</string>
+
+    <string name="label_timer_total_eng">Total</string>
+    <string name="label_timer_stopwatch">스톱워치</string>
+    <string name="label_timer_remove_all_history">모든 기록 삭제</string>
+    <string name="label_timer_remove_history">기록 삭제</string>
+    <string name="caption_timer_remove_history">기록을 정말 삭제하시겠습니까?</string>
+
+    <string name="label_error_title">인터넷 연결이 불안정합니다.</string>
+    <string name="caption_error_title">인터넷 연결이 불안정하여\n데이터를 불러올 수 없습니다.</string>
+    <string name="label_error_retry">재시도</string>
+
+    <string name="label_intro_start">시작하기</string>
+    <string name="label_intro_mylibrary">나의 서재</string>
+    <string name="caption_intro_mylibrary">실제 나의 책장을 한 페이지에\n책을 정리하고 기록하세요.</string>
+    <string name="label_intro_reading_graph">나의 독서 그래프</string>
+    <string name="caption_intro_reading_graph">날짜별로 나의 독서량을 확인하고 기록하세요.</string>
+    <string name="label_intro_book_group">책모임을 통한 소통</string>
+    <string name="caption_intro_book_group">비슷한 취향의 사람들과 소통해보세요.</string>
+    <string name="label_intro_today_one_line">한 줄의 독서, 오늘 한줄</string>
+    <string name="caption_intro_today_one_line">책을 읽고 기억에 남았던 문장을 공유해보세요.</string>
+
+    <string name="label_login_local">오프라인으로 시작하기</string>
+    <string name="label_login_google">Google계정으로 시작</string>
+    <string name="label_signup_next">다음</string>
+    <string name="label_signup_set_later"><u>나중에 설정하기</u></string>
+    <string name="label_signup_complete">가입 완료</string>
+    <string name="label_signup_text_count_format">(%d/%d)</string>
+    <string name="label_signup_set_nickname_title">사용할 <font color="#F99030">닉네임</font>을\n설정해 주세요.</string>
+    <string name="label_signup_set_nickname_place_holder">닉네임 입력</string>
+    <string name="label_signup_set_profile_title">사용할 <font color="#F99030">프로필</font>을\n설정해 주세요.</string>
+    <string name="label_signup_set_profile_place_holder">소개말 입력</string>
+    <string name="label_signup_set_reading_time_title"><font color="#F99030">목표 독서시간</font>을\n설정하고 실천해보세요.</string>
+    <string name="label_signup_set_reading_time_format">%d시간 %d분</string>
+    <string name="label_signup_set_reading_time_format_exclude_hour">%d분</string>
+    <string name="label_signup_set_reading_time_format_exclude_minute">%d시간</string>
+    <string name="html_caption_signup_set_reading_time_more"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>많아요]]></string>
+    <string name="html_caption_signup_set_reading_time_less"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>적어요]]></string>
+    <string name="label_signup_complete_title">축하합니다!\n책갈피 회원이 되었어요.</string>
+
+    <string name="label_today_oneline_title">책갈피 : 오늘한줄</string>
+
+    <string name="label_write_today_oneline_book_select">선택</string>
+    <string name="label_write_today_oneline_book_register_book">책 등록하기</string>
+    <string name="label_write_today_oneline_book_select_book">책 선택</string>
+    
+    <string name="label_write_today_oneline_write_title">한줄 작성</string>
+    <string name="label_write_today_oneline_write_upload">게시</string>
+    <string name="label_write_today_oneline_write_complete">완료</string>
+    <string name="label_write_today_oneline_set_background">배경 설정</string>
+    <string name="label_write_today_oneline_set_text">텍스트 입력</string>
+    <string name="label_write_today_oneline_place_holder">텍스트를 입력하세요.</string>
+
+    <string name="label_mypage_title">마이페이지</string>
+    <string name="label_mypage_profile_setting">프로필 설정</string>
+    <string name="label_mypage_alarm_setting">알림 설정</string>
+    <string name="label_mypage_data_clear">데이터 초기화</string>
+    <string name="label_mypage_modify_reading_time">목표 시간 재설정</string>
+
+    <string name="label_modify_profile">프로필 수정</string>
+    <string name="label_modfiy_profile_complete">수정 완료</string>
+
+    <string name="label_clear_data">모든 데이터를 삭제하시겠습니까?</string>
+    <string name="caption_clear_data">삭제된 데이터는 복구할 수 없습니다.</string>
+    <string name="label_clear_data_clear">삭제</string>
+
+    <string name="label_modify_reading_time">목표 독서시간 설정</string>
+    <string name="label_modify_reading_time_format">%d시간 %d분</string>
+    <string name="label_modify_reading_time_format_exclude_hour">%d분</string>
+    <string name="label_modify_reading_time_format_exclude_minute">%d시간</string>
+    <string name="html_caption_modify_reading_time_more"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>많아요]]></string>
+    <string name="html_caption_modify_reading_time_less"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>적어요]]></string>
+    <string name="label_modify_reading_time_complete">완료</string>
 </resources>

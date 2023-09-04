@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="28dp"
+    android:layout_height="28dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:tint="@color/gray"
+        android:src="@drawable/all_circle"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="2dp"
+        android:tint="@color/black"
+        android:src="@drawable/all_circle"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

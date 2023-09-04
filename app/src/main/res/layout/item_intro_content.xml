@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_item_intro_content_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/label_item_intro_content_caption"
+        android:layout_marginTop="84dp"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        tools:text="한줄의 독서, 오늘 한줄"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_item_intro_content_caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/label_item_intro_content_title"
+        app:layout_constraintBottom_toTopOf="@id/img_item_intro"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        tools:text="책을 읽고 기억에 남았던\n공유해보세요"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/img_item_intro"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_item_intro_content_caption"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginHorizontal="40dp"
+        tools:src="@drawable/img_intro_book_group"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

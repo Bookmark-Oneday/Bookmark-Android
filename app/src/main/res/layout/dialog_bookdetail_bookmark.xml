@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/all_dialogbackground"
+        android:paddingVertical="21dp"
+        android:paddingHorizontal="32dp">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/label_bookdetail_bookmarkdialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="@string/label_bookdetail_bookmark" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/label_bookdetail_bookmarkdialog_caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_bookdetail_bookmarkdialog_title"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:text="@string/caption_bookdetail_bookmark"/>
+
+        <LinearLayout
+            android:id="@+id/ll_bookdetail_page_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/label_bookdetail_bookmarkdialog_caption"
+            android:layout_marginTop="22dp"
+            android:gravity="center">
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/input_bookdetail_currentpage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:padding="6dp"
+                android:textStyle="bold"
+                android:textColor="@color/orange"
+                android:inputType="numberDecimal"
+                android:background="@drawable/bookdetail_edittextbackground"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:src="@drawable/img_bookdetail_slash"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/input_bookdetail_totalPage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:padding="6dp"
+                android:textStyle="bold"
+                android:inputType="numberDecimal"
+                android:background="@drawable/bookdetail_edittextbackground"
+                />
+
+
+        </LinearLayout>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_bookdetail_bookmarkdialog_input"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:text="@string/label_bookdetail_input"
+            android:background="@drawable/all_roundbutton_positive"
+            android:textColor="@color/default_background"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_bookdetail_page_input"
+            android:layout_marginTop="24dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="27dp"
+        android:layout_height="35dp"
+        android:layout_gravity="top"
+        android:layout_marginStart="29dp"
+        android:src="@drawable/img_bookdetail_bookmark"/>
+
+</FrameLayout>

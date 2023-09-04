@@ -6,11 +6,30 @@
         <item name="colorPrimaryVariant">@color/deep_orange</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorSecondary">@color/light_orange</item>
+        <item name="colorSecondaryVariant">@color/deep_orange</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <!-- Customize your theme here. -->
+        <item name="android:colorBackground">@color/default_background</item>
+        <item name="android:textColor">@color/default_text</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
     </style>
+
+    <style name="BottomNavigationView">
+        <item name="android:textColor">@color/selector_homebottom_color</item>
+        <item name="android:tint">@color/selector_homebottom_color</item>
+        <item name="android:background">@color/default_background</item>
+    </style>
+
+    <style name="BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:colorBackground">@color/default_background</item>
+    </style>
+
+    <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
 </resources>

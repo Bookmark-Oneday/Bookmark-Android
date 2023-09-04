@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="56dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_bookdetail_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btn_bookdetail_back"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:padding="10dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:tint="@color/default_icon_tint"
+            android:src="@drawable/ic_all_back"/>
+
+        <LinearLayout
+            android:id="@+id/ll_bookdetail_buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="10dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_bookdetail_like"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:padding="10dp"
+                android:tint="@color/default_icon_tint"
+                android:src="@drawable/ic_bookdetail_like_negative"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_bookdetail_timer"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:tint="@color/default_icon_tint"
+                android:src="@drawable/ic_bookdetail_timer"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btn_bookdetail_more"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:padding="10dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:tint="@color/default_icon_tint"
+                android:src="@drawable/ic_bookdetail_more"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/line_bookdetail_separator_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            app:layout_constraintTop_toBottomOf="@id/ll_bookdetail_buttons"
+            android:background="@color/default_separator"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/list_bookdetail_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/cl_bookdetail_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_bookdetail_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_bookdetail_begin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="24dp"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_bookdetail_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="24dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_bookdetail_bookcover"
+                android:layout_width="170dp"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="0.68"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="4dp"
+                android:layout_marginTop="36dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_bookdetail_bookcover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/card_bookdetail_bookcover"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_end"
+                android:layout_marginTop="24dp"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="세상의 마지막 기차역에서"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_author"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/label_bookdetail_title"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_end"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="무라세 다케시"/>
+
+            <View
+                android:id="@+id/line_bookdetail_separator_info"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_end"
+                app:layout_constraintTop_toBottomOf="@id/label_bookdetail_author"
+                android:layout_marginTop="27dp"/>
+
+            <LinearLayout
+                android:id="@+id/ll_bookdetail_timeinfos"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_end"
+                app:layout_constraintTop_toBottomOf="@id/line_bookdetail_separator_info">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingVertical="24dp"
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_bookdetail_first_read_day"
+                        android:textSize="15sp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/label_bookdetail_first_read_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="2023.01.09"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="bold"
+                        android:textSize="17sp"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:background="@color/default_separator"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingVertical="24dp"
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_bookdetail_total_reading_time"
+                        android:textSize="15sp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/label_bookdetail_total_reading_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="12:28.00"
+                        android:layout_marginTop="8dp"
+                        android:textStyle="bold"
+                        android:textSize="17sp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/line_bookdetail_separator_timeinfos"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_end"
+                app:layout_constraintTop_toBottomOf="@id/ll_bookdetail_timeinfos"
+                android:background="@color/default_separator"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_until_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                app:layout_constraintTop_toBottomOf="@id/line_bookdetail_separator_timeinfos"
+                android:layout_marginTop="32dp"
+                android:text="@string/label_bookdetail_until_complete"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_read_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/label_bookdetail_until_complete"
+                app:layout_constraintBottom_toBottomOf="@id/label_bookdetail_until_complete"
+                app:layout_constraintStart_toEndOf="@id/label_bookdetail_until_complete"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/orange"
+                android:textStyle="bold"
+                tools:text="42%"/>
+            
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_total_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_end"
+                app:layout_constraintTop_toTopOf="@id/label_bookdetail_until_complete"
+                app:layout_constraintBottom_toBottomOf="@id/label_bookdetail_until_complete"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                tools:text="/354"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_current_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/label_bookdetail_total_page"
+                app:layout_constraintTop_toTopOf="@id/label_bookdetail_until_complete"
+                app:layout_constraintBottom_toBottomOf="@id/label_bookdetail_until_complete"
+                android:layout_marginEnd="2dp"
+                android:textSize="17sp"
+                android:textColor="@color/orange"
+                android:textStyle="bold"
+                tools:text="120"/>
+
+            <ProgressBar
+                android:id="@+id/pb_bookdetail_readpage"
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_end"
+                app:layout_constraintTop_toBottomOf="@id/label_bookdetail_until_complete"
+                android:progressDrawable="@drawable/bookdetail_progressbarbackground"
+                android:layout_marginTop="12dp"
+                tools:progress="42" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                app:layout_constraintTop_toBottomOf="@id/pb_bookdetail_readpage"
+                android:layout_marginTop="2dp"
+                android:textSize="12sp"
+                android:text="0"
+                tools:ignore="HardcodedText" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_end"
+                app:layout_constraintTop_toBottomOf="@id/pb_bookdetail_readpage"
+                android:layout_marginTop="2dp"
+                android:textSize="12sp"
+                android:text="100"
+                tools:ignore="HardcodedText" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_bookdetail_input_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="0dp"
+                android:text="@string/label_bookdetail_input_page"
+                android:background="@drawable/all_roundbutton_positive"
+                android:textColor="@color/default_background"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingHorizontal="32dp"
+                android:paddingVertical="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pb_bookdetail_readpage"
+                android:layout_marginTop="24dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_my_reading_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/btn_bookdetail_input_page"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                android:layout_marginTop="40dp"
+                android:text="@string/label_bookdetail_my_reading_record"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/label_bookdetail_caption_my_reading_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/label_bookdetail_my_reading_record"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:text="@string/caption_bookdetail_my_reading_record"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_readinghistory"
+                android:layout_width="0dp"
+                android:layout_height="270dp"
+                android:paddingBottom="24dp"
+                app:layout_constraintStart_toStartOf="@id/guideline_bookdetail_begin"
+                app:layout_constraintEnd_toEndOf="@id/guideline_bookdetail_end"
+                app:layout_constraintTop_toBottomOf="@id/label_bookdetail_caption_my_reading_record"
+                android:layout_marginTop="24dp"/>
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/partial_bookdetail_loading"
+        layout="@layout/partial_bookdetail_loading"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/cl_bookdetail_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

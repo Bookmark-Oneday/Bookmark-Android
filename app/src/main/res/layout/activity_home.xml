@@ -4,11 +4,39 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/navhost_home_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/home_nav_graph"
+        />
+
+    <View
+        android:id="@+id/line_home_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toTopOf="@id/nav_home_bottom"
+        android:background="@color/default_separator"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/nav_home_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:elevation="0dp"
+        app:itemTextColor="@color/selector_menu_tint"
+        app:itemIconTint="@color/selector_menu_tint"
         app:menu="@menu/menu_homebottom"
         app:labelVisibilityMode="labeled"/>
+
+    <include
+        android:id="@+id/partial_home_network_error"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        layout="@layout/partial_network_error"
+        app:elevation="1dp"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
