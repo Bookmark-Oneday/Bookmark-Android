@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="175dp"
         app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/oneline_empty_background"
         tools:background="@color/orange"/>
 
     <View
