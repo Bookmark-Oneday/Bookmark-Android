@@ -37,7 +37,7 @@
         <activity android:name=".presentation.screens.modify_reading_time.ModifyReadingTimeActivity"/>
         <activity android:name=".presentation.screens.set_alarm.SetAlarmActivity"/>
 
-        <receiver android:name=".core.presentation.alarm.AlarmReceiver"/>
+        <receiver android:name=".presentation.alarm.AlarmReceiver"/>
     </application>
 
 </manifest>

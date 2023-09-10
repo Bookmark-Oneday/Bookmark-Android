@@ -2,7 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.set_alarm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bookmark.bookmark_oneday.core.presentation.alarm.BookMarkAlarmManager
+import com.bookmark.bookmark_oneday.presentation.alarm.BookMarkAlarmManager
 import com.bookmark.bookmark_oneday.domain.appinfo.usecase.UseCaseGetAlarmInfo
 import com.bookmark.bookmark_oneday.domain.appinfo.usecase.UseCaseSetAlarm
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,12 +59,12 @@ class SetAlarmViewModel @Inject constructor(
             )
 
             if (useAlarm.value) {
-                alarmManager.setAlarmOn(
+                alarmManager.createAlam(
                     hour = hour,
                     minute = minute
                 )
             } else {
-                alarmManager.setAlarmOff()
+                alarmManager.clearAlarm()
             }
 
             _saveAlarmSettingResult.emit(true)
