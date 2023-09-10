@@ -7,10 +7,9 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.bookmark.bookmark_oneday.core.presentation.R
 
-internal class NotificationManager {
-    fun createReadingNotification(
-        context : Context
-    ) {
+class NotificationManager {
+
+    fun initNotificationChannel(context : Context) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -25,6 +24,11 @@ internal class NotificationManager {
 
             notificationManager.createNotificationChannel(notificationChannel)
         }
+    }
+    fun createReadingNotification(
+        context : Context
+    ) {
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         val builder = NotificationCompat.Builder(context, channelId).apply {
             setSmallIcon(R.drawable.ic_logo)

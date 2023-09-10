@@ -1,17 +1,25 @@
 package com.bookmark.bookmark_oneday.presentation.screens.set_alarm
 
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ActivitySetAlarmBinding
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.screens.set_alarm.component.TimePickerDialog
+import com.bookmark.bookmark_oneday.presentation.util.EXACT_ALARM_PERMISSION
+import com.bookmark.bookmark_oneday.presentation.util.checkExactAlarmAvailable
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SetAlarmActivity : ViewBindingActivity<ActivitySetAlarmBinding>(ActivitySetAlarmBinding::inflate) {
     private val viewModel : SetAlarmViewModel by viewModels()
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) { viewModel.setUseSwitch(true) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +46,11 @@ class SetAlarmActivity : ViewBindingActivity<ActivitySetAlarmBinding>(ActivitySe
 
     private fun initSwitch() {
         binding.switchUseAlarm.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked && !checkExactAlarmAvailable(baseContext)) {
+                val alarmPermission = EXACT_ALARM_PERMISSION
+                alarmPermission?.let { requestPermission.launch(it) }
+                return@setOnCheckedChangeListener
+            }
             viewModel.setUseSwitch(isChecked)
         }
     }
@@ -45,7 +58,7 @@ class SetAlarmActivity : ViewBindingActivity<ActivitySetAlarmBinding>(ActivitySe
     private fun initObserver() {
         viewModel.useAlarm.collectLatestInLifecycle(this) { useAlarm ->
             setAlarmBtnEnabled(useAlarm)
-            binding.switchUseAlarm.isChecked = useAlarm
+            binding.switchUseAlarm.isChecked = useAlarm && checkExactAlarmAvailable(baseContext)
         }
 
         viewModel.alarmTime.collectLatestInLifecycle(this) { alarmTimeMinute ->
