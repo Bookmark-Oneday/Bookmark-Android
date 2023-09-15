@@ -39,7 +39,7 @@ class AlarmReceiver : BroadcastReceiver() {
                     bookMarkAlarmManager.clearAlarm()
                 }
             }
-            Intent.ACTION_REBOOT -> {
+            Intent.ACTION_BOOT_COMPLETED -> {
                 createAlarm()
             }
         }
