@@ -45,9 +45,12 @@ class ReadingCalendarFragment : ViewBindingFragment<FragmentReadingCalendarBindi
         binding.listCalendarCalendar.layoutManager = GridLayoutManager(requireContext(), 7)
         binding.listCalendarCalendar.adapter = ReadingCalendarCellAdapter(viewModel::loadReadingHistoryOfTheDay)
         binding.listCalendarCalendar.addItemDecoration(ReadingCalendarItemDecoration(requireContext()))
+        binding.listCalendarCalendar.setItemViewCacheSize(42)
+        binding.listCalendarCalendar.isNestedScrollingEnabled = false
 
         binding.listCalendarBook.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.listCalendarBook.adapter = ReadingCalendarBookAdapter()
+        binding.listCalendarBook.isNestedScrollingEnabled = false
     }
 
     private fun initObserver() {
