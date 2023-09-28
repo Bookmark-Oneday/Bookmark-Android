@@ -1,10 +1,10 @@
 package com.bookmark.bookmark_oneday.presentation.adapter.reading_calendar
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ItemReadingCalendarCellBinding
@@ -12,9 +12,7 @@ import com.bookmark.bookmark_oneday.presentation.screens.home.reading_calendar.m
 
 class ReadingCalendarCellAdapter(
     private val onCellClick : (Int, Int, Int) -> Unit
-) : RecyclerView.Adapter<ReadingCalendarCellAdapter.CellViewHolder>(){
-
-    private var cellList = listOf<CalendarCell>()
+) : ListAdapter<CalendarCell, ReadingCalendarCellAdapter.CellViewHolder>(ReadingCalendarCellDiffUtil()){
     private var currentYear : Int = 0
     private var currentMonth : Int = 0
 
@@ -24,18 +22,14 @@ class ReadingCalendarCellAdapter(
         return CellViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = cellList.size
-
     override fun onBindViewHolder(holder: CellViewHolder, position: Int) {
-        holder.bind(cellList[position])
+        holder.bind(getItem(position))
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun changeCellData(cellList : List<CalendarCell>, year : Int, month : Int) {
         currentYear = year
         currentMonth = month
-        this.cellList = cellList
-        notifyDataSetChanged()
+        submitList(cellList)
     }
 
     inner class CellViewHolder(
@@ -84,6 +78,17 @@ class ReadingCalendarCellAdapter(
             binding.labelCalendarCellDay.setTextColor(ContextCompat.getColor(binding.root.context, R.color.gray))
         }
 
+    }
+
+}
+
+class ReadingCalendarCellDiffUtil : DiffUtil.ItemCallback<CalendarCell>() {
+    override fun areItemsTheSame(oldItem: CalendarCell, newItem: CalendarCell): Boolean {
+        return "${oldItem.year}_${oldItem.month}_${oldItem.day}" == "${newItem.year}_${newItem.month}_${newItem.day}"
+    }
+
+    override fun areContentsTheSame(oldItem: CalendarCell, newItem: CalendarCell): Boolean {
+        return false
     }
 
 }
