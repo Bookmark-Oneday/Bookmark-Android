@@ -97,4 +97,18 @@ class LocalOneLineDataSource @Inject constructor(
                 )
             }
         }
+
+    override suspend fun deleteOneline(id: String): BaseResponse<Nothing> =
+        withContext(defaultDispatcher) {
+            try {
+                oneLineDao.deleteOneline(id)
+                return@withContext BaseResponse.EmptySuccess
+            } catch (e: Exception) {
+                return@withContext BaseResponse.Failure(
+                    errorCode = -1,
+                    errorMessage = "${e.message}"
+                )
+            }
+        }
+
 }
