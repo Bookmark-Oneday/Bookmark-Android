@@ -7,6 +7,6 @@ import com.bookmark.bookmark_oneday.domain.oneline.model.OneLineContent
 
 interface OnelineRepository {
     suspend fun getOnelineList(perPage : Int= 5, key : String, sortType : String = "latest") : BaseResponse<PagingData<OneLine>>
-
     suspend fun registerOneLine(oneLineContent: OneLineContent) : BaseResponse<Nothing>
+    suspend fun deleteOneline(id : String) : BaseResponse<Nothing>
 }
