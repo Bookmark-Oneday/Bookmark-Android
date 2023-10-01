@@ -3,6 +3,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.com
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bookmark.bookmark_oneday.databinding.PartialTodayOnelineToolbarBinding
 import com.bookmark.bookmark_oneday.domain.oneline.model.UserProfile
@@ -26,6 +27,10 @@ class TodayOnelineToolbar(context : Context, attrs : AttributeSet) : ConstraintL
         binding.btnTodayOnelineMore.setOnClickListener {
             event()
         }
+    }
+
+    fun setOnelineInfoVisible(visible : Boolean) {
+        binding.clTodayOnelineUserInfo.visibility = if (visible) View.VISIBLE else View.INVISIBLE
     }
 
     fun setWriterProfile(userProfile: UserProfile) {
