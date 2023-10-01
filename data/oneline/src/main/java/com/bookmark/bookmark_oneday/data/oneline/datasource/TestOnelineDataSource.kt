@@ -39,7 +39,7 @@ class TestOnelineDataSource @Inject constructor() : OnelineDataSource {
     private val testOnelineList = listOf(
         OneLineDto(
             id = "1", user_id = "1", profile_image = null,
-            nickname = "플레이스", book_id = "1",
+            nickname = "플레이스", book_isbn = "1",
             title = "차라투스트라는 이렇게 말했다", authors = listOf("프리드리히 니체"),
             oneliner = "사랑에는 늘 약간의 망상이 들어 있다.", color = "#ffffff",
             top = "0.5", left = "0.5", font = "Test", font_size = "18",
@@ -48,7 +48,7 @@ class TestOnelineDataSource @Inject constructor() : OnelineDataSource {
         ),
         OneLineDto(
             id = "2", user_id = "1", profile_image = null,
-            nickname = "더파인애플", book_id = "1",
+            nickname = "더파인애플", book_isbn = "1",
             title = "여행의 이유", authors = listOf("김영하"),
             oneliner = "여행가고싶다", color = "#ffffff",
             top = "0.0", left = "0.0", font = "Test", font_size = "24",
@@ -57,7 +57,7 @@ class TestOnelineDataSource @Inject constructor() : OnelineDataSource {
         ),
         OneLineDto(
             id = "3", user_id = "1", profile_image = null,
-            nickname = "프로브", book_id = "1",
+            nickname = "프로브", book_isbn = "1",
             title = "Clean Code(클린 코드)", authors = listOf("로버트 C. 마틴"),
             oneliner = "clean code, clean state", color = "#000000",
             top = "0.40", left = "0.08", font = "Test", font_size = "30",
@@ -66,7 +66,7 @@ class TestOnelineDataSource @Inject constructor() : OnelineDataSource {
         ),
         OneLineDto(
             id = "4", user_id = "1", profile_image = null,
-            nickname = "플레이스", book_id = "1",
+            nickname = "플레이스", book_isbn = "1",
             title = "차라투스트라는 이렇게 말했다", authors = listOf("프리드리히 니체"),
             oneliner = "사랑에는 늘 약간의 망상이 들어 있다.", color = "#ffffff",
             top = "0.5", left = "0.5", font = "Test", font_size = "18",
@@ -75,7 +75,7 @@ class TestOnelineDataSource @Inject constructor() : OnelineDataSource {
         ),
         OneLineDto(
             id = "5", user_id = "1", profile_image = null,
-            nickname = "더파인애플", book_id = "1",
+            nickname = "더파인애플", book_isbn = "1",
             title = "여행의 이유", authors = listOf("김영하"),
             oneliner = "여행가고싶다", color = "#ffffff",
             top = "0.0", left = "0.0", font = "Test", font_size = "24",
@@ -84,7 +84,7 @@ class TestOnelineDataSource @Inject constructor() : OnelineDataSource {
         ),
         OneLineDto(
             id = "6", user_id = "1", profile_image = null,
-            nickname = "프로브", book_id = "1",
+            nickname = "프로브", book_isbn = "1",
             title = "Clean Code(클린 코드)", authors = listOf("로버트 C. 마틴"),
             oneliner = "clean code, clean state", color = "#000000",
             top = "0.40", left = "0.08", font = "Test", font_size = "30",
