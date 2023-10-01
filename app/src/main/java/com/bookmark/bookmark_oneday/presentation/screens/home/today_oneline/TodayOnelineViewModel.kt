@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bookmark.bookmark_oneday.core.model.BaseResponse
 import com.bookmark.bookmark_oneday.core.model.PagingCheckData
+import com.bookmark.bookmark_oneday.domain.oneline.usecase.UseCaseDeleteOneline
 import com.bookmark.bookmark_oneday.domain.oneline.usecase.UseCaseGetOneline
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineEvent
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineSideEffect
@@ -23,7 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TodayOnelineViewModel @Inject constructor(
-    private val useCaseGetOneline: UseCaseGetOneline
+    private val useCaseGetOneline: UseCaseGetOneline,
+    private val useCaseDeleteOneline: UseCaseDeleteOneline
 ) : ViewModel() {
     private val pagingCheckData = PagingCheckData()
 
@@ -37,6 +39,9 @@ class TodayOnelineViewModel @Inject constructor(
 
     // 사용자의 터치 반응 없이 pager 를 이동했는지 여부를 나타냅니다.
     private var moveByResponse = false
+
+    // 현재 페이지 index
+    private var currentPageIdx : Int? = null
 
     init {
         tryGetFirstPagingData()
@@ -96,9 +101,26 @@ class TodayOnelineViewModel @Inject constructor(
         callSideEffect(TodayOnelineSideEffect.MovePage(viewPagerPosition))
     }
 
+    fun deleteOneline() {
+        val pageIdx = currentPageIdx
+        if (pageIdx == null || pageIdx >= state.value.onelineList.size) return
+
+        val id = state.value.onelineList[pageIdx].id
+        viewModelScope.launch {
+            event.send(TodayOnelineEvent.DeleteLoading)
+            val response = useCaseDeleteOneline(id)
+            if (response is BaseResponse.EmptySuccess) {
+                event.send(TodayOnelineEvent.DeleteSuccess(id))
+            } else {
+                event.send(TodayOnelineEvent.DeleteFail)
+            }
+        }
+    }
+
     private fun reduce(state : TodayOnelineState, event: TodayOnelineEvent) : TodayOnelineState {
         return when (event) {
             is TodayOnelineEvent.ChangePagerPosition -> {
+                currentPageIdx = event.position
                 val userProfile = if(state.onelineList.isEmpty()) null else state.onelineList[event.position].userProfile
                 state.copy(userProfile = userProfile)
             }
@@ -143,6 +165,22 @@ class TodayOnelineViewModel @Inject constructor(
                     onelineList = dataList,
                     showLoading = false,
                     showLoadingFail = false,
+                    showEmptyView = dataList.isEmpty()
+                )
+            }
+            TodayOnelineEvent.DeleteLoading -> {
+                return state.copy(
+                    showLoading = true
+                )
+            }
+            TodayOnelineEvent.DeleteFail -> {
+                return state.copy()
+            }
+            is TodayOnelineEvent.DeleteSuccess -> {
+                val dataList = state.onelineList.filter { it.id != event.id }
+                return state.copy(
+                    onelineList = dataList,
+                    showLoading = false,
                     showEmptyView = dataList.isEmpty()
                 )
             }

@@ -32,4 +32,7 @@ interface OneLineDao {
                 "ORDER BY OneLineEntity.createdAt DESC LIMIT :pageSize OFFSET :pageIdx * :pageSize"
     )
     suspend fun getOneLineList(pageIdx : Int, pageSize : Int) : List<OneLineAndBookInfo>
+
+    @Query("DELETE FROM OneLineEntity WHERE id = :id")
+    suspend fun deleteOneline(id : String)
 }

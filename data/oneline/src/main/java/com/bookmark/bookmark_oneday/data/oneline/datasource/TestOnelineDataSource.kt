@@ -20,25 +20,6 @@ class TestOnelineDataSource @Inject constructor() : OnelineDataSource {
         }
 
         val nextPageToken = continuousToken.toInt()
-//        val tempDataList = List(perPage){
-//            OneLineDto(
-//                id = "$continuousToken-$it",
-//                user_id = "1",
-//                profile_image = null,
-//                nickname = "Test User $continuousToken-$it",
-//                book_id = "1",
-//                title = "Test $continuousToken $it",
-//                authors = listOf("Oauth", "2.0"),
-//                oneliner = "$continuousToken $it 테스트 중입니다~",
-//                color = if (it == 0) "#FF018786" else  "#000000",
-//                top = if (it % 2 == 0) "0.9" else "0",
-//                left = if (it % 3 == 0) "0.9" else "0",
-//                font = "Test",
-//                font_size = (18 + it * 3).toString(),
-//                bg_image_url = null,
-//                created_at = "2023-04-29T11:18:25.801Z"
-//            )
-//        }
 
         val startIndex = perPage * nextPageToken
         val endIndex = perPage * (nextPageToken + 1)
@@ -113,6 +94,11 @@ class TestOnelineDataSource @Inject constructor() : OnelineDataSource {
     )
 
     override suspend fun registerOneline(oneLineContent: RegisterOneLineRequestBody): BaseResponse<Nothing> {
+        delay(1500L)
+        return BaseResponse.EmptySuccess
+    }
+
+    override suspend fun deleteOneline(id: String): BaseResponse<Nothing> {
         delay(1500L)
         return BaseResponse.EmptySuccess
     }

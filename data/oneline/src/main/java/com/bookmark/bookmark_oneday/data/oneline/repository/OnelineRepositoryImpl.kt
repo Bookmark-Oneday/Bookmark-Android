@@ -41,4 +41,8 @@ class OnelineRepositoryImpl @Inject constructor(
         val requestBody = RegisterOneLineRequestBody.fromOnelineContent(oneLineContent = oneLineContent)
         return dataSource.registerOneline(requestBody)
     }
+
+    override suspend fun deleteOneline(id: String): BaseResponse<Nothing> {
+        return dataSource.deleteOneline(id = id)
+    }
 }

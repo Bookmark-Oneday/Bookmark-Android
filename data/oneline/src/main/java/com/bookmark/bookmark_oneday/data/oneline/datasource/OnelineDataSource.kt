@@ -9,4 +9,5 @@ interface OnelineDataSource {
     suspend fun getOnelineList(perPage : Int, continuousToken : String, sortType : String) : BaseResponse<PagingData<OneLineDto>>
 
     suspend fun registerOneline(oneLineContent: RegisterOneLineRequestBody) : BaseResponse<Nothing>
+    suspend fun deleteOneline(id : String) : BaseResponse<Nothing>
 }

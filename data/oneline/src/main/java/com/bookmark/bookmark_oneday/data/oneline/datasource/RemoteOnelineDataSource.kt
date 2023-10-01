@@ -11,6 +11,7 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -52,6 +53,17 @@ class RemoteOnelineDataSource @Inject constructor(
             BaseResponse.Failure(errorCode, errorMessage)
         }
     }
+
+    override suspend fun deleteOneline(id: String): BaseResponse<Nothing> {
+        val response = service.deleteOneline(id)
+        return if (response.isSuccessful) {
+            BaseResponse.EmptySuccess
+        } else {
+            val errorMessage = response.message()
+            val errorCode = response.code()
+            BaseResponse.Failure(errorCode, errorMessage)
+        }
+    }
 }
 
 interface OnelineApi {
@@ -60,4 +72,7 @@ interface OnelineApi {
 
     @POST("/v1/oneliner")
     suspend fun registerOneline(@Body params : RegisterOneLineRequestBody) : Response<ResponseBody>
+
+    @DELETE("/v1/oneliner")
+    suspend fun deleteOneline(@Query("id") id : String) : Response<ResponseBody>
 }
