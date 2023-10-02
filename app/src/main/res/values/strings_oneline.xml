@@ -2,4 +2,13 @@
 <resources>
     <string name="label_oneline_empty">아직 작성한 한줄 기록이 없어요</string>
     <string name="caption_oneline_empty">우상단의 + 버튼을 클릭해\n등록한 책에 대한 한줄 감상을 남겨보세요</string>
+    
+    <string name="label_oneline_bottomsheet_delete">삭제하기</string>
+    <string name="label_oneline_bottomsheet_report">신고하기</string>
+    <string name="label_oneline_bottomsheet_book_info">책 정보 불러오기</string>
+
+    <string name="label_oneline_delete_dialog">이 한줄을 삭제하실건가요?</string>
+    <string name="caption_oneline_delete_dialog">식제한 한줄을 복구할 수 없습니다.</string>
+    <string name="label_oneline_delete_dialog_cancel">취소</string>
+    <string name="label_oneline_delete_dialog_delete">삭제</string>
 </resources>

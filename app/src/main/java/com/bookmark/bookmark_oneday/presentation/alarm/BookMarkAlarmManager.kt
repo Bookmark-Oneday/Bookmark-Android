@@ -1,6 +1,7 @@
-package com.bookmark.bookmark_oneday.core.presentation.alarm
+package com.bookmark.bookmark_oneday.presentation.alarm
 
 import android.app.AlarmManager
+import android.app.AlarmManager.RTC_WAKEUP
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -8,11 +9,13 @@ import com.bookmark.bookmark_oneday.core.presentation.noti.NotificationManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Calendar
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class BookMarkAlarmManager @Inject constructor(
     @ApplicationContext private val context : Context
 ) {
-    fun setAlarmOff() {
+    fun clearAlarm() {
         val intent = getAlarmIntent()
         val alarmManager = getAlarmManager()
         val pendingIntent = getAlarmPendingIntent(intent)
@@ -20,17 +23,17 @@ class BookMarkAlarmManager @Inject constructor(
         alarmManager.cancel(pendingIntent)
     }
 
-    fun setAlarmOn(
+    fun createAlam(
         hour : Int, minute : Int
     ) {
-        setAlarmOff()
+        clearAlarm()
 
         val intent = getAlarmIntent()
         val alarmManager = getAlarmManager()
         val pendingIntent = getAlarmPendingIntent(intent)
         val alarmTime = getNextAlarmTime(hour, minute)
 
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, alarmTime, AlarmManager.INTERVAL_DAY, pendingIntent)
+        alarmManager.setExactAndAllowWhileIdle(RTC_WAKEUP, alarmTime, pendingIntent)
     }
 
     private fun getAlarmIntent() : Intent {
@@ -54,7 +57,10 @@ class BookMarkAlarmManager @Inject constructor(
             set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
         }.timeInMillis
-        val currentTime = Calendar.getInstance().timeInMillis
+
+        // 10분 전에 설정한 경우, 그날은 알람이 발생하지 않음
+        val graceTimeMilli = 1000 * 60 * 10
+        val currentTime = Calendar.getInstance().timeInMillis + graceTimeMilli
 
         return if (currentTime > alarmTime) {
             alarmTime + AlarmManager.INTERVAL_DAY

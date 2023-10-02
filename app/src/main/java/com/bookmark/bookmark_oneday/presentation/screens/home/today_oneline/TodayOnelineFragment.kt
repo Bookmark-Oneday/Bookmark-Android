@@ -14,7 +14,10 @@ import com.bookmark.bookmark_oneday.core.presentation.util.toVisibility
 import com.bookmark.bookmark_oneday.databinding.FragmentTodayOnelineBinding
 import com.bookmark.bookmark_oneday.presentation.adapter.today_oneline.TodayOnelineAdapter
 import com.bookmark.bookmark_oneday.presentation.base.DataBindingFragment
+import com.bookmark.bookmark_oneday.presentation.base.dialog.TwoButtonDialog
+import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation_oneline.BookConfirmationFromOnelineActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.HomeActivity
+import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.component.TodayOnelineBottomSheet
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineSideEffect
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.ViewPagerPosition
 import com.bookmark.bookmark_oneday.presentation.screens.write_today_oneline.WriteTodayOnelineActivity
@@ -44,7 +47,11 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
 
     private fun setButton() {
         binding.partialTodayOnlineToolbar.setMoreButtonEvent {
-            // 신고, 삭제 팝업
+            val moreBottomSheet = TodayOnelineBottomSheet(
+                onRemoveClick = ::callDeleteConfirmDialog,
+                onBookInfoClick = ::goToBookConfirmation
+            )
+            moreBottomSheet.show(childFragmentManager, "OnelineMoreBottomSheet")
         }
 
         binding.partialTodayOnlineToolbar.setWriteButtonEvent {
@@ -52,6 +59,26 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
             writeTodayOneLineScreenLauncher.launch(intent)
         }
     }
+
+    private fun callDeleteConfirmDialog() {
+        val deleteConfirmDialog = TwoButtonDialog(
+            title = getString(R.string.label_oneline_delete_dialog),
+            caption = getString(R.string.caption_oneline_delete_dialog),
+            leftText = getString(R.string.label_oneline_delete_dialog_cancel),
+            rightText = getString(R.string.label_oneline_delete_dialog_delete),
+            onLeftButtonClick = {},
+            onRightButtonClick = viewModel::deleteOneline
+        )
+        deleteConfirmDialog.show(childFragmentManager, "onelineDeleteConfirmationDialog")
+    }
+
+    private fun goToBookConfirmation() {
+        val isbn = viewModel.getCurrentOnelineBookIsbn() ?: return
+        val intent = Intent(requireContext(), BookConfirmationFromOnelineActivity::class.java)
+        intent.putExtra("isbn", isbn)
+        startActivity(intent)
+    }
+
     private fun setPager() {
         binding.pagerTodayOneline.adapter = TodayOnelineAdapter()
         binding.pagerTodayOneline.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -104,6 +131,7 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
     private fun setObserver() {
         viewModel.state.collectLatestInLifecycle(viewLifecycleOwner) { state ->
             binding.partialTodayOnelineEmpty.root.visibility = state.showEmptyView.toVisibility()
+            binding.partialTodayOnlineToolbar.setOnelineInfoVisible(!state.showEmptyView)
             setLoadingDialogVisibility(state.showLoading)
             state.userProfile?.let { binding.partialTodayOnlineToolbar.setWriterProfile(it) }
             binding.pagerTodayOneline.isUserInputEnabled = !state.showLoading

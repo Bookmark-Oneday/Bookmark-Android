@@ -9,4 +9,7 @@ sealed class TodayOnelineEvent {
     class FirstPageDataLoadingSuccess(val pagingData : PagingData<OneLine>) : TodayOnelineEvent()
     class DataLoadingSuccess(val pagingData : PagingData<OneLine>) : TodayOnelineEvent()
     class ChangePagerPosition(val position : Int) : TodayOnelineEvent()
+    object DeleteLoading : TodayOnelineEvent()
+    object DeleteFail : TodayOnelineEvent()
+    class DeleteSuccess(val id : String) : TodayOnelineEvent()
 }
