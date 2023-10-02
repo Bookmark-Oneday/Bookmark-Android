@@ -11,7 +11,7 @@
     <string name="caption_bookrecognition_scan_barcode">책의 바코드를 인식해 주세요.</string>
     <string name="label_bookrecognition_scan_fail">인식 실패</string>
     <string name="caption_bookrecognition_scan_fail">바코드가 인식되지 않습니다.</string>
-    <string name="label_bookrecognition_confirm">확인</string>
+    <string name="label_bookrecognition_confirm">확인</string>인
 
     <string name="label_bookconfirm_register">등록</string>
     <string name="label_bookconfirm_cancel">취소</string>
@@ -127,4 +127,10 @@
     <string name="html_caption_modify_reading_time_more"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>많아요]]></string>
     <string name="html_caption_modify_reading_time_less"><![CDATA[2022년 성인 기준\n평균보다 <font color="#F99030">%d분</font>적어요]]></string>
     <string name="label_modify_reading_time_complete">완료</string>
+
+    <string name="label_all_empty_placeholder">-</string>
+
+    <string name="label_bookconfirm_cannot_founc_book_info">조회 실패</string>
+    <string name="caption_bookconfirm_cannot_found_book_info">책 정보를 조회할 수 없습니다.\n잠시 후에 다시 시도해주세요.</string>
+    <string name="label_bookconfirm_confirm">확인</string>
 </resources>
