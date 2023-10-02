@@ -8,7 +8,7 @@ data class OneLineDto(
     val user_id : String,
     val profile_image : String?,
     val nickname : String,
-    val book_id : String,
+    val book_isbn : String,
     val title : String,
     val authors : List<String>,
     val oneliner : String,
@@ -32,7 +32,7 @@ data class OneLineDto(
             return OneLine(
                 id = oneLineDto.id,
                 userProfile = userProfile,
-                bookId = oneLineDto.book_id,
+                bookIsbn = oneLineDto.book_isbn,
                 bookInfo = bookInfo,
                 oneliner = oneLineDto.oneliner,
                 textColor = oneLineDto.color,

@@ -15,6 +15,7 @@ import com.bookmark.bookmark_oneday.databinding.FragmentTodayOnelineBinding
 import com.bookmark.bookmark_oneday.presentation.adapter.today_oneline.TodayOnelineAdapter
 import com.bookmark.bookmark_oneday.presentation.base.DataBindingFragment
 import com.bookmark.bookmark_oneday.presentation.base.dialog.TwoButtonDialog
+import com.bookmark.bookmark_oneday.presentation.screens.book_confirmation_oneline.BookConfirmationFromOnelineActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.HomeActivity
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.component.TodayOnelineBottomSheet
 import com.bookmark.bookmark_oneday.presentation.screens.home.today_oneline.model.TodayOnelineSideEffect
@@ -47,7 +48,8 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
     private fun setButton() {
         binding.partialTodayOnlineToolbar.setMoreButtonEvent {
             val moreBottomSheet = TodayOnelineBottomSheet(
-                onRemoveClick = ::callDeleteConfirmDialog
+                onRemoveClick = ::callDeleteConfirmDialog,
+                onBookInfoClick = ::goToBookConfirmation
             )
             moreBottomSheet.show(childFragmentManager, "OnelineMoreBottomSheet")
         }
@@ -68,6 +70,13 @@ class TodayOnelineFragment : DataBindingFragment<FragmentTodayOnelineBinding>(R.
             onRightButtonClick = viewModel::deleteOneline
         )
         deleteConfirmDialog.show(childFragmentManager, "onelineDeleteConfirmationDialog")
+    }
+
+    private fun goToBookConfirmation() {
+        val isbn = viewModel.getCurrentOnelineBookIsbn() ?: return
+        val intent = Intent(requireContext(), BookConfirmationFromOnelineActivity::class.java)
+        intent.putExtra("isbn", isbn)
+        startActivity(intent)
     }
 
     private fun setPager() {

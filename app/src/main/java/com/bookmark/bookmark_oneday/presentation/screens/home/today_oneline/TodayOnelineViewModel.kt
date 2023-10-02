@@ -117,6 +117,10 @@ class TodayOnelineViewModel @Inject constructor(
         }
     }
 
+    fun getCurrentOnelineBookIsbn() : String? {
+        return state.value.onelineList.getOrNull(currentPageIdx ?: 0)?.bookIsbn
+    }
+
     private fun reduce(state : TodayOnelineState, event: TodayOnelineEvent) : TodayOnelineState {
         return when (event) {
             is TodayOnelineEvent.ChangePagerPosition -> {

@@ -5,7 +5,7 @@ import com.bookmark.bookmark_oneday.core.model.TimeString
 data class OneLine(
     val id : String,
     val userProfile: UserProfile,
-    val bookId : String,
+    val bookIsbn : String,
     val bookInfo : String,
     val oneliner : String,
     val textColor : String,

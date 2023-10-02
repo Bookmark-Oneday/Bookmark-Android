@@ -46,7 +46,7 @@ class LocalOneLineDataSource @Inject constructor(
                                user_id = "0",
                                profile_image = userInfo.profileUri,
                                nickname = userInfo.nickname,
-                               book_id = it.isbn,
+                               book_isbn = it.isbn,
                                title = it.title,
                                authors = it.authors,
                                oneliner = it.oneliner,
