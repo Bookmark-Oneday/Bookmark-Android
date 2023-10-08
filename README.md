@@ -1,7 +1,7 @@
 # 책갈피:오늘한줄 - AOS
 
 ## 프로젝트 구조
-본 프로젝트는 크게 5가지 분류로 구성되어 있으며, 각각의 대표 기능은 아래와 같습니다.
+본 프로젝트는 크게 5가지 레이어로 구성되어 있으며, 각각의 대표 기능은 아래와 같습니다.
 - app : application클래스 및 shared preference의 초기화작업, 의존성 주입
 - presentation : 화면 및 화면에 사용되는 UI적인 요소
 - domain : 앱에서 사용하는 데이터 클래스 및 비스니스 로직
@@ -12,15 +12,15 @@
 현재 app과 presentation은 app 모듈에 존재하며 나머지 domain, data, core는 별도의 모듈로 분리되어 있습니다.
 
 ### 주의사항
-1. 모둘의 상호 참조를 방지하기 위해서 동일한 layer에 배치된 모듈간에는 의존성을 가질 수 없습니다.  
+1. 모둘의 상호 참조를 방지하기 위해서 동일한 레이어에 배치된 모듈간에는 의존성을 가질 수 없습니다.  
   예시 1) data.book 모듈은 data.user 모듈을 참조할 수 없습니다.
-2. domain 모듈은 core 모듈만을 참조할 수 있습니다.  
+2. domain레이어의 모듈은 core레이어의 모듈만을 참조할 수 있습니다.  
   예시 2_1) domain.book 모듈은 data.book 모듈을 참조할 수 없습니다.  
   예시 2_2) domain.book 모듈은 core.model 모듈을 참조할 수 있습니다.
-3. data 모듈은 core 모듈과 presentation 모듈만을 참조할 수 있습니다.  
+3. data레이어 모듈은 core레이어 모듈과 data레이어 모듈만을 참조할 수 있습니다.  
   예시 3_1) data.book 모듈은 app 모듈을 참조할 수 없습니다.  
   예시 3_2) data.book 모듈은 domain.book 모듈을 참조할 수 있습니다.
-4. app 모듈 내 presentation 패키지는 domain, core 모듈만을 참조할 수 있습니다.  
+4. app 모듈 내 presentation 패키지는 domain, core레이어 모듈만을 참조할 수 있습니다.  
   예시 4) app 모듈 내 presentation 패키지는 data.book 모듈에 존재하는 클래스 및 함수를 사용할 수 없습니다. 대신 domain.book을 사용해야 합니다.
 
 #### app
