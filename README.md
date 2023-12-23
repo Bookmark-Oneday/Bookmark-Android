@@ -39,7 +39,7 @@ https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/13bc95d2-edc
 | **비동기 처리** | `Flow, Coroutine`              |
 
 ## 프로젝트 세부 구조
-현재 app과 presentation은 app 모듈에 존재하며 나머지 domain, data, core는 별도의 모듈로 분리되어 있습니다.
+현재 app과 presentation은 app 모듈에 존재하며 나머지 domain, data, core는 별도의 모듈로 분리되어 있습니다.  
 각 모듈 내 readme에 상세한 내용 및 의존성 관계가 명시되어 있습니다.
 
 ### 의존성 규칙
@@ -75,18 +75,19 @@ https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/13bc95d2-edc
 - util : presentation layer에서 공통적으로 사용되는 유틸 함수
 
 #### domain
-domain은 appinfo, book, login, oneline, user 모듈로 세부 분리되어 있습니다.
+domain 레이어는 appinfo, book, login, oneline, user 모듈로 세부 분리되어 있습니다.
 각 모듈 내의 폴더구조는 아래와 같습니다.
 - useCase : presentation의 viewModel 클래스에서 사용할 useCase 정의
 - repository : data 레이어에서 사용하는 repository의 인터페이스 선언
 - model : 앱에서 사용하는 데이터 클래스
 
 #### data
-domain은 appinfo, book, google_auth, oneline, token, user 모듈로 세부 분리되어 있습니다.
+data 레이어는 appinfo, book, google_auth, oneline, token, user 모듈로 세부 분리되어 있습니다.
 각 모듈 내의 폴더구조는 아래와 같습니다.
 - datasource : repository가 데이터를 가져오는 대상인 데이터 저장소를 구현한 클래스
 - repository : domain 레이어에서 정의한 repository 인퍼테이스를 구현한 클래스
-- model : data레이어에사만 사용되는 데이터 클래스 (dto)
+- model : DTO, RequestBody, ResponseBody같이 data 레이어에서 사용되는 데이터 클래스 (dto)
+- util : data 레이어에서 사용하는 유틸 함수
 
 #### core
 core 모듈은 앱 전체에서 공통으로 사용되는 기능들이 배치되어 있습니다.
