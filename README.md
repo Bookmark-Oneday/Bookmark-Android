@@ -1,6 +1,24 @@
 # 책갈피:오늘한줄 - AOS
+<p>
+<img width="15%" src="https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/e1a74894-d601-4ba9-ab04-9de6c3dfb3ef"/>
+</p>
+책갈피:오늘한줄은 사용자의 독서 욕구를 증진시키고, 독서 경험을 공유할 수 있도록 하는 독서 전문 커뮤니티 플랫폼입니다.
+
+## 기능
+- 바코드 인식을 통한 책 등록
+- 독서 기록 타이머
+- 달력을 통한 독서 기록 확인
+- 책에 대한 한줄평을 남기는 오늘한줄
+- 목표 독서시간 설정
+- 푸시 알림
+
+## 스크린샷 및 시연 영상
+![오늘한줄_example](https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/1e17e887-8e44-435f-875a-fa3be4a285b3)
+
+https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/13bc95d2-edc9-4d3d-bd9b-732ec4cce367
 
 ## 프로젝트 구조
+![프로젝트구조](https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/8444a75d-ced1-4848-b665-e61fc0d0f769)
 본 프로젝트는 크게 5가지 레이어로 구성되어 있으며, 각각의 대표 기능은 아래와 같습니다.
 - app : application클래스 및 shared preference의 초기화작업, 의존성 주입
 - presentation : 화면 및 화면에 사용되는 UI적인 요소
@@ -8,10 +26,23 @@
 - data : api호출과 같은 네트워크 작업 및 로컬 데이터베이스에 접근하여 데이터를 가져오는 작업을 수행
 - core : retrofit, okhttp, room, dataStore 정의, 프로젝트 전체적으로 사용되는 클래스
 
-## 폴더 상세 구조
-현재 app과 presentation은 app 모듈에 존재하며 나머지 domain, data, core는 별도의 모듈로 분리되어 있습니다.
+## 기술 스택
 
-### 주의사항
+| 분야          | 기술 스택                                           |
+|---------------|-----------------------------------------------------|
+| **언어**  | `Kotlin`                                           |
+| **UI** | `Xml, ViewBinding`                                          |
+| **의존성 주입** | `Dagger Hilt`                                          |
+| **구조** | `Clean Architecture, MVVM, MVI`              |
+| **jetpack** | `CameraX, Navigation`              |
+| **데이터베이스** | `Room`              |
+| **비동기 처리** | `Flow, Coroutine`              |
+
+## 프로젝트 세부 구조
+현재 app과 presentation은 app 모듈에 존재하며 나머지 domain, data, core는 별도의 모듈로 분리되어 있습니다.
+각 모듈 내 readme에 상세한 내용 및 의존성 관계가 명시되어 있습니다.
+
+### 의존성 규칙
 1. 모둘의 상호 참조를 방지하기 위해서 동일한 레이어에 배치된 모듈간에는 의존성을 가질 수 없습니다.  
   예시 1) data.book 모듈은 data.user 모듈을 참조할 수 없습니다.
 2. domain레이어의 모듈은 core레이어의 모듈만을 참조할 수 있습니다.  
@@ -57,5 +88,5 @@ domain은 appinfo, book, google_auth, oneline, token, user 모듈로 세부 분�
 - repository : domain 레이어에서 정의한 repository 인퍼테이스를 구현한 클래스
 - model : data레이어에사만 사용되는 데이터 클래스 (dto)
 
-#### 추후 계획
-현재 presentation 패키지에 존재하는 각 화면들을 전부 fragment로 전환하고 navigation의 deeplink를 통해 화면 전환하도록 수정하여  SingleActivityApplication으로 변환한 다음, presentation 모듈로 분리할 예정입니다.
+#### core
+core 모듈은 앱 전체에서 공통으로 사용되는 기능들이 배치되어 있습니다.
