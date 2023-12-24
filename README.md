@@ -17,7 +17,7 @@
 
 https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/13bc95d2-edc9-4d3d-bd9b-732ec4cce367
 
-## 프로젝트 구조
+## 프로젝트 모듈 구조
 ![프로젝트구조](https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/8444a75d-ced1-4848-b665-e61fc0d0f769)
 본 프로젝트는 크게 5가지 레이어로 구성되어 있으며, 각각의 대표 기능은 아래와 같습니다.
 - app : application클래스 및 shared preference의 초기화작업, 의존성 주입
@@ -25,6 +25,11 @@ https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/13bc95d2-edc
 - domain : 앱에서 사용하는 데이터 클래스 및 비스니스 로직
 - data : api호출과 같은 네트워크 작업 및 로컬 데이터베이스에 접근하여 데이터를 가져오는 작업을 수행
 - core : retrofit, okhttp, room, dataStore 정의, 프로젝트 전체적으로 사용되는 클래스
+
+## 프로젝트 세부 기능 구조
+![단일기능 흐름도](https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/eb8b2861-4cd3-4760-ad99-1ddf642d1e2a)
+- Data레이어의 Repository 구현체는 Hilt를 사용하여 주입되며, app 모듈의 app.di 패키지에 명시되어 있습니다.
+- 위 그래프에서 DataSource를 사용하지 않고 바로 Repository 구현체에서 데이터에 접근하는 경우도 존재합니다.
 
 ## 기술 스택
 
