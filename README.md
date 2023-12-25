@@ -1,6 +1,9 @@
 # 책갈피:오늘한줄 - AOS
 <p>
 <img width="15%" src="https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/e1a74894-d601-4ba9-ab04-9de6c3dfb3ef"/>
+<a href="https://drive.google.com/file/d/1aWV8yaqgbHTXroO-9KpW9BthsctjpKbB/view?usp=drive_link">
+  <img width="15%" src="https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/6d8a24c2-1054-45cc-b0e7-d79105a3419b"/>
+</a>
 </p>
 책갈피:오늘한줄은 사용자의 독서 욕구를 증진시키고, 독서 경험을 공유할 수 있도록 하는 독서 전문 커뮤니티 플랫폼입니다.
 
@@ -25,6 +28,8 @@ https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/13bc95d2-edc
 - domain : 앱에서 사용하는 데이터 클래스 및 비스니스 로직
 - data : api호출과 같은 네트워크 작업 및 로컬 데이터베이스에 접근하여 데이터를 가져오는 작업을 수행
 - core : retrofit, okhttp, room, dataStore 정의, 프로젝트 전체적으로 사용되는 클래스
+
+또한, 라이브러리의 버젼 관리는 gradle/libs.versions.toml 에서 관리하고 있습니다.
 
 ## 단일 기능 수행 과정
 ![단일기능 흐름도](https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/eb8b2861-4cd3-4760-ad99-1ddf642d1e2a)
