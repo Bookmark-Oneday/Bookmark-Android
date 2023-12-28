@@ -1,8 +1,9 @@
 # 책갈피:오늘한줄 - AOS
 <p>
 <img width="15%" src="https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/e1a74894-d601-4ba9-ab04-9de6c3dfb3ef"/>
-<a href="https://drive.google.com/file/d/16pIO6ssf7JyVo_19F86CsowjC_6kXZIC/view?usp=sharing">
-  <img width="15%" src="https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/6d8a24c2-1054-45cc-b0e7-d79105a3419b"/>
+<img width="15%" src="https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/6cfa4758-2161-43a5-a12d-9990ec1a002a"/>
+<a href="https://drive.google.com/drive/folders/1awIeOW1vRkCBYeU_8UXI1iHTGBZlbxgZ?usp=drive_link">
+  <img width="25%" src="https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/6d8a24c2-1054-45cc-b0e7-d79105a3419b"/>
 </a>
 </p>
 책갈피:오늘한줄은 사용자의 독서 욕구를 증진시키고, 독서 경험을 공유할 수 있도록 하는 독서 전문 커뮤니티 플랫폼입니다.
