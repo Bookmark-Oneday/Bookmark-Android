@@ -1,7 +1,7 @@
 # 책갈피:오늘한줄 - AOS
 <p>
 <img width="15%" src="https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/e1a74894-d601-4ba9-ab04-9de6c3dfb3ef"/>
-<a href="https://drive.google.com/file/d/1aWV8yaqgbHTXroO-9KpW9BthsctjpKbB/view?usp=drive_link">
+<a href="https://drive.google.com/file/d/16pIO6ssf7JyVo_19F86CsowjC_6kXZIC/view?usp=sharing">
   <img width="15%" src="https://github.com/Bookmark-Oneday/Bookmark-Android/assets/39579912/6d8a24c2-1054-45cc-b0e7-d79105a3419b"/>
 </a>
 </p>
