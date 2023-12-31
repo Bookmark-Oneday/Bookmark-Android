@@ -25,6 +25,7 @@
         android:layout_marginHorizontal="28dp"
         android:layout_marginBottom="24dp"
         android:gravity="center"
+        android:visibility="gone"
         android:background="@drawable/login_socialbutton_background">
 
         <androidx.appcompat.widget.AppCompatImageView
