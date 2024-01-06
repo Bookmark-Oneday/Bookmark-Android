@@ -61,6 +61,9 @@
     <string name="label_timer_remove_all_history">모든 기록 삭제</string>
     <string name="label_timer_remove_history">기록 삭제</string>
     <string name="caption_timer_remove_history">기록을 정말 삭제하시겠습니까?</string>
+    <string name="label_timer_time_format_second">%d초</string>
+    <string name="label_timer_time_format_minute_and_second">%d분 %d초</string>
+    <string name="label_timer_time_format_hour_and_minute">%d시간 %d분</string>
 
     <string name="label_error_title">인터넷 연결이 불안정합니다.</string>
     <string name="caption_error_title">인터넷 연결이 불안정하여\n데이터를 불러올 수 없습니다.</string>

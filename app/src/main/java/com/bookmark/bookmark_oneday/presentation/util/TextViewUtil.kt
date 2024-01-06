@@ -32,3 +32,21 @@ fun getTimeCaptionHtmlText(context : Context, timeMinute : Int) : Spanned {
 
     return text
 }
+
+fun getTimerTimeString(context : Context, timeSecond : Int) : String {
+    val hour = timeSecond / 3600
+    val minute = (timeSecond % 3600) / 60
+    val second = (timeSecond % 3600) % 60
+
+    return when {
+        (hour > 0) -> {
+            context.getString(R.string.label_timer_time_format_hour_and_minute, hour, minute)
+        }
+        (minute > 0) -> {
+            context.getString(R.string.label_timer_time_format_minute_and_second, minute, second)
+        }
+        else -> {
+            context.getString(R.string.label_timer_time_format_second, second)
+        }
+    }
+}
