@@ -2,6 +2,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.set_alarm
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,16 +29,25 @@ class SetAlarmActivity : ViewBindingActivity<ActivitySetAlarmBinding>(ActivitySe
         permissionGrantedMap.values
             .all { it }
             .run {
-                if (this@run) {
-                    viewModel.setUseSwitch(true)
-                } else {
-                    viewModel.setUseSwitch(false)
-                    callRequirePermissionDialog()
+                when {
+                    !this -> {
+                        viewModel.setUseSwitch(false)
+                        callRequirePermissionDialog()
+                    }
+                    !checkExactAlarmAvailable(baseContext) -> {
+                        viewModel.setUseSwitch(false)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            callRequirePermissionDialog(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                        }
+                    }
+                    else -> {
+                        viewModel.setUseSwitch(true)
+                    }
                 }
             }
     }
 
-    private fun callRequirePermissionDialog() {
+    private fun callRequirePermissionDialog(action : String = Settings.ACTION_APPLICATION_DETAILS_SETTINGS) {
         val dialog = TwoButtonDialog(
             title = getString(R.string.label_notify_require_permissions_for_alarm),
             caption = getString(R.string.caption_notify_require_permissions_for_alarm),
@@ -46,7 +56,7 @@ class SetAlarmActivity : ViewBindingActivity<ActivitySetAlarmBinding>(ActivitySe
             onLeftButtonClick = {},
             onRightButtonClick = {
                 Intent(
-                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    action,
                     Uri.fromParts("package", packageName, null)
                 ).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
