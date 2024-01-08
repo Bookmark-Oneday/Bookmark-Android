@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bookmark.bookmark_oneday.databinding.ItemTimerHistoryBinding
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
+import com.bookmark.bookmark_oneday.presentation.util.getTimerTimeString
 
 class TimerRecordHistoryAdapter(
     private val onClickRemove: (String) -> Unit
@@ -57,7 +58,7 @@ class TimerRecordHistoryViewHolder(
     fun bind(readingHistory : ReadingHistory) {
         history = readingHistory
         binding.labelTimerHistoryDate.text = history.dateString.getOnlyDate()
-        binding.labelTimerHistoryTime.text = history.time.toString()
+        binding.labelTimerHistoryTime.text = getTimerTimeString(context = binding.root.context, timeSecond = history.time)
     }
 
     companion object {
