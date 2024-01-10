@@ -12,4 +12,9 @@
     <string name="label_time_of_day_am_format">오전 %d시 %d분</string>
     <string name="label_time_of_day_night_format">밤 %d시 %d분</string>
     <string name="label_time_of_day_afternoon_format">낮 %d시 %d분</string>
+
+    <string name="label_notify_require_permissions_for_alarm">알림 권한 요청</string>
+    <string name="caption_notify_require_permissions_for_alarm">정확한 시간에 알림을 보내기 위해서는 권한이 필요합니다.\n알림을 사용하려면 권한을 허용해주세요.\n"이동"버튼을 누르면 설정 화면으로 이동합니다.</string>
+    <string name="moving">이동</string>
+    <string name="cancel">취소</string>
 </resources>

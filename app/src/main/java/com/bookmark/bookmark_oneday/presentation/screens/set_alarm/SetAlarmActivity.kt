@@ -1,24 +1,73 @@
 package com.bookmark.bookmark_oneday.presentation.screens.set_alarm
 
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.bookmark.bookmark_oneday.R
 import com.bookmark.bookmark_oneday.databinding.ActivitySetAlarmBinding
 import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
+import com.bookmark.bookmark_oneday.presentation.base.dialog.TwoButtonDialog
 import com.bookmark.bookmark_oneday.presentation.screens.set_alarm.component.TimePickerDialog
 import com.bookmark.bookmark_oneday.presentation.util.EXACT_ALARM_PERMISSION
+import com.bookmark.bookmark_oneday.presentation.util.POST_NOTIFICATIONS_33
 import com.bookmark.bookmark_oneday.presentation.util.checkExactAlarmAvailable
+import com.bookmark.bookmark_oneday.presentation.util.checkPostNotificationAvailable
 import com.bookmark.bookmark_oneday.presentation.util.collectLatestInLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SetAlarmActivity : ViewBindingActivity<ActivitySetAlarmBinding>(ActivitySetAlarmBinding::inflate) {
     private val viewModel : SetAlarmViewModel by viewModels()
-    private val requestPermission = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) { viewModel.setUseSwitch(true) }
+
+    private val requestExactNotificationPermissions = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissionGrantedMap ->
+        permissionGrantedMap.values
+            .all { it }
+            .run {
+                when {
+                    !this -> {
+                        viewModel.setUseSwitch(false)
+                        callRequirePermissionDialog()
+                    }
+                    !checkExactAlarmAvailable(baseContext) -> {
+                        viewModel.setUseSwitch(false)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                            callRequirePermissionDialog(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                        }
+                    }
+                    else -> {
+                        viewModel.setUseSwitch(true)
+                    }
+                }
+            }
+    }
+
+    private fun callRequirePermissionDialog(action : String = Settings.ACTION_APPLICATION_DETAILS_SETTINGS) {
+        val dialog = TwoButtonDialog(
+            title = getString(R.string.label_notify_require_permissions_for_alarm),
+            caption = getString(R.string.caption_notify_require_permissions_for_alarm),
+            leftText = getString(R.string.cancel),
+            rightText = getString(R.string.moving),
+            onLeftButtonClick = {},
+            onRightButtonClick = {
+                Intent(
+                    action,
+                    Uri.fromParts("package", packageName, null)
+                ).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }.run {
+                    startActivity(this)
+                }
+            },
+            accentLeft = false
+        )
+
+        dialog.show(supportFragmentManager, "requirePermissionDialog")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,19 +95,26 @@ class SetAlarmActivity : ViewBindingActivity<ActivitySetAlarmBinding>(ActivitySe
 
     private fun initSwitch() {
         binding.switchUseAlarm.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked && !checkExactAlarmAvailable(baseContext)) {
-                val alarmPermission = EXACT_ALARM_PERMISSION
-                alarmPermission?.let { requestPermission.launch(it) }
+            viewModel.setUseSwitch(isChecked)
+            if (isChecked &&
+                !(checkExactAlarmAvailable(baseContext) && checkPostNotificationAvailable(baseContext))
+            ) {
+                listOfNotNull(EXACT_ALARM_PERMISSION, POST_NOTIFICATIONS_33)
+                    .run {
+                        if (isEmpty()) return@run
+                        requestExactNotificationPermissions.launch(toTypedArray())
+                    }
+
                 return@setOnCheckedChangeListener
             }
-            viewModel.setUseSwitch(isChecked)
         }
     }
 
     private fun initObserver() {
         viewModel.useAlarm.collectLatestInLifecycle(this) { useAlarm ->
             setAlarmBtnEnabled(useAlarm)
-            binding.switchUseAlarm.isChecked = useAlarm && checkExactAlarmAvailable(baseContext)
+            binding.switchUseAlarm.isChecked = useAlarm
+
         }
 
         viewModel.alarmTime.collectLatestInLifecycle(this) { alarmTimeMinute ->
