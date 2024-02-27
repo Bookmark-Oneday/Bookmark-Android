@@ -11,6 +11,7 @@
     <uses-permission
         android:name="android.permission.POST_NOTIFICATIONS"
         android:minSdkVersion="33"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -50,6 +51,8 @@
                 <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".presentation.screens.timer.TimerService"/>
     </application>
 
 </manifest>
