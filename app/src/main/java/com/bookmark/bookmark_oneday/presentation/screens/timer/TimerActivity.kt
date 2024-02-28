@@ -1,5 +1,6 @@
 package com.bookmark.bookmark_oneday.presentation.screens.timer
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -48,6 +49,11 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         setObserver()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        cancelTimerService()
+    }
+
     private fun setBackButtonCallback() {
         val onBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -78,6 +84,7 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
     private fun callCancelDialog() {
         val dialog = CancelTimerDialog(
             onClickBack = {
+                cancelTimerService()
                 setBackStackExtra()
                 finish()
             }
@@ -120,6 +127,22 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         ).show(supportFragmentManager, "TimerRemoveHistoryDialog")
     }
 
+    private fun callTimerService() {
+        Intent(this@TimerActivity, TimerService::class.java)
+            .putExtra(TimerService.TIMER_ACTION, TimerService.START)
+            .run {
+                startService(this)
+            }
+    }
+
+    private fun cancelTimerService() {
+        Intent(this@TimerActivity, TimerService::class.java)
+            .putExtra(TimerService.TIMER_ACTION, TimerService.PAUSE)
+            .run {
+                startService(this)
+            }
+    }
+
     private fun setRecyclerView() {
         binding.listTimerHistory.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -152,6 +175,12 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
             if (state.totalButtonToggled) View.VISIBLE else View.INVISIBLE
         val totalTextColor = if (state.totalButtonToggled) R.color.orange else R.color.default_text
         binding.labelTimerTime.setTextColor(ContextCompat.getColor(this, totalTextColor))
+
+        if (state.playButtonToggled) {
+            callTimerService()
+        } else {
+            cancelTimerService()
+        }
     }
 
     private fun applyStopWatchState(state: StopWatchState) {
