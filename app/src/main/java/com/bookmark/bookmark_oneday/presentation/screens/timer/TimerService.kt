@@ -3,6 +3,7 @@ package com.bookmark.bookmark_oneday.presentation.screens.timer
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.os.Build
@@ -70,7 +71,6 @@ class TimerService : Service() {
         when (action) {
             START -> {
                 startForeground(1, buildTimerNotification(0))
-                timer.start()
             }
             PAUSE -> {
                 timer.pause()
@@ -86,12 +86,23 @@ class TimerService : Service() {
         val minutes = totalSecond / 60
         val seconds = totalSecond % 60
 
+        val timerActivityIntent = Intent(baseContext, TimerActivity::class.java)
+
+        val pendingIntent = PendingIntent.getActivity(
+            baseContext,
+            1000,
+            timerActivityIntent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("timer")
             .setOngoing(true)
             .setContentText("${"%02d".format(hours)}:${"%02d".format(minutes)}:${"%02d".format(seconds)}")
             .setSmallIcon(R.drawable.ic_logo)
             .setAutoCancel(false)
+            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
             .build()
     }
 
