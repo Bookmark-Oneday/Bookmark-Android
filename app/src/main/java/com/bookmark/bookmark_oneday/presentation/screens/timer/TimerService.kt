@@ -96,7 +96,7 @@ class TimerService : Service() {
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("timer")
+            .setContentTitle(getString(R.string.timer))
             .setOngoing(true)
             .setContentText("${"%02d".format(hours)}:${"%02d".format(minutes)}:${"%02d".format(seconds)}")
             .setSmallIcon(R.drawable.ic_logo)
