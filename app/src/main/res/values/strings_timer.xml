@@ -3,4 +3,5 @@
     <string name="label_timer_cancel">현재 독서 기록을 취소하고\n이전 화면으로 이동하시겠습니까?</string>
     <string name="no">아니요</string>
     <string name="yes">네</string>
+    <string name="timer">타이머</string>
 </resources>

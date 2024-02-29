@@ -11,6 +11,7 @@
     <uses-permission
         android:name="android.permission.POST_NOTIFICATIONS"
         android:minSdkVersion="33"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -33,7 +34,7 @@
         <activity android:name=".presentation.screens.intro.IntroActivity"/>
         <activity android:name=".presentation.screens.home.HomeActivity"/>
         <activity android:name=".presentation.screens.book_recognition.BookRecognitionActivity"/>
-        <activity android:name=".presentation.screens.timer.TimerActivity"/>
+        <activity android:name=".presentation.screens.timer.TimerActivity" android:launchMode="singleTop"/>
         <activity android:name=".presentation.screens.book_confirmation.BookConfirmationActivity"/>
         <activity android:name=".presentation.screens.signup.SignupBaseActivity"/>
         <activity android:name=".presentation.screens.write_today_oneline.WriteTodayOnelineActivity"/>
@@ -50,6 +51,8 @@
                 <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".presentation.screens.timer.TimerService"/>
     </application>
 
 </manifest>

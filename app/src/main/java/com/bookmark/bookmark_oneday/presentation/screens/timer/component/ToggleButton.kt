@@ -32,7 +32,7 @@ class ToggleButton(context : Context, attrs : AttributeSet) : View(context, attr
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         val backgroundId = if (toggle) toggleOnBackground else toggleOffBackground

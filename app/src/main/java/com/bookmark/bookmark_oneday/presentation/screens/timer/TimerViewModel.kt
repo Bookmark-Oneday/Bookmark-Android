@@ -8,13 +8,12 @@ import com.bookmark.bookmark_oneday.domain.book.model.ReadingHistory
 import com.bookmark.bookmark_oneday.domain.book.model.ReadingInfo
 import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseGetReadingHistory
 import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseSaveReadingHistory
-import com.bookmark.bookmark_oneday.presentation.model.Timer
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.TimerViewEvent
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.TimerViewState
+import com.bookmark.bookmark_oneday.presentation.screens.timer.model.timer.BookReadingTimer
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -22,10 +21,9 @@ import kotlinx.coroutines.launch
 class TimerViewModel @AssistedInject constructor(
     private val useCaseGetReadingHistory: UseCaseGetReadingHistory,
     private val useCaseSaveReadingHistory: UseCaseSaveReadingHistory,
+    private val timer : BookReadingTimer,
     @Assisted val bookId : String
 ) : ViewModel() {
-
-    private val timer = Timer(viewModelScope, Dispatchers.Default, action = ::setStopWatchTime)
 
     private val events = Channel<TimerViewEvent>()
     val state : StateFlow<TimerViewState> = events.receiveAsFlow()
@@ -35,9 +33,11 @@ class TimerViewModel @AssistedInject constructor(
     // 기록 추가 및 삭제와 같은 이벤트로 인해, 기록의 변화가 발생했는지 여부를 나타냅니다.
     private var readingHistoryChanged = false
 
-    private fun setStopWatchTime(time : Int) {
+    init {
         viewModelScope.launch {
-            events.send(TimerViewEvent.UpdateTimer(time))
+            timer.state.collectLatest {
+                events.send(TimerViewEvent.UpdateTimer(it.second))
+            }
         }
     }
 
@@ -72,7 +72,7 @@ class TimerViewModel @AssistedInject constructor(
 
             if (response is BaseResponse.Success) {
                 events.send(TimerViewEvent.RecordSuccess(response.data))
-                timer.resetTime()
+                timer.reset()
             } else {
                 events.send(TimerViewEvent.RecordFail)
             }
