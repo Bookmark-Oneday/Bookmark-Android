@@ -34,4 +34,12 @@ class ApplicationRepositoryImpl @Inject constructor(
             minute = it.minute
         )
     }
+
+    override suspend fun setTimerNotificationUsed(useTimerNotification: Boolean) {
+        dataSource.setTimerNotificationUsed(useTimerNotification)
+    }
+
+    override suspend fun getTimerNotificationUsed(): Boolean {
+        return dataSource.getTimerNotificationUsed()
+    }
 }
