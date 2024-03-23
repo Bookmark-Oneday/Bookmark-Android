@@ -15,6 +15,7 @@ import com.bookmark.bookmark_oneday.presentation.screens.timer.model.timer.BookR
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,19 +25,26 @@ class TimerService : Service() {
     @Inject
     lateinit var timer : BookReadingTimer
     private lateinit var notificationManager: NotificationManager
+    private var timerJob : Job? = null
+    private var isRunning : Boolean = false
 
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
+    // 이 중 몇개는 onCreate 에 들어가야 할듯?
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         createChannel()
         initNotificationManager()
-        initObserver()
 
         intent?.getStringExtra(TIMER_ACTION)?.let { action -> handleActions(action) }
 
         return START_STICKY
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timerJob?.cancel()
     }
 
     private fun createChannel() {
@@ -55,12 +63,15 @@ class TimerService : Service() {
         notificationManager = ContextCompat.getSystemService(this, NotificationManager::class.java) as NotificationManager
     }
 
-    private fun initObserver() {
-        CoroutineScope(Dispatchers.Default).launch {
+    private fun startTimerJob() {
+        timerJob?.cancel()
+        timerJob = CoroutineScope(Dispatchers.Default).launch {
             timer.state.collectLatest {
                 if (it.isPlaying) {
+                    isRunning = true
                     notificationManager.notify(1, buildTimerNotification(it.second))
                 } else {
+                    isRunning = false
                     stopForeground(STOP_FOREGROUND_REMOVE)
                 }
             }
@@ -70,13 +81,18 @@ class TimerService : Service() {
     private fun handleActions(action : String) {
         when (action) {
             START -> {
-                startForeground(1, buildTimerNotification(0))
+                if (!isRunning) {
+                    isRunning = true
+                    startForeground(1, buildTimerNotification(0))
+                    startTimerJob()
+                }
             }
             PAUSE -> {
-                timer.pause()
-            }
-            RESET -> {
-                timer.reset()
+                if (isRunning) {
+                    isRunning = false
+                    stopForeground(STOP_FOREGROUND_REMOVE)
+                    timerJob?.cancel()
+                }
             }
         }
     }
@@ -113,7 +129,6 @@ class TimerService : Service() {
         // Service Actions
         const val START = "START"
         const val PAUSE = "PAUSE"
-        const val RESET = "RESET"
 
         // Intent Extras
         const val TIMER_ACTION = "TIMER_ACTION"
