@@ -1,6 +1,7 @@
 package com.bookmark.bookmark_oneday.presentation.screens.timer
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -47,6 +48,7 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         setButton()
         setRecyclerView()
         setObserver()
+        setSwitch()
     }
 
     override fun onDestroy() {
@@ -131,7 +133,11 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         Intent(this@TimerActivity, TimerService::class.java)
             .putExtra(TimerService.TIMER_ACTION, TimerService.START)
             .run {
-                startService(this)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(this)
+                } else {
+                    startService(this)
+                }
             }
     }
 
@@ -139,7 +145,11 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         Intent(this@TimerActivity, TimerService::class.java)
             .putExtra(TimerService.TIMER_ACTION, TimerService.PAUSE)
             .run {
-                startService(this)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(this)
+                } else {
+                    startService(this)
+                }
             }
     }
 
@@ -162,6 +172,30 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
                 }
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.timserServiceActionEvent.collectLatest { actionString ->
+                        when (actionString) {
+                            TimerService.START -> {
+                                callTimerService()
+                            }
+                            TimerService.PAUSE -> {
+                                cancelTimerService()
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setSwitch() {
+        binding.switchUseNotification.setOnCheckedChangeListener { buttonView, isChecked ->
+            viewModel.setTimerNotificationUseSwitchState(isChecked)
+        }
     }
 
     private fun applyState(state: TimerViewState) {
@@ -176,10 +210,12 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         val totalTextColor = if (state.totalButtonToggled) R.color.orange else R.color.default_text
         binding.labelTimerTime.setTextColor(ContextCompat.getColor(this, totalTextColor))
 
-        if (state.playButtonToggled) {
-            callTimerService()
-        } else {
-            cancelTimerService()
+        setUseNotificationSwitchState(state.timerNotificationSwitch)
+    }
+
+    private fun setUseNotificationSwitchState(on : Boolean) {
+        if (binding.switchUseNotification.isChecked != on) {
+            binding.switchUseNotification.isChecked = on
         }
     }
 
