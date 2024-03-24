@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -19,9 +21,12 @@ import com.bookmark.bookmark_oneday.presentation.base.ViewBindingActivity
 import com.bookmark.bookmark_oneday.presentation.model.ReadingHistoryParcelable
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.bottomsheet_more.TimerMoreBottomSheetDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_cancel_timer.CancelTimerDialog
+import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_permission.NotificationPermissionDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.component.dialog_remove.TimerRemoveHistoryDialog
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.StopWatchState
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.TimerViewState
+import com.bookmark.bookmark_oneday.presentation.util.POST_NOTIFICATIONS_33
+import com.bookmark.bookmark_oneday.presentation.util.checkPostNotificationAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -38,6 +43,18 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
             bookId = intent.getStringExtra("book_id") ?: "1"
         )
     }
+
+    private val requestPermission = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            viewModel.setTimerNotificationUseSwitchState(true)
+        } else {
+            Toast.makeText(this, getString(R.string.label_notification_permission_not_allowed), Toast.LENGTH_SHORT).show()
+            setUseNotificationSwitchState(false)
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -193,8 +210,12 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
     }
 
     private fun setSwitch() {
-        binding.switchUseNotification.setOnCheckedChangeListener { buttonView, isChecked ->
-            viewModel.setTimerNotificationUseSwitchState(isChecked)
+        binding.switchUseNotification.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked && !checkPostNotificationAvailable(this)) {
+                NotificationPermissionDialog(onClick = {requestPermission.launch(POST_NOTIFICATIONS_33)}).show(supportFragmentManager, "Notification Permission Dialog")
+            } else {
+                viewModel.setTimerNotificationUseSwitchState(isChecked)
+            }
         }
     }
 
