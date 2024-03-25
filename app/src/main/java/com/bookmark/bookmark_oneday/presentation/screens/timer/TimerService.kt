@@ -68,11 +68,9 @@ class TimerService : Service() {
         timerJob = CoroutineScope(Dispatchers.Default).launch {
             timer.state.collectLatest {
                 if (it.isPlaying) {
-                    isRunning = true
                     notificationManager.notify(1, buildTimerNotification(it.second))
                 } else {
-                    isRunning = false
-                    stopForeground(STOP_FOREGROUND_REMOVE)
+                    notificationManager.notify(1, buildTimerNotification(0))
                 }
             }
         }
@@ -90,8 +88,8 @@ class TimerService : Service() {
             PAUSE -> {
                 if (isRunning) {
                     isRunning = false
-                    stopForeground(STOP_FOREGROUND_REMOVE)
                     timerJob?.cancel()
+                    stopForeground(STOP_FOREGROUND_REMOVE)
                 }
             }
         }
@@ -119,6 +117,7 @@ class TimerService : Service() {
             .setAutoCancel(false)
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .build()
     }
 
