@@ -36,7 +36,7 @@ class TimerViewModel @AssistedInject constructor(
     private var readingHistoryChanged = false
 
     private val _timerServiceActionEvent = MutableEventFlow<String>()
-    val timserServiceActionEvent = _timerServiceActionEvent.asEventFlow()
+    val timerServiceActionEvent = _timerServiceActionEvent.asEventFlow()
 
     init {
         viewModelScope.launch {

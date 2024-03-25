@@ -193,7 +193,7 @@ class TimerActivity : ViewBindingActivity<ActivityTimerBinding>(ActivityTimerBin
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.timserServiceActionEvent.collectLatest { actionString ->
+                    viewModel.timerServiceActionEvent.collectLatest { actionString ->
                         when (actionString) {
                             TimerService.START -> {
                                 callTimerService()
