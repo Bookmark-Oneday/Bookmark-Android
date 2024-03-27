@@ -11,6 +11,8 @@ import com.bookmark.bookmark_oneday.domain.book.usecase.UseCaseSaveReadingHistor
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.TimerViewEvent
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.TimerViewState
 import com.bookmark.bookmark_oneday.presentation.screens.timer.model.timer.BookReadingTimer
+import com.bookmark.bookmark_oneday.presentation.util.MutableEventFlow
+import com.bookmark.bookmark_oneday.presentation.util.asEventFlow
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -32,6 +34,9 @@ class TimerViewModel @AssistedInject constructor(
 
     // 기록 추가 및 삭제와 같은 이벤트로 인해, 기록의 변화가 발생했는지 여부를 나타냅니다.
     private var readingHistoryChanged = false
+
+    private val _timerServiceActionEvent = MutableEventFlow<String>()
+    val timerServiceActionEvent = _timerServiceActionEvent.asEventFlow()
 
     init {
         viewModelScope.launch {
@@ -102,6 +107,18 @@ class TimerViewModel @AssistedInject constructor(
         return if (readingHistoryChanged) readingHistoryList else null
     }
 
+    fun setTimerNotificationUseSwitchState(isChecked : Boolean) {
+        viewModelScope.launch {
+            events.send(TimerViewEvent.ToggleTimerNotificationSwitch(isChecked))
+        }
+    }
+
+    private fun emitServiceActionEvent(action : String) {
+        viewModelScope.launch {
+            _timerServiceActionEvent.emit(action)
+        }
+    }
+
     private fun reduce(state : TimerViewState, event : TimerViewEvent) : TimerViewState {
         return when (event) {
             TimerViewEvent.ApiResponseLoading -> {
@@ -158,6 +175,19 @@ class TimerViewModel @AssistedInject constructor(
             is TimerViewEvent.UpdateTimer -> {
                 val stopWatchState = state.stopWatchState.copy(currentTime = event.time)
                 state.copy(stopWatchState = stopWatchState)
+            }
+            is TimerViewEvent.ToggleTimerNotificationSwitch -> {
+                val callServiceStartAction = !state.timerNotificationSwitch && event.useTimerNotification
+                val callServiceStopAction = state.timerNotificationSwitch && !event.useTimerNotification
+
+                if (callServiceStartAction) {
+                    emitServiceActionEvent(TimerService.START)
+                }
+                if (callServiceStopAction) {
+                    emitServiceActionEvent(TimerService.PAUSE)
+                }
+
+                state.copy(timerNotificationSwitch = event.useTimerNotification)
             }
         }
     }

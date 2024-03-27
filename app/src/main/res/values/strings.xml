@@ -136,4 +136,12 @@
     <string name="label_bookconfirm_cannot_founc_book_info">조회 실패</string>
     <string name="caption_bookconfirm_cannot_found_book_info">책 정보를 조회할 수 없습니다.\n잠시 후에 다시 시도해주세요.</string>
     <string name="label_bookconfirm_confirm">확인</string>
+
+
+    <string name="label_notification_permission">알림 권한 허용</string>
+    <string name="label_notification">알림</string>
+    <string name="caption_notification">독서 기록 타이머 표시 및 알람 기능에 사용</string>
+    <string name="caption_notification_permission">알림 권한은 상단 알림바에 타이머를 표시하고 알람 기능 동작에 사용됩니다. 권한을 허용하지 않아도 타이머 기능은 사용 가능하나 알람 기능은 사용할 수 없습니다.</string>
+    <string name="label_confirm">확인</string>
+    <string name="label_notification_permission_not_allowed">상단바에 타이머를 표시하기 위해서는 알림 권한이 필요합니다.</string>
 </resources>

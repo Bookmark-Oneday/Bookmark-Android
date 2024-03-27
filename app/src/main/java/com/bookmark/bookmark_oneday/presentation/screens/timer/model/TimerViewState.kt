@@ -7,5 +7,6 @@ data class TimerViewState (
     val playButtonToggled : Boolean = false,
     val buttonActive : Boolean = true,
     val readingHistoryList : List<ReadingHistory> = listOf(),
-    val stopWatchState: StopWatchState = StopWatchState()
+    val stopWatchState: StopWatchState = StopWatchState(),
+    val timerNotificationSwitch : Boolean = false
 )

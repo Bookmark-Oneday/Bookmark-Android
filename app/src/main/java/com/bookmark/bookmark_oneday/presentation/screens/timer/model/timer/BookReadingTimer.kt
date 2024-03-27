@@ -25,6 +25,7 @@ class BookReadingTimer @Inject constructor() {
         _state.update { it.copy(isPlaying = true) }
         startTimeInMillis = Calendar.getInstance().timeInMillis
 
+        timerJob?.cancel()
         timerJob = CoroutineScope(Dispatchers.Default).launch {
             while (true) {
                 delay(1000L)

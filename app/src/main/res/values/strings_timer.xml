@@ -4,4 +4,6 @@
     <string name="no">아니요</string>
     <string name="yes">네</string>
     <string name="timer">타이머</string>
+
+    <string name="label_timer_show_timer_notification">타이머 상단 바 표시</string>
 </resources>

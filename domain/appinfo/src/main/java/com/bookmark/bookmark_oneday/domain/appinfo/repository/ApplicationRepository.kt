@@ -8,4 +8,6 @@ interface ApplicationRepository {
     fun setExecuted()
     suspend fun setAlarm(alarmOn : Boolean, hour : Int = 20, minute : Int = 0)
     fun getAlarmInfo() : Flow<AlarmInfo>
+    suspend fun setTimerNotificationUsed(useTimerNotification : Boolean)
+    suspend fun getTimerNotificationUsed() : Boolean
 }

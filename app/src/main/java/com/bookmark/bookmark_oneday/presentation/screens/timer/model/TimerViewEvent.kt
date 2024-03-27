@@ -12,4 +12,5 @@ sealed class TimerViewEvent {
     class TogglePlayButton(val playing : Boolean) : TimerViewEvent()
     class UpdateReadingInfo(val readingInfo : ReadingInfo) : TimerViewEvent()
     class UpdateTimer(val time : Int) : TimerViewEvent()
+    class ToggleTimerNotificationSwitch(val useTimerNotification : Boolean) : TimerViewEvent()
 }
